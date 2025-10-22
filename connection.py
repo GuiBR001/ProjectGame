@@ -1,5 +1,7 @@
 import oracledb
 
+#conexao futura com banco
+
 try:
     conn = oracledb.connect(user = "RM561226", password = "110505", dsn = "oracle.fiap.com.br:1521/ORCL" )
 

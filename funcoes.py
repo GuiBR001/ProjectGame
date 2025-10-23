@@ -95,13 +95,36 @@ def iniciar(fase: int, player: dict) -> None:
 
 
 
-#gera personagem
-def criar_personagem() -> dict:
+#descricao da raca + imagem
+def descri_raca(raca) -> None:
+    from icons import esqueleto, anjo, mago
 
-    nome = str(input("Escolha um nome: ")).upper()
+    try:
+        match raca:
+
+            case 1:
+                new_raca = "Esqueleto"
+                esqueleto()
+            
+            case 2:
+                new_raca = "Anjo Da Morte"
+                anjo()
+            
+            case 3:
+                new_raca = "Mago Ancião"
+                mago()
+
+    except ValueError:
+        print("Escolha com um número de 1 a 3!")
+
+
+
+#gera personagem
+def criar_personagem(nome: str, new_raca: str) -> dict: 
 
     return  {
         "nome": nome,
+        "raca": new_raca,
         "level": 1,
         "exp": 0,
         "hp": 150,
@@ -203,7 +226,8 @@ def exibir_player(player: dict) -> None:
                    """))
     print(f'''
                         {rgb_text(player['nome'])}
-
+                
+                {Fore.YELLOW}      Raça: {player['raca']}
                 {Fore.BLUE}      Level:  {player['level']}
                 {Fore.RED}      Dano:  {player['dano']}
                 {Fore.MAGENTA}      Saúde:  {player['hp']}
@@ -264,38 +288,4 @@ def rgb_text(texto: str) -> str:
 
 
 
-#fase 1 completa
-def fase_1() -> None:
-    print(rgb_text("""
-                    |>>>                    |>>>
-                    |                        |
-                _  _|_  _                _  _|_  _
-                | |_| |_| |              | |_| |_| |
-                \  .      /              \ .    .  /
-                \    ,  /                \    .  /
-                    | .   |_   _   _   _   _| ,   |
-                    |    .| |_| |_| |_| |_| |  .  |
-                    | .   |    _______     |    . |
-                    |   . |  .'       '.   |  ,   |
-                    | ,   | |  PARABÉNS |  |    . |
-                ___|_____| |___________|  |______|___
-                /    o    o    o    o    o    o    o   \
-            /_______________________________________\
-            |_________________________________________|
-    """))
 
-    print(rgb_text("""
-    ╔════════════════════════════════════════════════════╗
-    ║                                                    ║
-    ║                PARABÉNS, GUERREIRO!                ║
-    ║                                                    ║
-    ║    Você conquistou a CIDADELA DO REI DE FERRO!     ║
-    ║                                                    ║
-    ║    Suas cinzas agora marcam sua vitória eterna.    ║
-    ║                                                    ║
-    ║         Prepare-se... a próxima fase é:            ║
-    ║                                                    ║
-    ║        ✦ CAMPOS DE BATALHA DE DRAKMOR ✦           ║
-    ║                                                    ║
-    ╚════════════════════════════════════════════════════╝
-    """))

@@ -103,15 +103,12 @@ def descri_raca(raca) -> None:
         match raca:
 
             case 1:
-                new_raca = "Esqueleto"
                 esqueleto()
             
             case 2:
-                new_raca = "Anjo Da Morte"
                 anjo()
             
             case 3:
-                new_raca = "Mago Ancião"
                 mago()
 
     except ValueError:
@@ -120,15 +117,25 @@ def descri_raca(raca) -> None:
 
 
 #gera personagem
-def criar_personagem(nome: str, new_raca: str) -> dict: 
+def criar_personagem(nome: str,raca: int) -> dict: 
+
+    match raca:
+        case 1:
+            raca = "Esqueleto Flamejante"
+        
+        case 2:
+            raca = "Anjo Da Morte"
+        
+        case 3:
+            raca = "Mago Ancião"
 
     return  {
         "nome": nome,
-        "raca": new_raca,
+        "raca": raca,
         "level": 1,
         "exp": 0,
         "hp": 150,
-        "dano": 10000
+        "dano": 35
     }
 
 

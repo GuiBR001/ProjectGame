@@ -35,10 +35,6 @@ raca = int(input("""
 fn.descri_raca(raca)
 player = fn.criar_personagem(nome, raca)
 cont = str(input("Aperte ENTER para continuar"))
-
-while cont != "":
-    print("Digite ENTER!")
-else:
-    fn.limpar_tela()
-    fn.iniciar(fase, player)
-    fs.fase_1(fase, player)
+fn.limpar_tela()
+fn.iniciar(fase, player)
+fs.fase_1(fase, player)

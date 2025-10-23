@@ -5,7 +5,6 @@ import funcoes as fn
 import fases as fs
 import icons as ic
 
-ic.endless_img()
 fase = 1
 nome = input("""
                                 ╔══════════════════════════════════════════════════════════════════════╗

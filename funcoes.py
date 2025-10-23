@@ -135,7 +135,7 @@ def criar_personagem(nome: str,raca: int) -> dict:
         "level": 1,
         "exp": 0,
         "hp": 150,
-        "dano": 35
+        "dano": 100000000
     }
 
 
@@ -145,63 +145,63 @@ def criar_npc(level) -> dict:
 
     if level >= 1 and level <= 10:
         if level <= 5:
-            nome = "dominus"
+            nome = "dominus".upper()
         else:
-            nome = "draconis"
+            nome = "draconis".upper()
 
     elif level >= 11 and level <= 20:
         if level <= 15:
-            nome = "carceres"
+            nome = "carceres".upper()
         else:
-            nome = "minotauro"
+            nome = "minotauro".upper()
 
     elif level >= 21 and level <= 30:
         if level <= 25:
-            nome = "poseidon"
+            nome = "poseidon".upper()
         else:
-            nome = "kraken"
+            nome = "kraken".upper()
 
     elif level >= 31 and level <= 40:
         if level <= 35:
-            nome = "saci"
+            nome = "saci".upper()
         else:
-            nome = "boitatá"
+            nome = "boitatá".upper()
 
     elif level >= 41 and level <= 50:
         if level <= 45:
-            nome = "bobbafet"
+            nome = "bobbafet".upper()
         else:
-            nome = "magma"
+            nome = "magma".upper()
 
     elif level >= 51 and level <= 60:
         if level <= 55:
-            nome = "farquad"
+            nome = "farquad".upper()
         else:
-            nome = "ogroid"
+            nome = "ogroid".upper()
 
     elif level >= 61 and level <= 70:
         if level <= 65:
-            nome = "monsa"
+            nome = "monsa".upper()
         else:
-            nome = "fenrir"
+            nome = "fenrir".upper()
 
     elif level >= 71 and level <= 80:
         if level <= 75:
-            nome = "mytus"
+            nome = "mytus".upper()
         else:
-            nome = "hydra"
+            nome = "hydra".upper()
 
     elif level >= 81 and level <= 90:
         if level <= 85:
-            nome = Fore.GREEN + "GUISPARK"
+            nome = Fore.GREEN + "guispark".upper()
         else:
-            nome = Fore.BLUE + "TARTARUS"
+            nome = Fore.BLUE + "tartarus".upper()
 
     elif level >= 91 and level <= 100:
         if level <= 95:
-            nome = Fore.YELLOW + "ENDLESS"
+            nome = Fore.YELLOW + "endless".upper()
         else:
-            nome = Fore.RED + "FOGUINHO"
+            nome = Fore.RED + "foguinho".upper()
 
     novo_npc = {
         "nome": f"{nome}",

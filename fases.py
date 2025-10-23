@@ -1,4 +1,5 @@
 import funcoes as fn
+import icons as ic
 from colorama import Fore, Style, init
 
 
@@ -17,7 +18,7 @@ def fase_1(fase: int, player: dict) -> None:
         try:
             if len(fn.lista_npcs) <= 0:
                 fn.limpar_tela()
-                fn.fase_1()
+                ic.fase_1_fim()
                 sair = input("\nAperte ENTER para voltar")
                 if sair == "":
                     fn.limpar_tela()
@@ -43,9 +44,8 @@ def fase_1(fase: int, player: dict) -> None:
                    print(Fore.YELLOW + "CIDADELA DO REI DE FERRO\n")
                    fn.exibir_npcs()
                    if fn.lista_npcs[0]['hp'] <= 0:
-                       print(f"""
-                                   {fn.lista_npcs[0]['nome']} derrotado!
-                       """.upper())
+                       print("")
+                       ic.morte_monstro_img(npc_atacado)
                        del fn.lista_npcs[0]
 
                    else:
@@ -77,9 +77,7 @@ def fase_1(fase: int, player: dict) -> None:
                     print(Fore.YELLOW + "CIDADELA DO REI DE FERRO\n")
                     fn.exibir_npcs()
                     if fn.lista_npcs[1]['hp'] <= 0:
-                        print(f"""
-                                    {fn.lista_npcs[1]['nome']} derrotado!
-                        """.upper())
+                        ic.morte_monstro_img(npc_atacado)
                         del fn.lista_npcs[1]
 
                     else:
@@ -110,9 +108,7 @@ def fase_1(fase: int, player: dict) -> None:
                     print(Fore.YELLOW + "CIDADELA DO REI DE FERRO\n")
                     fn.exibir_npcs()
                     if fn.lista_npcs[2]['hp'] <= 0:
-                        print(f"""
-                                    {fn.lista_npcs[2]['nome']} derrotado!
-                        """.upper())
+                        ic.morte_monstro_img(npc_atacado)
                         del fn.lista_npcs[2]
 
                     else:
@@ -143,9 +139,7 @@ def fase_1(fase: int, player: dict) -> None:
                     print(Fore.YELLOW + "CIDADELA DO REI DE FERRO\n")
                     fn.exibir_npcs()
                     if fn.lista_npcs[3]['hp'] <= 0:
-                        print(f"""
-                                    {fn.lista_npcs[3]['nome']} derrotado!
-                        """.upper())
+                        ic.morte_monstro_img(npc_atacado)
                         del fn.lista_npcs[3]
 
                     else:
@@ -176,9 +170,7 @@ def fase_1(fase: int, player: dict) -> None:
                     print(Fore.YELLOW + "CIDADELA DO REI DE FERRO\n")
                     fn.exibir_npcs()
                     if fn.lista_npcs[4]['hp'] <= 0:
-                        print(f"""
-                                    {fn.lista_npcs[4]['nome']} derrotado!
-                        """.upper())
+                        ic.morte_monstro_img(npc_atacado)
                         del fn.lista_npcs[4]
 
                     else:
@@ -209,9 +201,7 @@ def fase_1(fase: int, player: dict) -> None:
                     print(Fore.YELLOW + "CIDADELA DO REI DE FERRO\n")
                     fn.exibir_npcs()
                     if fn.lista_npcs[5]['hp'] <= 0:
-                        print(f"""
-                                    {fn.lista_npcs[5]['nome']} derrotado!
-                        """.upper())
+                        ic.morte_monstro_img(npc_atacado)
                         del fn.lista_npcs[5]
                 
                     else:
@@ -242,9 +232,7 @@ def fase_1(fase: int, player: dict) -> None:
                     print(Fore.YELLOW + "CIDADELA DO REI DE FERRO\n")
                     fn.exibir_npcs()
                     if fn.lista_npcs[6]['hp'] <= 0:
-                        print(f"""
-                                    {fn.lista_npcs[6]['nome']} derrotado!
-                        """.upper())
+                        ic.morte_monstro_img(npc_atacado)
                         del fn.lista_npcs[6]
                     else:
                         print(f"""

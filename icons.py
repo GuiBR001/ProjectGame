@@ -1,9 +1,10 @@
 import funcoes as fn
 import os
+import shutil
 from colorama import Fore, init, Style
 
 init(autoreset= True)
-largura_tela = os.get_terminal_size().columns
+largura_tela = shutil.get_terminal_size().columns
 
 
 #TELA DE INICIO DO JOGO ----------------------------------------------------------------
@@ -67,7 +68,6 @@ def fase1_inicio():
  -|--|= ||--|--|--|-||:::::::::::::::::::::||-|--|--|--||- |--|-
      |- ||  |  |  | ||:::::::::::::::::::::|| |  |  |  ||= |  | 
 ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^~~~~~~~~~
-          
 """
     for linha in arte.splitlines():
       print(linha.center(largura_tela))
@@ -110,45 +110,42 @@ def fase1_img():
       print(linha.center(largura_tela))
 
 #fase 1 completa
-def fase_1_fim_parabens() -> None:
-    arte = fn.rgb_text(fr"""
-                  |>>>                    |>>>
-                  |                       |
-              _  _|_  _               _  _|_  _
-             | |_| |_| |             | |_| |_| |
-             \  .      /             \ .    .  /
-              \    ,  /               \    .  /
-               | .   |_   _   _   _   _| ,   |
-               |    .| |_| |_| |_| |_| |  .  |
-               | .   |    _______      |     |
-               |   . |  .'       '.    |     |
-               | ,   | |  PARABÉNS |   |   . |
-            ___|_____| |___________|   |_____|___
+def fase_1_fim() -> None:
+    arte = fr"""
+                 |>>>                    |>>>
+              |                       |
+             _  _|_  _               _  _|_  _
+            | |_| |_| |             | |_| |_| |
+            \  .      /             \ .    .  /
+            \    ,  /               \    .  /
+            | .   |_   _   _   _   _| ,   |
+            |    .| |_| |_| |_| |_| |  .  |
+            | .   |    _______      |     |
+            |   . |  .'       '.    |     |
+            | ,   | |  PARABÉNS |   |   . |
+           ___|_____| |___________|   |_____|___
           /    o    o    o    o    o    o    o   \
-         /________________________________________\
+          /________________________________________\
          |_________________________________________|
                        
     ╔════════════════════════════════════════════════════╗
     ║                                                    ║
-    ║                PARABÉNS, GUERREIRO!                ║
+    ║                PARABÉNS, GUERREIRO!                  ║
     ║                                                    ║
     ║    Você conquistou a CIDADELA DO REI DE FERRO!     ║
-    ║                                                    ║
-    ║    Suas cinzas agora marcam sua vitória eterna.    ║
-    ║                                                    ║
+    ║                                                      ║
+    ║    os cidadãos estão muito agradecidos pela sua    ║
+    ║                     Bravura                        ║
     ║         Prepare-se... a próxima fase é:            ║
     ║                                                    ║
-    ║        ✦ CAMPOS DE BATALHA DE DRAKMOR ✦           ║
+    ║        ✦ CAMPOS DE BATALHA DE DRAKMOR ✦             ║
     ║                                                    ║
     ╚════════════════════════════════════════════════════╝
-    """)
-    
-    for linha in arte.splitlines():
-      print(linha.center(largura_tela))
-    ENTER = input("\nAperte ENTER para continuar")
+    """
+    for linha in (arte.splitlines()):
+      cor = fn.rgb_text(linha.center(largura_tela))
+      print(cor)
 
-    for linha in ENTER.splitlines():
-      print(linha.center(largura_tela))
 
 
 

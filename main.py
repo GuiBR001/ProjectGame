@@ -38,8 +38,7 @@ raca = int(input(Fore.YELLOW + """
 
 fn.descri_raca(raca)
 player = fn.criar_personagem(nome, raca)
-cont = str(input("Aperte ENTER para continuar"))
+cont = str(input("Aperte ENTER para continuar".center(largura_tela)))
 fn.limpar_tela()
-ic.fase_1_fim_parabens()
 fn.iniciar(fase, player)
 fs.fase_1(fase, player)

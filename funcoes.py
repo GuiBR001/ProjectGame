@@ -1,4 +1,6 @@
 import os
+import shutil
+import re
 from random import randint
 from colorama import Fore, Style, init
 
@@ -28,11 +30,13 @@ def iniciar(fase: int, player: dict) -> None:
                 lista_npcs.append(novo_npc)
 
             exibir_player(player)
-            print(f"""
-                            {rgb_text("FASE 1")}
+            arte = f"""
+FASE 1
 
-                {Fore.YELLOW} CIDADELA DO REI DE FERRO\n
-                    """)
+CIDADELA DO REI DE FERRO\n
+                    """
+            for linha in arte.splitlines():
+                print(Fore.YELLOW + linha.center(largura_tela))
     
         case 2:
             for x in range(7):
@@ -227,23 +231,30 @@ def criar_npc_em_massa(n) -> None:
 
 
 #exibe jogador
-def exibir_player(player: dict) -> None:
+ANSI = re.compile(r'\x1B\[[0-?]*[ -/]*[@-~]')
 
-    print(rgb_text("""
-                                \n--------------------- Jogador ---------------------
-                   """))
-    print(f'''
-                        {rgb_text(player['nome'])}
-                
-                {Fore.YELLOW}      Raça: {player['raca']}
-                {Fore.BLUE}      Level:  {player['level']}
-                {Fore.RED}      Dano:  {player['dano']}
-                {Fore.MAGENTA}      Saúde:  {player['hp']}
-                {Fore.GREEN}      EXP:  {player['exp']}
-                ''')
-    print(rgb_text("""
-        ---------------------------------------------------\n
-                   """))
+def exibir_player(player: dict) -> None:
+    largura_tela = shutil.get_terminal_size().columns
+
+    cabecalho = rgb_text("--------------------- Jogador ---------------------")
+    corpo = f"""
+{rgb_text(player['nome'])}
+
+{Fore.YELLOW}Raça: {player['raca']}
+{Fore.BLUE}Level: {player['level']}
+{Fore.RED}Dano: {player['dano']}
+{Fore.MAGENTA}Saúde: {player['hp']}
+{Fore.GREEN}EXP: {player['exp']}
+"""
+    rodape = rgb_text("---------------------------------------------------")
+
+    texto_final = f"\n{cabecalho}\n{corpo}\n{rodape}\n"
+
+    # Centraliza corretamente mesmo com ANSI
+    for linha in texto_final.splitlines():
+        texto_puro = ANSI.sub('', linha)  # remove cores temporariamente
+        espacos = max((largura_tela - len(texto_puro)) // 2, 0)
+        print(' ' * espacos + linha)
 
 
 

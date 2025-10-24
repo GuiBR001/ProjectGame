@@ -1,8 +1,10 @@
 import funcoes as fn
 import icons as ic
+import shutil
 from colorama import Fore, Style, init
 
-
+largura_tela = shutil.get_terminal_size().columns
+altura_tela = shutil.get_terminal_size().lines
 
 #fase 1
 def fase_1(fase: int, player: dict) -> None:
@@ -10,7 +12,7 @@ def fase_1(fase: int, player: dict) -> None:
     
     while fase == 1:
 
-        input("\nAperte ENTER para continuar")
+        cont = input(Fore.GREEN + ("Aperte ENTER para continuar".center(largura_tela).center(altura_tela)))
         fn.limpar_tela()
         fn.exibir_player(player)
         print(Fore.YELLOW + "CIDADELA DO REI DE FERRO\n")

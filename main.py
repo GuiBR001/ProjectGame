@@ -1,6 +1,5 @@
 import os 
-os.system("cls")
-
+import shutil
 import funcoes as fn
 import fases as fs
 import icons as ic
@@ -8,8 +7,10 @@ from colorama import Fore, Style, init
 
 init(autoreset= True)
 largura_tela = os.get_terminal_size().columns
+altura_tela = shutil.get_terminal_size().lines
+
 fase = 1
-ic.menu_tela_incicio()
+ic.menu_tela_inicio()
 nome = input(Fore.YELLOW + """
                                                ╔══════════════════════════════════════════════════════════════════════╗
                                                 ║                                                                     ║
@@ -20,7 +21,7 @@ nome = input(Fore.YELLOW + """
                                                ╚══════════════════════════════════════════════════════════════════════╝
 
                                 > """ + Style.RESET_ALL).upper()
-ic.menu_tela_incicio()
+ic.menu_tela_inicio()
 raca = int(input(Fore.YELLOW + """
                                                ╔══════════════════════════════════════════════════════════════════════╗
                                                ║                                                                      ║
@@ -38,7 +39,7 @@ raca = int(input(Fore.YELLOW + """
 
 fn.descri_raca(raca)
 player = fn.criar_personagem(nome, raca)
-cont = str(input("Aperte ENTER para continuar".center(largura_tela)))
+cont = input(Fore.GREEN + ("Aperte ENTER para continuar".center(largura_tela)))
 fn.limpar_tela()
 fn.iniciar(fase, player)
 fs.fase_1(fase, player)

@@ -1,6 +1,7 @@
 import os
 import shutil
 import re
+import textwrap
 from random import randint
 from colorama import Fore, Style, init
 
@@ -9,12 +10,86 @@ init(autoreset= True)
 
 lista_npcs = []
 player = {}
-largura_tela = os.get_terminal_size().columns
+tamanho = shutil.get_terminal_size()
+largura_tela = tamanho.columns
+altura_tela = tamanho.lines
+ANSI = re.compile(r'\x1B\[[0-?]*[ -/]*[@-~]')
 
 
 #limpa tela
 def limpar_tela() -> None:
     os.system("cls" if os.name == "nt" else "clear" )
+
+
+
+#centraliza no meio vertical
+def centra_v(mensagem: str, cor_padrao: str = None):
+    limpar_tela()
+    linhas = mensagem.strip('\n').split('\n')
+    _, term_rows = shutil.get_terminal_size(fallback=(120, 30))
+    padrao_ansi = re.compile(r'\x1b\[[0-9;]*m')
+    def tem_ansi(s):
+        return bool(padrao_ansi.search(s))
+    altura = len(linhas)
+    if altura > term_rows:
+        linhas = linhas[:term_rows]
+        altura = term_rows
+    espaco_v = max((term_rows - altura) // 2, 0)
+    print('\n' * espaco_v, end='')
+    for linha in linhas:
+        texto = linha
+        if cor_padrao and not tem_ansi(linha):
+            texto = f"{cor_padrao}{linha}\033[0m"
+        print(texto)
+
+
+
+#centraliza no meio horizontal
+def centra_h(mensagem: str, cor_padrao: str = None):
+    limpar_tela()
+    linhas = mensagem.strip('\n').split('\n')
+    term_cols, _ = shutil.get_terminal_size(fallback=(120, 30))
+    padrao_ansi = re.compile(r'\x1b\[[0-9;]*m')
+    def sem_ansi(s):
+        return padrao_ansi.sub('', s)
+    def tem_ansi(s):
+        return bool(padrao_ansi.search(s))
+    largura = max(len(sem_ansi(l)) for l in linhas)
+    espaco_h = max((term_cols - largura) // 2, 0)
+    for linha in linhas:
+        texto = linha
+        if cor_padrao and not tem_ansi(linha):
+            texto = f"{cor_padrao}{linha}\033[0m"
+        print(' ' * espaco_h + texto)
+
+
+
+#centraliza no meio tanto na horizontal quanto na vertical
+def centra_h_v(mensagem: str, cor_padrao: str = None):
+    limpar_tela()
+    linhas = mensagem.strip('\n').split('\n')
+    term_cols, term_rows = shutil.get_terminal_size(fallback=(120, 30))
+    padrao_ansi = re.compile(r'\x1b\[[0-9;]*m')
+    def sem_ansi(s):
+        return padrao_ansi.sub('', s)
+    def tem_ansi(s):
+        return bool(padrao_ansi.search(s))
+    largura = max(len(sem_ansi(l)) for l in linhas)
+    altura = len(linhas)
+    if largura > term_cols:
+        linhas = [l[:term_cols] for l in linhas]
+        largura = term_cols
+    if altura > term_rows:
+        linhas = linhas[:term_rows]
+        altura = term_rows
+    espaco_h = max((term_cols - largura) // 2, 0)
+    espaco_v = max((term_rows - altura) // 2, 0)
+    print('\n' * espaco_v, end='')
+    for linha in linhas:
+        texto = linha
+        if cor_padrao and not tem_ansi(linha):
+            texto = f"{cor_padrao}{linha}\033[0m"
+        print(' ' * espaco_h + texto)
 
 
 
@@ -234,7 +309,6 @@ def criar_npc_em_massa(n) -> None:
 ANSI = re.compile(r'\x1B\[[0-?]*[ -/]*[@-~]')
 
 def exibir_player(player: dict) -> None:
-    largura_tela = shutil.get_terminal_size().columns
 
     cabecalho = rgb_text("--------------------- Jogador ---------------------")
     corpo = f"""
@@ -249,12 +323,10 @@ def exibir_player(player: dict) -> None:
     rodape = rgb_text("---------------------------------------------------")
 
     texto_final = f"\n{cabecalho}\n{corpo}\n{rodape}\n"
-
-    # Centraliza corretamente mesmo com ANSI
     for linha in texto_final.splitlines():
-        texto_puro = ANSI.sub('', linha)  # remove cores temporariamente
-        espacos = max((largura_tela - len(texto_puro)) // 2, 0)
-        print(' ' * espacos + linha)
+        texto_puro = ANSI.sub('', linha)
+        espacos_h = max((largura_tela - len(texto_puro)) // 2, 0)
+        print(' ' * espacos_h + linha)
 
 
 

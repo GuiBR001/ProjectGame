@@ -5,11 +5,12 @@ from colorama import Fore, init, Style
 
 init(autoreset= True)
 largura_tela = shutil.get_terminal_size().columns
+altura_tela = shutil.get_terminal_size().lines
 
 
 #TELA DE INICIO DO JOGO ----------------------------------------------------------------
 
-def menu_tela_incicio():
+def menu_tela_inicio():
     fn.limpar_tela()
     print(Fore.RED + fr"""
                                                                     /|                 |\
@@ -30,7 +31,7 @@ def menu_tela_incicio():
                                             |         \_/~~~~-.     '/(~~~---===~~)  |`      .-~~~~~\_       |
                                            |  ._      _/   _    \   '|(~~~-----~~~)  /`      /     _   \_ .-. | _._
                                                 \    // / /\\~)  \  '|(~~~-----~~~)  |`     /   (~//\ \ \X   \|/   \
-{fn.rgb_text("-" * (largura_tela // 3 - 6))}{Fore.RED + "/ \ \ )" + Style.RESET_ALL}{fn.rgb_text("-" * (largura_tela // 3))}{fn.rgb_text("-" * (largura_tela // 3))}
+{fn.rgb_text("-" * (largura_tela // 3 - 7))}{Fore.RED + "/ \ \ )" + Style.RESET_ALL}{fn.rgb_text("-" * (largura_tela // 3))}{fn.rgb_text("-" * (largura_tela // 3))}
                                                     {Fore.RED + "\ (\_)\ " + Style.RESET_ALL}         {fn.rgb_text("BEM VINDO AO RETRO-GAME!")}           {Fore.RED + fr"""
                                                     \_|\ """}
 {fn.rgb_text(f"""{"_" * (largura_tela)}
@@ -39,11 +40,13 @@ def menu_tela_incicio():
 {"_" * (largura_tela)}""")}
 """)
 
+
+
 #IMAGENS DAS FAZES DO JOGO -------------------------------------------------------------
 
 #fase 1 o inicio
 def fase1_inicio():
-    arte = fr"""
+    mensagem = fr"""
                     ==                     ==
                  <^\()/^>               <^\()/^>
                   \/  \/                 \/  \/
@@ -69,12 +72,11 @@ def fase1_inicio():
      |- ||  |  |  | ||:::::::::::::::::::::|| |  |  |  ||= |  | 
 ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^~~~~~~~~~
 """
-    for linha in arte.splitlines():
-      print(linha.center(largura_tela))
-    
+    fn.centra_h_v(mensagem)
+
 
 def fase1_img():
-    arte  = fr"""
+    mensagem  = fr"""
                             .-----.
                           .'       `.
                          :      ^v^  :
@@ -106,12 +108,10 @@ def fase1_img():
     /. __ ./    \ `. \ / -  /  .-'.' ====='  >
    /  \  /  .-' `--.  / .' /  `-.' ======.' /
 """
-    for linha in arte.splitlines():
-      print(linha.center(largura_tela))
 
 #fase 1 completa
 def fase_1_fim() -> None:
-    arte = fr"""
+    mensagem  = fr"""
                  |>>>                    |>>>
               |                       |
              _  _|_  _               _  _|_  _
@@ -142,7 +142,7 @@ def fase_1_fim() -> None:
     ║                                                    ║
     ╚════════════════════════════════════════════════════╝
     """
-    for linha in (arte.splitlines()):
+    for linha in (mensagem.splitlines()):
       cor = fn.rgb_text(linha.center(largura_tela))
       print(cor)
 
@@ -154,8 +154,7 @@ def fase_1_fim() -> None:
 
 #morte jogador
 def morte_player_img(player):
-    fn.limpar_tela()
-    print(fr"""
+    mensagem = fr"""
 ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⣀⣠⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣀⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
 ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⣤⣶⣾⠿⠿⠛⠛⠛⠋⠉⠉⠉⢉⣿⡟⠛⠿⢿⣿⡿⣷⣶⣤⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
 ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣤⣾⠟⠋⢡⣶⠶⠶⠶⣶⣶⣦⠤⠶⠞⠛⠋⠀⠀⠀⠀⠈⠻⣦⡉⠻⢿⣶⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀
@@ -187,19 +186,19 @@ def morte_player_img(player):
 ⢀⡙⢿⣿⣏⣀⣀⣾⣏⠀⠀⠀⠀⠀⠀⠀⣸⡄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣰⣧⣀⡀⠀⠀⠀⢀⣸⣦⣷⣿⣿⣿⣿⣿⣿⡿⠁
 ⠀⠙⢿⣿⣿⣿⣿⣿⣿⠿⣷⣶⣶⣾⣿⣿⣿⣿⡿⣿⣿⣿⣿⡿⠛⠿⢿⠿⠋⠉⠙⠛⠿⢿⠿⠛⠛⠛⠿⢿⣿⠟⠿⣿⣿⣿⣿⠁⠀
 ⠀⠀⠀⠉⠉⠉⠉⠁⠀⠀⠈⠙⠛⠛⠉⠉⠙⠋⠀⠀⠉⠙⠉⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⢛⠛⠁⠀⠀
-""")
+"""
 
 
 
 #morte monstro
 def morte_monstro_img(npc_atacado):
-    print(fr"""
+    mensagem = fr"""
        ,-=-.      
       /  +  \     
       | ~~~ |               {Fore.RED + npc_atacado + " Foi Morto!" + Style.RESET_ALL} 
       |R.I.P|     
 \.vV,,|_____|V,VV,,
-""")
+"""
     
 
 
@@ -207,7 +206,7 @@ def morte_monstro_img(npc_atacado):
 #IMAGENS DA HISTORIA DO JOGO -------------------------------------------------------------------------
 
 def lendaria_espada():
-    print(fr"""
+    mensagem = fr"""
                                       /|
                                      |\|
                                      |||
@@ -242,11 +241,11 @@ def lendaria_espada():
         ) `\_         |-_;;--__               ~~~----__/'    /'_______/
         `----'       (   `~--_ ~~~;;------------~~~~~ ;;;'_/'
                      `~~~~~~~~'~~~-----....___;;;____---~~
-""")
+"""
     
 
 def manuscrito_lendaria_espada():
-    print(fr"""
+    mensagem = fr"""
                                             _______________________
    _______________________-------------------                       `\
  /:--__                                                              |
@@ -268,11 +267,11 @@ def manuscrito_lendaria_espada():
   |/`--_                                                                 |
   ||[ ]||                                            ___________________/
    \===/___________________--------------------------
-""")
+"""
     
 
 def anciao_espada_lendaria():
-    print(fr"""
+    mensagem = fr"""
                        /\
         _/\           /  \
     _  /   \         /    \/\
@@ -300,8 +299,8 @@ _.-\ \/  \  \   /  /  \.-'-._
    /|    /____|____\         '-._
    ||     |   ||   |
    \\     ///\\//\\\
-jro \|   oOO(_)(_)OOo
-""")
+    \|   oOO(_)(_)OOo
+"""
     
 
 def trust_sword_lendaria_espada():
@@ -358,8 +357,7 @@ def trust_sword_lendaria_espada():
 
 #escolha de raça = esqueleto
 def esqueleto():
-    fn.limpar_tela()
-    print(fr"""
+    mensagem = fr"""
                   (  (|              
               )   )\/ ( ( (
       *  (   ((  /     ))\))  (  )    )
@@ -391,14 +389,15 @@ def esqueleto():
 (: <     ):  --:   ^  \  )(   )\/:   /   /_/ ) :._) :
  \..)   (_..  ..  :    :  : .(   \..:..    ./__.  ./
 
-""")
+"""
+    fn.centra_h_v(Fore.RED + mensagem)
   
 
 
 #escolha de raça = anjo
 def anjo():
     fn.limpar_tela()
-    print(fr"""
+    mensagem = fr"""
           
 ⣴⠀⣀⣤⣴⣶⣾⣿⣿⣿⣿⣿⣿⣷⣶⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
 ⢾⣷⣿⣿⣿⣿⣿⠿⠟⠛⠉⠉⠉⠉⠉⠙⠳⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
@@ -430,14 +429,15 @@ def anjo():
 ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢠⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣦⡀⠀
 ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠿⠟⠛⠛⠿⠿⠿⠿⠿⣿⣿⣿⣿⠿⠿⠿⢿⠿⠟⠛⠛⠃    
                          
-""")
+"""
+    fn.centra_h_v(mensagem)
     
 
 
 #escolha de raça = mago
 def mago():
     fn.limpar_tela()
-    print(fr"""
+    mensagem = fr"""
               o
                    O       /`-.__
                           /  \�'^|
@@ -468,8 +468,8 @@ def mago():
   `'---..__   `.                  ._.._   __       \.
            ``'''`.              .'   `'^  `''---'^
                   `-..______..-'
-""")
-    
+"""
+    fn.centra_h_v(mensagem)
 
 
 

@@ -153,35 +153,35 @@ def criar_npc(level) -> dict:
         if level <= 15:
             nome = "carceres".upper()
         else:
-            nome = "minotauro".upper()
+            nome = "faskra".upper()
 
     elif level >= 21 and level <= 30:
         if level <= 25:
-            nome = "poseidon".upper()
+            nome = "wetiza".upper()
         else:
-            nome = "kraken".upper()
+            nome = "hommer".upper()
 
     elif level >= 31 and level <= 40:
         if level <= 35:
-            nome = "saci".upper()
+            nome = "vyper".upper()
         else:
-            nome = "boitatá".upper()
+            nome = "fryth".upper()
 
     elif level >= 41 and level <= 50:
         if level <= 45:
-            nome = "bobbafet".upper()
+            nome = "akari".upper()
         else:
             nome = "magma".upper()
 
     elif level >= 51 and level <= 60:
         if level <= 55:
-            nome = "farquad".upper()
+            nome = "tarik".upper()
         else:
             nome = "ogroid".upper()
 
     elif level >= 61 and level <= 70:
         if level <= 65:
-            nome = "monsa".upper()
+            nome = "wertz".upper()
         else:
             nome = "fenrir".upper()
 
@@ -193,7 +193,7 @@ def criar_npc(level) -> dict:
 
     elif level >= 81 and level <= 90:
         if level <= 85:
-            nome = Fore.GREEN + "guispark".upper()
+            nome = Fore.GREEN + "toon".upper()
         else:
             nome = Fore.BLUE + "tartarus".upper()
 

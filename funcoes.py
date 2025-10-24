@@ -7,6 +7,7 @@ init(autoreset= True)
 
 lista_npcs = []
 player = {}
+largura_tela = os.get_terminal_size().columns
 
 
 #limpa tela

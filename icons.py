@@ -1,8 +1,9 @@
 import funcoes as fn
+import os
 from colorama import Fore, init, Style
 
 init(autoreset= True)
-
+largura_tela = os.get_terminal_size().columns
 
 
 #TELA DE INICIO DO JOGO ----------------------------------------------------------------
@@ -28,21 +29,20 @@ def menu_tela_incicio():
                                             |         \_/~~~~-.     '/(~~~---===~~)  |`      .-~~~~~\_       |
                                            |  ._      _/   _    \   '|(~~~-----~~~)  /`      /     _   \_ .-. | _._
                                                 \    // / /\\~)  \  '|(~~~-----~~~)  |`     /   (~//\ \ \X   \|/   \
-{fn.rgb_text("----------------------------------------------------")}{Fore.RED + "/ \ \ )" + Style.RESET_ALL}{fn.rgb_text("--=====----=====------------=====-----===-")}{Fore.RED + "\_) \\" + Style.RESET_ALL}{fn.rgb_text("-----------------------------------------------------------------------")}
-                                                    {Fore.RED + "\ (\_)\ " + Style.RESET_ALL}         {fn.rgb_text("BEM VINDO AO RETRO-GAME!")}           {Fore.RED + fr"""/\_)
-                                                    \_|\                                                /\_)"""}
-{fn.rgb_text("""__________________________________________________________________________________________________________________________________________________________________________________
+{fn.rgb_text("-" * (largura_tela // 3 - 6))}{Fore.RED + "/ \ \ )" + Style.RESET_ALL}{fn.rgb_text("-" * (largura_tela // 3))}{fn.rgb_text("-" * (largura_tela // 3))}
+                                                    {Fore.RED + "\ (\_)\ " + Style.RESET_ALL}         {fn.rgb_text("BEM VINDO AO RETRO-GAME!")}           {Fore.RED + fr"""
+                                                    \_|\ """}
+{fn.rgb_text(f"""{"_" * (largura_tela)}
                                                                  Aqui começa seu progresso em uma
                                                                  aventura insana e estratégica...
-__________________________________________________________________________________________________________________________________________________________________________________""")}
+{"_" * (largura_tela)}""")}
 """)
-{fn.rgb_text("BEM VINDO AO RETRO-GAME!")}
 
 #IMAGENS DAS FAZES DO JOGO -------------------------------------------------------------
 
 #fase 1 o inicio
 def fase1_inicio():
-    print(fr"""
+    arte = fr"""
                     ==                     ==
                  <^\()/^>               <^\()/^>
                   \/  \/                 \/  \/
@@ -67,11 +67,14 @@ def fase1_inicio():
  -|--|= ||--|--|--|-||:::::::::::::::::::::||-|--|--|--||- |--|-
   jgs|- ||  |  |  | ||:::::::::::::::::::::|| |  |  |  ||= |  | 
 ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^~~~~~~~~~
-""")
+          
+"""
+    for linha in arte.splitlines():
+      print(linha.center(largura_tela))
     
 
 def fase1_img():
-    print(fr"""
+    arte  = fr"""
                             .-----.
                           .'       `.
                          :      ^v^  :
@@ -102,7 +105,9 @@ def fase1_img():
      / .-'  __/_   `.   _/.' .-' `-. ; ====;\
     /. jgs./    \ `. \ / -  /  .-'.' ====='  >
    /  \  /  .-' `--.  / .' /  `-.' ======.' /
-""")
+"""
+    for linha in arte.splitlines():
+      print(linha.center(largura_tela))
 
 #fase 1 completa
 def fase_1_fim() -> None:

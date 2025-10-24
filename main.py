@@ -8,7 +8,6 @@ from colorama import Fore, Style, init
 
 init(autoreset= True)
 largura_tela = os.get_terminal_size().columns
-
 fase = 1
 ic.menu_tela_incicio()
 nome = input(Fore.YELLOW + """
@@ -41,5 +40,6 @@ fn.descri_raca(raca)
 player = fn.criar_personagem(nome, raca)
 cont = str(input("Aperte ENTER para continuar"))
 fn.limpar_tela()
+ic.fase_1_fim_parabens()
 fn.iniciar(fase, player)
 fs.fase_1(fase, player)

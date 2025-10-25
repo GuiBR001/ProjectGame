@@ -8,11 +8,16 @@ altura_tela = shutil.get_terminal_size().lines
 
 #fase 1
 def fase_1(fase: int, player: dict) -> None:
-    npc_atacado = ""
+
+    fn.limpar_tela()
     
+    npc_atacado = ""
+
+    fn.iniciar(fase, player)
+
     while fase == 1:
 
-        cont = input(Fore.GREEN + ("Aperte ENTER para continuar".center(largura_tela).center(altura_tela)))
+        input(Fore.GREEN + ("Aperte ENTER para continuar".center(largura_tela).center(altura_tela)))
         fn.limpar_tela()
         fn.exibir_player(player)
         print(Fore.YELLOW + "CIDADELA DO REI DE FERRO\n")

@@ -1,5 +1,7 @@
 import funcoes as fn
-import os
+import re
+import time
+import msvcrt
 import shutil
 from colorama import Fore, init, Style
 
@@ -8,9 +10,100 @@ largura_tela = shutil.get_terminal_size().columns
 altura_tela = shutil.get_terminal_size().lines
 
 
-#TELA DE INICIO DO JOGO ----------------------------------------------------------------
+#regex
+_ANSI = re.compile(r"\x1B\[[0-?]*[ -/]*[@-~]")
+def strip_ansi(s: str) -> str:
+    return _ANSI.sub("", s or "")
 
-def menu_tela_inicio():
+
+#TELA DE INICIO DO JOGO ----------------------------------------------------------------
+escolhas = ["Começar Novo Jogo", "Ultimos Recordes", "Créditos", "Sair"]
+
+
+def design_tela_inicio(idx) -> None:
+    fn.limpar_tela()
+    tela = r"""
+                                                      ____________
+                                (`-..________....---''  ____..._.-`
+                                  \\`._______.._,.---'''     ,'
+                                  ; )`.      __..-'`-.      /
+                                / /     _.-' _,.;;._ `-._,'
+                                / /   ,-' _.-'  //   ``--._``._
+                              ,','_.-' ,-' _.- (( =-    -. `-._`-._____
+                            ,;.''__..-'   _..--.\\.--'````--.._``-.`-._`.
+            _          |\,' .-''        ```-'`---'`-...__,._  ``-.`-.`-.`.
+  _     _.-,'(__)\__)\-'' `     ___  .          `     \      `--._
+,',)---' /|)          `     `      ``-.   `     /     /     `     `-.
+\_____--.  '`  `               __..-.  \     . (   < _...-----..._   `.
+\_,--..__. \\ .-`.\----'';``,..-.__ \  \      ,`_. `.,-'`--'`---''`.  )
+          `.\`.\  `_.-..' ,'   _,-..'  /..,-''(, ,' ; ( _______`___..'__
+                  ((,(,__(    ((,(,__,'  ``'-- `'`.(\  `.,..______       
+                                                      ``--------..._``--.__
+    """.strip("\n")
+
+    fn.centra_h_v(tela, Fore.RED + Style.BRIGHT)
+    fn.centra_h("\n\nPARAÍSO MEDIEVAL", Fore.YELLOW + Style.BRIGHT)
+    fn.centra_h(Style.DIM + "use ↑/↓ para navegar e ENTER para confirmar")
+
+    largura_interna = 56
+    fn.centra_h(Fore.CYAN + "╔" + "═" * largura_interna + "╗")
+
+    for i, esc in enumerate(escolhas):
+        selecionado = (i == idx)
+        seta = "➤" if selecionado else " "
+        cor = Fore.GREEN + Style.BRIGHT if selecionado else Fore.WHITE
+        conteudo = f"{seta} {esc}"
+        largura_visivel = len(strip_ansi(conteudo))
+        padding = max(largura_interna - largura_visivel, 0)
+        linha_final = (
+            Fore.CYAN + "║ "
+            + cor + conteudo + Style.RESET_ALL
+            + " " * padding
+            + Fore.CYAN + " ║"
+        )
+        fn.centra_h(linha_final)
+
+    fn.centra_h(Fore.CYAN + "╚" + "═" * largura_interna + "╝")
+
+def mostrar_creditos() -> None:
+    fn.limpar_tela()
+    fn.centra_h("\nJOGO SINGLE DEVELOPER", Fore.MAGENTA + Style.BRIGHT)
+    fn.centra_h("Dev by Guilherme Barreto Ramos", Fore.WHITE + Style.BRIGHT)
+    fn.centra_h("email: guilhermebramos.dev@gmail.com",  Fore.WHITE + Style.BRIGHT)
+    fn.centra_h(Style.DIM + "\npressione qualquer tecla para voltar")
+    msvcrt.getch()
+
+def tela_inicio() -> str:
+    idx = 0
+    while True:
+        design_tela_inicio(idx)
+        ch = msvcrt.getch()
+        if ch in (b"\x00", b"\xe0"):
+            ch2 = msvcrt.getch()
+            if ch2 == b"H":
+                idx = (idx - 1) % len(escolhas)
+            elif ch2 == b"P":
+                idx = (idx + 1) % len(escolhas)
+        elif ch in (b"\r", b"\n"):
+            escolha = escolhas[idx]
+            if escolha == "Créditos":
+                mostrar_creditos()
+                continue
+            return escolha
+        elif ch in (b"1", b"2", b"3", b"4"):
+            n = int(ch.decode()) - 1
+            if 0 <= n < len(escolhas):
+                escolha = escolhas[n]
+                if escolha == "Créditos":
+                    mostrar_creditos()
+                    continue
+                return escolha
+        else:
+            time.sleep(0.00000000000000000000000000001)
+
+
+
+def escolha_personagem():
     fn.limpar_tela()
     print(Fore.RED + fr"""
                                                                     /|                 |\
@@ -32,13 +125,18 @@ def menu_tela_inicio():
                                            |  ._      _/   _    \   '|(~~~-----~~~)  /`      /     _   \_ .-. | _._
                                                 \    // / /\\~)  \  '|(~~~-----~~~)  |`     /   (~//\ \ \X   \|/   \
 {fn.rgb_text("-" * (largura_tela // 3 - 7))}{Fore.RED + "/ \ \ )" + Style.RESET_ALL}{fn.rgb_text("-" * (largura_tela // 3))}{fn.rgb_text("-" * (largura_tela // 3))}
-                                                    {Fore.RED + "\ (\_)\ " + Style.RESET_ALL}         {fn.rgb_text("BEM VINDO AO RETRO-GAME!")}           {Fore.RED + fr"""
+                                                    {Fore.RED + "\ (\_)\ " + Style.RESET_ALL}         {fn.rgb_text("BEM VINDO AO PARAÍSO MEDIEVAL!")}           {Fore.RED + fr"""
                                                     \_|\ """}
 {fn.rgb_text(f"""{"_" * (largura_tela)}
                                                                  Aqui começa seu progresso em uma
                                                                  aventura insana e estratégica...
 {"_" * (largura_tela)}""")}
 """)
+
+
+    
+
+    
 
 
 

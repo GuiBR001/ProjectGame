@@ -10,36 +10,9 @@ largura_tela = os.get_terminal_size().columns
 altura_tela = shutil.get_terminal_size().lines
 
 fase = 1
-ic.menu_tela_inicio()
-nome = input(Fore.YELLOW + """
-                                               ╔══════════════════════════════════════════════════════════════════════╗
-                                                ║                                                                     ║
-                                               ║                  Bem-vindo à forja dos Heróis                       ║
-                                               ║                                                                      ║
-                                              ║              Escolha um nome digno para seu aventureiro:              ║
-                                               ║                                                                       ║ 
-                                               ╚══════════════════════════════════════════════════════════════════════╝
-
-                                > """ + Style.RESET_ALL).upper()
-ic.menu_tela_inicio()
-raca = int(input(Fore.YELLOW + """
-                                               ╔══════════════════════════════════════════════════════════════════════╗
-                                               ║                                                                      ║
-                                               ║                        Escolha sua Raça                             ║ 
-                                              ║                                                                        ║
-                                               ║                   1 - Esqueleto Flamejante                           ║
-                                               ║                   2 - Anjo da Morte                                  ║
-                                              ║                    3 - Mago Ancião                                    ║
-                                               ║                                                                     ║
-                                               ║    Digite o número da raça:                                          ║
-                                               ╚══════════════════════════════════════════════════════════════════════╝
-                                
-                                >  """ + Style.RESET_ALL))
-
-
+escolha = ic.tela_inicio()
+ic.escolha_personagem()
 fn.descri_raca(raca)
 player = fn.criar_personagem(nome, raca)
-cont = input(Fore.GREEN + ("Aperte ENTER para continuar".center(largura_tela)))
-fn.limpar_tela()
-fn.iniciar(fase, player)
+input(Fore.GREEN + ("Aperte ENTER para continuar".center(largura_tela)))
 fs.fase_1(fase, player)

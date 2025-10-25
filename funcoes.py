@@ -1,7 +1,6 @@
 import os
 import shutil
 import re
-import textwrap
 from random import randint
 from colorama import Fore, Style, init
 
@@ -24,7 +23,6 @@ def limpar_tela() -> None:
 
 #centraliza no meio vertical
 def centra_v(mensagem: str, cor_padrao: str = None):
-    limpar_tela()
     linhas = mensagem.strip('\n').split('\n')
     _, term_rows = shutil.get_terminal_size(fallback=(120, 30))
     padrao_ansi = re.compile(r'\x1b\[[0-9;]*m')
@@ -46,7 +44,6 @@ def centra_v(mensagem: str, cor_padrao: str = None):
 
 #centraliza no meio horizontal
 def centra_h(mensagem: str, cor_padrao: str = None):
-    limpar_tela()
     linhas = mensagem.strip('\n').split('\n')
     term_cols, _ = shutil.get_terminal_size(fallback=(120, 30))
     padrao_ansi = re.compile(r'\x1b\[[0-9;]*m')
@@ -66,7 +63,6 @@ def centra_h(mensagem: str, cor_padrao: str = None):
 
 #centraliza no meio tanto na horizontal quanto na vertical
 def centra_h_v(mensagem: str, cor_padrao: str = None):
-    limpar_tela()
     linhas = mensagem.strip('\n').split('\n')
     term_cols, term_rows = shutil.get_terminal_size(fallback=(120, 30))
     padrao_ansi = re.compile(r'\x1b\[[0-9;]*m')
@@ -83,7 +79,7 @@ def centra_h_v(mensagem: str, cor_padrao: str = None):
         linhas = linhas[:term_rows]
         altura = term_rows
     espaco_h = max((term_cols - largura) // 2, 0)
-    espaco_v = max((term_rows - altura) // 2, 0)
+    espaco_v = max((term_rows - altura - 15) // 2, 0)
     print('\n' * espaco_v, end='')
     for linha in linhas:
         texto = linha

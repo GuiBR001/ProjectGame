@@ -174,21 +174,22 @@ CIDADELA DO REI DE FERRO\n
 #descricao da raca + imagem
 def descri_raca(raca) -> None:
     from icons import esqueleto, anjo, mago
+    limpar_tela()
+    match raca:
 
-    try:
-        match raca:
+        case 1:
+            esqueleto()
+        
+        case 2:
+            anjo()
+        
+        case 3:
+            mago()
 
-            case 1:
-                esqueleto()
-            
-            case 2:
-                anjo()
-            
-            case 3:
-                mago()
+    centra_h(rgb_text("\n\nAperte ENTER para continuar "))
+    input()
 
-    except ValueError:
-        print("Escolha com um número de 1 a 3!")
+
 
 
 

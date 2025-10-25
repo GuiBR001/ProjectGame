@@ -15,10 +15,9 @@ _ANSI = re.compile(r"\x1B\[[0-?]*[ -/]*[@-~]")
 def strip_ansi(s: str) -> str:
     return _ANSI.sub("", s or "")
 
-
+escolhas_menu = ["Começar Novo Jogo", "Ultimos Recordes", "Créditos", "Sair"]
+escolhas_raca = ["Esqueleto Flamejante", "Anjo Da Morte", "Mago Ancião"]
 #TELA DE INICIO DO JOGO ----------------------------------------------------------------
-escolhas = ["Começar Novo Jogo", "Ultimos Recordes", "Créditos", "Sair"]
-
 
 def design_tela_inicio(idx) -> None:
     fn.limpar_tela()
@@ -48,7 +47,7 @@ def design_tela_inicio(idx) -> None:
     largura_interna = 56
     fn.centra_h(Fore.CYAN + "╔" + "═" * largura_interna + "╗")
 
-    for i, esc in enumerate(escolhas):
+    for i, esc in enumerate(escolhas_menu):
         selecionado = (i == idx)
         seta = "➤" if selecionado else " "
         cor = Fore.GREEN + Style.BRIGHT if selecionado else Fore.WHITE
@@ -73,7 +72,7 @@ def mostrar_creditos() -> None:
     fn.centra_h(Style.DIM + "\npressione qualquer tecla para voltar")
     msvcrt.getch()
 
-def tela_inicio() -> str:
+def escolha_seta_menu() -> str:
     idx = 0
     while True:
         design_tela_inicio(idx)
@@ -81,57 +80,103 @@ def tela_inicio() -> str:
         if ch in (b"\x00", b"\xe0"):
             ch2 = msvcrt.getch()
             if ch2 == b"H":
-                idx = (idx - 1) % len(escolhas)
+                idx = (idx - 1) % len(escolhas_menu)
             elif ch2 == b"P":
-                idx = (idx + 1) % len(escolhas)
+                idx = (idx + 1) % len(escolhas_menu)
         elif ch in (b"\r", b"\n"):
-            escolha = escolhas[idx]
-            if escolha == "Créditos":
-                mostrar_creditos()
-                continue
+            escolha = escolhas_menu[idx]
             return escolha
         elif ch in (b"1", b"2", b"3", b"4"):
             n = int(ch.decode()) - 1
-            if 0 <= n < len(escolhas):
-                escolha = escolhas[n]
-                if escolha == "Créditos":
-                    mostrar_creditos()
-                    continue
+            if 0 <= n < len(escolhas_menu):
+                escolha = escolhas_menu[n]
                 return escolha
         else:
             time.sleep(0.00000000000000000000000000001)
 
 
 
-def escolha_personagem():
+
+def escolha_seta_raca() -> str:
+    idx = 0
+    while True:
+        esc_nome_personagem(idx)
+        ch = msvcrt.getch()
+        if ch in (b"\x00", b"\xe0"):
+            ch2 = msvcrt.getch()
+            if ch2 == b"H":
+                idx = (idx - 1) % len(escolhas_raca)
+            elif ch2 == b"P":
+                idx = (idx + 1) % len(escolhas_raca)
+        elif ch in (b"\r", b"\n"):
+            escolha = escolhas_raca[idx]
+            return escolha
+        elif ch in (b"1", b"2", b"3", b"4"):
+            n = int(ch.decode()) - 1
+            if 0 <= n < len(escolhas_raca):
+                escolha = escolhas_raca[n]
+                return escolha
+        else:
+            time.sleep(0.00000000000000000000000000001)
+
+
+
+
+def ultimos_recordes():
+    print("em criação!")
+
+
+
+
+def esc_nome_personagem(idx):
     fn.limpar_tela()
-    print(Fore.RED + fr"""
-                                                                    /|                 |\
-                                                                   / | ___.--~~~--.___ | \
-                                             ...--=.._           /  ~~___~\_   _/~___~~  \        _..=--...
-                                             ~   .-=_)/==._     _ \ .(~  o~-.\ /.-~o  ~). / _  _.==\(_=-.   ~~-._
-                                             / _/.-  /         / \/\_ ~---~_-=V=-_~---~ _/\/ \      \  -.\_      -
-                                           / /_/  ./          \/\_-_~~v-/~o~) (~o~\-v~~_-_/\/       \.  \_\      ~
-                                             //    |          _-=___==/(__         __)\==___=-_       |    \\\
-                                           | ))    \          _/ _ \ X___---===---___X / _ \_       /    (( ))\
-                                           | \ \_   |         /_\/_\ (( \| ` ` ' ' |/ )) /_\/_\      |   _/ /|  \
-                                            |\  \   \       ~~  / _ /\\ V  /~V~)  V //\ _ \  ~~    /   /  / |   \
-                                           |   \_ \  |           \/ \\ \\^  \ )/   ^//|// \/        |  / _/  |    \
-                                           |    \ \  \               '/\\^  )/   ^// |`           /  / /     |
-                                           |     \ \_ |             '| (\\^ V   ^//  |`          | _/ /      |
-                                            |      \  \\             '/(~~\`-___-'/) /`           //  /       |
-                                           |        \_ \\ /|        '|(~~~-\_   _/)  |`          |\ _/        |
-                                            |         \_/~~~~-.     '/(~~~---===~~)  |`      .-~~~~~\_       |
-                                           |  ._      _/   _    \   '|(~~~-----~~~)  /`      /     _   \_ .-. | _._
-                                                \    // / /\\~)  \  '|(~~~-----~~~)  |`     /   (~//\ \ \X   \|/   \
-{fn.rgb_text("-" * (largura_tela // 3 - 7))}{Fore.RED + "/ \ \ )" + Style.RESET_ALL}{fn.rgb_text("-" * (largura_tela // 3))}{fn.rgb_text("-" * (largura_tela // 3))}
-                                                    {Fore.RED + "\ (\_)\ " + Style.RESET_ALL}         {fn.rgb_text("BEM VINDO AO PARAÍSO MEDIEVAL!")}           {Fore.RED + fr"""
-                                                    \_|\ """}
-{fn.rgb_text(f"""{"_" * (largura_tela)}
-                                                                 Aqui começa seu progresso em uma
-                                                                 aventura insana e estratégica...
-{"_" * (largura_tela)}""")}
-""")
+    tela = Fore.RED + r"""
+    ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣀⣀⣀⣀⣀⣠⣼⠂⠀⠀⠀⠀⠙⣦⢀⠀⠀⠀⠀⠀⢶⣤⣀⣀⣀⣀⣀⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀                                                !_
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣠⣴⣶⣿⣿⣿⣿⣿⣿⣿⣿⠷⢦⠀⣹⣶⣿⣦⣿⡘⣇⠀⠀⠀⢰⠾⣿⣿⣿⣟⣻⣿⣿⣿⣷⣦⣄⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀                                                    |*~=-.,
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣤⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡟⠀⠀⠀⠀⢺⣿⣿⣿⣿⣿⣿⣆⠀⠀⠀⠀⠀⠀⢹⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⣦⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀                                                    |_,-'`
+⠀⠀⠀⠀⠀⠀⠀⠀⢀⣴⢟⣥⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇⠀⠀⠀⠀⢻⣿⣿⡏⢹⣿⣿⣿⣿⠀⠀⠀⠀⠀⠀⠀⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣮⣝⢷⣄⠀⠀⠀⠀⠀⠀⠀⠀                                                   |
+⠀⠀⠀⠀⠀⠀⠀⣴⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⢛⣿⣿⣿⡇⠀⠀⠀⠀⠛⣿⣿⣷⡀⠘⢿⣧⣻⡷⠀⠀⠀⠀⠀⠀⣿⣿⣿⣟⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣝⢧⡀⠀⠀⠀⠀⠀⠀                                                   |
+⠀⠀⠀⠀⠀⢠⣾⣿⠟⣡⣾⣿⣿⣧⣿⡿⣋⣴⣿⣿⣿⣿⣧⠀⠀⠀⠀⠀⢻⣿⣿⣿⣶⡄⠙⠛⠁⠀⠀⠀⠀⠀⢸⣿⣿⣿⣿⣷⣝⢻⣿⣟⣿⣿⣷⣮⡙⢿⣽⣆⠀⠀⠀⠀⠀                                                   /^\
+⠀⠀⠀⠀⢀⡿⢋⣴⣿⣿⣿⣿⣿⣼⣯⣾⣿⣿⡿⣻⣿⣿⣿⣦⠀⠀⠀⠀⢀⣹⣿⣿⣿⣿⣶⣤⠀⠀⠀⠀⠀⣰⣿⣿⣿⣿⠻⣿⣿⣿⣮⣿⣿⣿⣿⣿⣿⣦⡙⢿⣇⠀⠀⠀⠀                     !_                           /   \
+⠀⠀⠀⣠⡏⣰⣿⣿⡿⢿⣿⣿⣿⣿⣿⣿⡿⢋⣼⣿⣿⣿⣿⣿⣷⡤⠀⣠⣿⣿⣿⣿⣿⣿⣿⣿⣷⣄⠀⢠⣾⣿⣿⣿⣿⣿⣷⡜⢿⣿⣿⣿⣿⣿⣿⡿⠿⣿⣿⣦⡙⣦⠀⠀⠀                     |*`~-.,                     /,    \
+⠀⠀⣰⢿⣿⣿⠟⠋⣠⣾⣿⣿⣿⣿⣿⠛⢡⣾⡿⢻⣿⣿⣿⣿⣿⣿⣿⣿⡿⠋⠻⣿⡟⣿⣿⣿⠻⢿⣿⣿⣿⣿⣿⣿⣿⣟⠻⣿⣆⠙⢿⣿⣿⣿⣿⣿⣦⡈⠻⣿⣿⣟⣧⠀⠀                     |.-~^`                     /#"     \
+⠀⣰⢣⣿⡿⠃⣠⡾⠟⠁⠀⣸⣿⡟⠁⢀⣿⠋⢠⣿⡏⣿⣿⣿⣿⣿⢿⠁⢀⣠⣴⢿⣷⣿⣿⣿⠀⠀⠽⢻⣿⣿⣿⣿⡼⣿⡇⠈⢿⡆⠀⠻⣿⣧⠀⠈⠙⢿⣆⠈⠻⣿⣎⢧⠀                     |                        _/##_   _  \_
+⠀⢣⣿⠟⢀⡼⠋⠀⠀⢀⣴⠿⠋⠀⠀⣾⡟⠀⢸⣿⠙⣿⠃⠘⢿⡟⠀⣰⢻⠟⠻⣿⣿⣿⣿⣿⣀⠀⠀⠘⣿⠋⠀⣿⡇⣿⡇⠀⠸⣿⡄⠀⠈⠻⣷⣄⠀⠀⠙⢷⡀⠙⣿⣆⠁                _   _|  _   _   _            [ ]_[ ]_[ ]_[ ]
+⢀⣿⡏⠀⡞⠁⢀⡠⠞⠋⠁⠀⠀⠀⠈⠉⠀⠀⠀⠿⠀⠈⠀⠀⠀⠀⠀⣿⣿⣰⣾⣿⣿⣿⣿⣿⣿⣤⠀⠀⠀⠀⠀⠉⠀⠸⠃⠀⠀⠈⠋⠀⠀⠀⠀⠙⠳⢤⣀⠀⠹⡄⠘⣿⡄               [ ]_[ ]_[ ]_[ ]_[ ]           | _=_-=_ - =_ |
+⣸⡟⠀⣰⣿⠟⠋⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠛⠿⠿⠿⠟⠁⠀⠹⣿⣷⡄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠻⣿⣧⠀⢹⣷               !_ |_=_ =-_-_  = =|           !_ |=_= -     |
+⣿⠃⢠⡿⠃⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢠⣄⣤⣀⠀⠀⣿⣿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⢻⡇⠀⣿               |*`--,_- _        |           | *`~-.,= []  |
+⣿⠀⢸⠅⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣰⡿⠋⠉⢻⣧⢀⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿⠀⢸               |.-'|=     []     |   !_      | _.-"`_-     |
+⡇⠀⠈⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢿⣧⡀⠀⠀⣿⣾⡟⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠀⢸               |   |_=- -        |   |*`~-., |   |=_-      |
+----___^^^^__^_-___-----^^^^^^^^^^^--~^^^---^^^^^-------^-^_---___-~~^^^^^^-_______~~~^^^~---__~^^~_^^^~~_--____^^_____^^~^^^^^^^^^~^^_____^^^^^^_--_--___
+"""
+
+    
+    fn.centra_h_v(tela, Fore.RED + Style.BRIGHT)
+    print("\n")
+    fn.centra_h("\nPARAÍSO MEDIEVAL", Fore.YELLOW + Style.BRIGHT)
+    fn.centra_h(Style.DIM + "use ↑/↓ para navegar e ENTER para confirmar")
+
+    largura_interna = 56
+    fn.centra_h(Fore.CYAN + "╔" + "═" * largura_interna + "╗")
+
+    for i, esc in enumerate(escolhas_raca):
+        selecionado = (i == idx)
+        seta = "➤" if selecionado else " "
+        cor = Fore.GREEN + Style.BRIGHT if selecionado else Fore.WHITE
+        conteudo = f"{seta} {esc}"
+        largura_visivel = len(strip_ansi(conteudo))
+        padding = max(largura_interna - largura_visivel, 0)
+        linha_final = (
+            Fore.CYAN + "║ "
+            + cor + conteudo + Style.RESET_ALL
+            + " " * padding
+            + Fore.CYAN + " ║"
+        )
+        fn.centra_h(linha_final)
+
+    fn.centra_h(Fore.CYAN + "╚" + "═" * largura_interna + "╝")
+
+
 
 
     
@@ -466,8 +511,8 @@ def esqueleto():
        )(      (  | |   )            .    (  /
       )(    ,'))     \ /          \( `.    )
       (\>  ,'/__      ))            __`.  /
-     ( \   | /  ___   ( \/     ___   \ | ( (                             {fn.rgb_text("Agora você é um esqueleto")}
-      \.)  |/  /   \__      __/   \   \|  ))                             {Fore.BLACK + "Esqueletos"} tem:
+     ( \   | /  ___   ( \/     ___   \ | ( (                             {fn.rgb_text("Agora você é um Esqueleto Flamejante")}
+      \.)  |/  /   \__      __/   \   \|  ))                             {Fore.BLACK + "Esqueletos Flamejantes"} tem:
      .  \. |>  \      | __ |      /   <|  /                              {Fore.RED + "dano" + Style.RESET_ALL} maior
           )/    \____/ :..: \____/     \ <                               {Fore.MAGENTA + "vida" + Style.RESET_ALL} menor
    )   \ (|__  .      / ;: \          __| )  (                           {Fore.GREEN + "sorte" + Style.RESET_ALL} normal
@@ -488,7 +533,7 @@ def esqueleto():
  \..)   (_..  ..  :    :  : .(   \..:..    ./__.  ./
 
 """
-    fn.centra_h_v(Fore.RED + mensagem)
+    fn.centra_h_v(mensagem)
   
 
 

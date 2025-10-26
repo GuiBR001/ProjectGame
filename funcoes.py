@@ -230,7 +230,7 @@ def criar_npc(level) -> dict:
         if level <= 15:
             nome = "carceres".upper()
         else:
-            nome = "faskra".upper()
+            nome = "fraskra".upper()
 
     elif level >= 21 and level <= 30:
         if level <= 25:
@@ -260,7 +260,7 @@ def criar_npc(level) -> dict:
         if level <= 65:
             nome = "wertz".upper()
         else:
-            nome = "fenrir".upper()
+            nome = "quantinum".upper()
 
     elif level >= 71 and level <= 80:
         if level <= 75:

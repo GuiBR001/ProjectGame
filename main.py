@@ -9,15 +9,18 @@ from colorama import Fore, Style, init
 init(autoreset= True)
 largura_tela = os.get_terminal_size().columns
 altura_tela = shutil.get_terminal_size().lines
-
+ic.guerreira_elfica_espadalendaria()
+input()
 fase = 1
 while True:
 
     escolha_menu = ic.escolha_seta_menu()
 
     if escolha_menu == "Começar Novo Jogo":
+
         fn.limpar_tela()
         escolha_raca = ic.escolha_seta_raca()
+        
         if escolha_raca == "Esqueleto Flamejante":
             raca = 1
             fn.descri_raca(raca)

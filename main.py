@@ -9,8 +9,7 @@ from colorama import Fore, Style, init
 init(autoreset= True)
 largura_tela = os.get_terminal_size().columns
 altura_tela = shutil.get_terminal_size().lines
-ic.guerreira_elfica_espadalendaria()
-input()
+
 fase = 1
 while True:
 

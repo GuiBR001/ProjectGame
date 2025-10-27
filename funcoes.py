@@ -173,7 +173,7 @@ CIDADELA DO REI DE FERRO\n
 
 #descricao da raca + imagem
 def descri_raca(raca) -> None:
-    from icons import esqueleto_flamejante, anjo_caido, sabio_feiticeiro
+    from icons import esqueleto_flamejante, anjo_caido, sabio_feiticeiro, pricesa_medusa, morte_mormurante, arqueiro_magico
     limpar_tela()
     match raca:
 
@@ -185,6 +185,15 @@ def descri_raca(raca) -> None:
         
         case 3:
             sabio_feiticeiro()
+
+        case 4: 
+            pricesa_medusa()
+        
+        case 5:
+            morte_mormurante()
+        
+        case 6:
+            arqueiro_magico()
 
     centra_h(rgb_text("\n\nAperte ENTER para continuar "))
     input()
@@ -205,6 +214,15 @@ def criar_personagem(nome: str,raca: int) -> dict:
         
         case 3:
             raca = "Sábio Feiticeiro"
+        
+        case 4: 
+            "Pricesa Medusa"
+        
+        case 5:
+            "Morte Mormurante"
+        
+        case 6:
+            "Arqueiro Mágico"
 
     return  {
         "nome": nome,
@@ -218,25 +236,27 @@ def criar_personagem(nome: str,raca: int) -> dict:
 
 
 # cria npc
-def criar_npc(level) -> dict:
+def criar_npc(level, fase) -> dict:
 
-    if level >= 1 and level <= 10:
-        if level <= 5:
-            nome = "dominus".upper()
-        else:
-            nome = "draconis".upper()
+    if fase == 1:
 
-    elif level >= 11 and level <= 20:
-        if level <= 15:
-            nome = "carceres".upper()
-        else:
-            nome = "fraskra".upper()
+        if level >= 1 and level <= 10:
+            if level <= 5:
+                nome = "dominus".upper()
+            else:
+                nome = "draconis".upper()
 
-    elif level >= 21 and level <= 30:
-        if level <= 25:
-            nome = "wetiza".upper()
-        else:
-            nome = "hommer".upper()
+        elif level >= 11 and level <= 20:
+            if level <= 15:
+                nome = "carceres".upper()
+            else:
+                nome = "fraskra".upper()
+
+        elif level >= 21 and level <= 30:
+            if level <= 25:
+                nome = "wetiza".upper()
+            else:
+                nome = "prayskurt".upper()
 
     elif level >= 31 and level <= 40:
         if level <= 35:

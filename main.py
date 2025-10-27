@@ -43,8 +43,12 @@ while True:
         ic.mostrar_creditos()
 
     elif escolha_menu == "Sair":
-        fn.centra_h_v(fn.rgb_text("Volte sempre, os cidadões precisam de você!"))
-        fn.centra_h(fn.rgb_text("Encerrando Jogo..."))
+        fn.limpar_tela()
+        print("\n\n\n\n\n\n\n\n\n\n\n\n\n\n")
+        fn.centra_h_v(Fore.BLACK + ic.jogo_encerrado())
+        print("\n\n")
+        fn.centra_h(fn.rgb_text("Jogo encerrado, volte quando quiser se aventurar mais!"))
+        fn.centra_h(fn.rgb_text("   Os aldeões clamam pela volta do herói deles"))
         sys.exit(0)
 
     else:

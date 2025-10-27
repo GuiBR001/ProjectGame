@@ -173,18 +173,18 @@ CIDADELA DO REI DE FERRO\n
 
 #descricao da raca + imagem
 def descri_raca(raca) -> None:
-    from icons import esqueleto, anjo, mago
+    from icons import esqueleto_flamejante, anjo_caido, sabio_feiticeiro
     limpar_tela()
     match raca:
 
         case 1:
-            esqueleto()
+            esqueleto_flamejante()
         
         case 2:
-            anjo()
+            anjo_caido()
         
         case 3:
-            mago()
+            sabio_feiticeiro()
 
     centra_h(rgb_text("\n\nAperte ENTER para continuar "))
     input()
@@ -201,10 +201,10 @@ def criar_personagem(nome: str,raca: int) -> dict:
             raca = "Esqueleto Flamejante"
         
         case 2:
-            raca = "Anjo Da Morte"
+            raca = "Anjo caído"
         
         case 3:
-            raca = "Mago Ancião"
+            raca = "Sábio Feiticeiro"
 
     return  {
         "nome": nome,

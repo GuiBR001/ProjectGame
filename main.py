@@ -23,10 +23,10 @@ while True:
         if escolha_raca == "Esqueleto Flamejante":
             raca = 1
             fn.descri_raca(raca)
-        elif escolha_raca == "Anjo Da Morte":
+        elif escolha_raca == "Anjo Caído":
             raca = 2
             fn.descri_raca(raca) 
-        elif escolha_raca == "Mago Ancião":
+        elif escolha_raca == "Sábio Feticeiro":
             raca = 3
             fn.descri_raca(raca)
 

@@ -120,15 +120,10 @@ def criar_npcs_em_massa(fase: int, player: dict) -> None:
                             level = randint(11, 20)
                             novo_npc = criar_npc(level, fase)
                             lista_npcs.append(novo_npc)
-
-                        exibir_player(player)
-                        arte = f"""
-        FASE 1
-
-REINO DO REI DE FERRO\n
-                                """
-                        centra_h_v(arte)
-                        exibir_npcs()
+                        
+                        escolha_seta_inimigo()
+                        
+                        
                                      
 
     
@@ -434,7 +429,7 @@ def escolha_seta_inimigo() -> str:
         limpar_tela()
         imagem_seta_escolhida_inimigo(idx)
         print("\n")
-        centra_h("\nPARAÍSO MEDIEVAL", Fore.YELLOW + Style.BRIGHT)
+        centra_h("\nQUE INIMIGO DESEJA ATACAR?", Fore.RED + Style.BRIGHT)
         centra_h(Style.DIM + "use ↑/↓ para navegar e ENTER para confirmar")
 
         largura_interna = 35

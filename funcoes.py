@@ -97,7 +97,7 @@ def iniciar(fase: int, player: dict) -> None:
         case 1:
             for x in range(7):
                 level = randint(1, 20)
-                novo_npc = criar_npc(level)
+                novo_npc = criar_npc(level, fase)
                 lista_npcs.append(novo_npc)
 
             exibir_player(player)
@@ -112,7 +112,7 @@ CIDADELA DO REI DE FERRO\n
         case 2:
             for x in range(7):
                 level = randint(21, 40)
-                novo_npc = criar_npc(level)
+                novo_npc = criar_npc(level,fase)
                 lista_npcs.append(novo_npc)
             exibir_player(player)
             print(Fore.GREEN + "CAMPOS DE BATALHA DE DRAKMOR\n")
@@ -120,7 +120,7 @@ CIDADELA DO REI DE FERRO\n
         case 3:
             for x in range(7):
                 level = randint(41, 60)
-                novo_npc = criar_npc(level)
+                novo_npc = criar_npc(level, fase)
                 lista_npcs.append(novo_npc)
             exibir_player(player)
             print(Fore.CYAN + "FLORESTA DE NÉVOA ETERNA\n")
@@ -128,7 +128,7 @@ CIDADELA DO REI DE FERRO\n
         case 4:
             for x in range(7):
                 level = randint(61, 80)
-                novo_npc = criar_npc(level)
+                novo_npc = criar_npc(level, fase)
                 lista_npcs.append(novo_npc)
             exibir_player(player)
             print(Fore.RED + "COVIL DO DRAGÃO ESCARLATE\n")
@@ -136,7 +136,7 @@ CIDADELA DO REI DE FERRO\n
         case 5:
             for x in range(7):
                 level = randint(81, 100)
-                novo_npc = criar_npc(level)
+                novo_npc = criar_npc(level, fase)
                 lista_npcs.append(novo_npc)
             exibir_player(player)
             print(Fore.MAGENTA + "FORTALEZA DAS SOMBRAS ANTIGAS\n")
@@ -236,13 +236,13 @@ def criar_personagem(nome: str,raca: int) -> dict:
             raca = "Sábio Feiticeiro"
         
         case 4: 
-            "Pricesa Medusa"
+            raca = "Pricesa Medusa"
         
         case 5:
-            "Morte Mormurante"
+            raca = "Morte Mormurante"
         
         case 6:
-            "Arqueiro Mágico"
+            raca = "Arqueiro Mágico"
 
     return  {
         "nome": nome,
@@ -278,15 +278,15 @@ def criar_npc(level, fase) -> dict:
             else:
                 nome = "prayskurt".upper()
 
-    if fase == 2:
-
-        if level >= 16 and level <= 20:
+        elif level >= 16 and level <= 20:
             if level <= 18:
                 nome = "vyper".upper()
             else:
                 nome = "fryth".upper()
 
-        elif level >= 21 and level <= 25:
+    if fase == 2:
+
+        if level >= 21 and level <= 25:
             if level <= 23:
                 nome = "akari".upper()
             else:
@@ -298,29 +298,95 @@ def criar_npc(level, fase) -> dict:
             else:
                 nome = "ogroid".upper()
 
-    elif level >= 31 and level <= 35:
-        if level <= 33:
-            nome = "wertz".upper()
-        else:
-            nome = "quantinum".upper()
+        elif level >= 31 and level <= 35:
+            if level <= 33:
+                nome = "wertz".upper()
+            else:
+                nome = "quantinum".upper()
 
-    elif level >= 36 and level <= 40:
-        if level <= 38:
-            nome = "mytus".upper()
-        else:
-            nome = "hydra".upper()
+        elif level >= 36 and level <= 40:
+            if level <= 38:
+                nome = "mytus".upper()
+            else:
+                nome = "hydra".upper()
 
-    elif level >= 41 and level <= 45:
-        if level <= 43:
-            nome = Fore.GREEN + "toon".upper()
-        else:
-            nome = Fore.BLUE + "tartarus".upper()
+    if fase == 3:
 
-    elif level >= 46 and level <= 50:
-        if level <= 48:
-            nome = Fore.YELLOW + "endless".upper()
-        else:
-            nome = Fore.RED + "foguinho".upper()
+        if level >= 41 and level <= 45:
+            if level <= 43:
+                nome = Fore.GREEN + "".upper()
+            else:
+                nome = Fore.BLUE + "".upper()
+
+        elif level >= 46 and level <= 50:
+            if level <= 48:
+                nome = Fore.YELLOW + "".upper()
+            else:
+                nome = Fore.RED + "".upper()
+
+        elif level >= 51 and level <= 55:
+            if level <= 53:
+                nome = Fore.YELLOW + "".upper()
+            else:
+                nome = Fore.RED + "".upper()
+
+        elif level >= 56 and level <= 60:
+            if level <= 58:
+                nome = Fore.YELLOW + "".upper()
+            else:
+                nome = Fore.RED + "".upper()
+
+    if fase == 4:
+
+        if level >= 41 and level <= 45:
+            if level <= 43:
+                nome = Fore.GREEN + "".upper()
+            else:
+                nome = Fore.BLUE + "".upper()
+
+        elif level >= 46 and level <= 50:
+            if level <= 48:
+                nome = Fore.YELLOW + "".upper()
+            else:
+                nome = Fore.RED + "".upper()
+
+        elif level >= 51 and level <= 55:
+            if level <= 53:
+                nome = Fore.YELLOW + "".upper()
+            else:
+                nome = Fore.RED + "".upper()
+
+        elif level >= 56 and level <= 60:
+            if level <= 58:
+                nome = Fore.YELLOW + "".upper()
+            else:
+                nome = Fore.RED + "".upper()
+
+    if fase == 5:
+
+        if level >= 41 and level <= 45:
+            if level <= 43:
+                nome = Fore.GREEN + "toon".upper()
+            else:
+                nome = Fore.BLUE + "tartarus".upper()
+
+        elif level >= 46 and level <= 50:
+            if level <= 48:
+                nome = Fore.YELLOW + "endless".upper()
+            else:
+                nome = Fore.RED + "foguinho".upper()
+
+        elif level >= 51 and level <= 55:
+            if level <= 53:
+                nome = Fore.YELLOW + "endless".upper()
+            else:
+                nome = Fore.RED + "foguinho".upper()
+
+        elif level >= 56 and level <= 60:
+            if level <= 58:
+                nome = Fore.YELLOW + "endless".upper()
+            else:
+                nome = Fore.RED + "foguinho".upper()
 
     novo_npc = {
         "nome": f"{nome}",

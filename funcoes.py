@@ -171,6 +171,29 @@ CIDADELA DO REI DE FERRO\n
 
 
 
+#puxa a imagem baseado na escolha da seta do jogador
+def imagem_seta_escolhida(idx):
+    from icons import esqueleto_flamejante, anjo_caido, sabio_feiticeiro, pricesa_medusa, morte_mormurante, arqueiro_magico
+    if idx == 0:
+        esqueleto_flamejante()
+    
+    elif idx == 1:
+        anjo_caido()
+
+    elif idx == 2:
+        sabio_feiticeiro()
+
+    elif idx == 3:
+        pricesa_medusa()
+
+    elif idx == 4:
+        morte_mormurante()
+
+    elif idx == 5:
+        arqueiro_magico()
+
+
+
 #descricao da raca + imagem
 def descri_raca(raca) -> None:
     from icons import esqueleto_flamejante, anjo_caido, sabio_feiticeiro, pricesa_medusa, morte_mormurante, arqueiro_magico
@@ -194,9 +217,6 @@ def descri_raca(raca) -> None:
         
         case 6:
             arqueiro_magico()
-
-    centra_h(rgb_text("\n\nAperte ENTER para continuar "))
-    input()
 
 
 
@@ -240,62 +260,64 @@ def criar_npc(level, fase) -> dict:
 
     if fase == 1:
 
-        if level >= 1 and level <= 10:
-            if level <= 5:
+        if level >= 1 and level <= 5:
+            if level <= 2:
                 nome = "dominus".upper()
             else:
                 nome = "draconis".upper()
 
-        elif level >= 11 and level <= 20:
-            if level <= 15:
+        elif level >= 6 and level <= 10:
+            if level <= 8:
                 nome = "carceres".upper()
             else:
                 nome = "fraskra".upper()
 
-        elif level >= 21 and level <= 30:
-            if level <= 25:
+        elif level >= 11 and level <= 15:
+            if level <= 13:
                 nome = "wetiza".upper()
             else:
                 nome = "prayskurt".upper()
 
-    elif level >= 31 and level <= 40:
-        if level <= 35:
-            nome = "vyper".upper()
-        else:
-            nome = "fryth".upper()
+    if fase == 2:
 
-    elif level >= 41 and level <= 50:
-        if level <= 45:
-            nome = "akari".upper()
-        else:
-            nome = "magma".upper()
+        if level >= 16 and level <= 20:
+            if level <= 18:
+                nome = "vyper".upper()
+            else:
+                nome = "fryth".upper()
 
-    elif level >= 51 and level <= 60:
-        if level <= 55:
-            nome = "tarik".upper()
-        else:
-            nome = "ogroid".upper()
+        elif level >= 21 and level <= 25:
+            if level <= 23:
+                nome = "akari".upper()
+            else:
+                nome = "magma".upper()
 
-    elif level >= 61 and level <= 70:
-        if level <= 65:
+        elif level >= 26 and level <= 30:
+            if level <= 28:
+                nome = "tarik".upper()
+            else:
+                nome = "ogroid".upper()
+
+    elif level >= 31 and level <= 35:
+        if level <= 33:
             nome = "wertz".upper()
         else:
             nome = "quantinum".upper()
 
-    elif level >= 71 and level <= 80:
-        if level <= 75:
+    elif level >= 36 and level <= 40:
+        if level <= 38:
             nome = "mytus".upper()
         else:
             nome = "hydra".upper()
 
-    elif level >= 81 and level <= 90:
-        if level <= 85:
+    elif level >= 41 and level <= 45:
+        if level <= 43:
             nome = Fore.GREEN + "toon".upper()
         else:
             nome = Fore.BLUE + "tartarus".upper()
 
-    elif level >= 91 and level <= 100:
-        if level <= 95:
+    elif level >= 46 and level <= 50:
+        if level <= 48:
             nome = Fore.YELLOW + "endless".upper()
         else:
             nome = Fore.RED + "foguinho".upper()

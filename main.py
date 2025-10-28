@@ -9,13 +9,30 @@ from colorama import Fore, Style, init
 init(autoreset= True)
 largura_tela = os.get_terminal_size().columns
 altura_tela = shutil.get_terminal_size().lines
-
 fase = 1
+
+
 while True:
 
     escolha_menu = ic.escolha_seta_menu()
 
     if escolha_menu == "Começar Novo Jogo":
+
+        #ic.fase1_guerra_morte_inicial()
+        #input()
+        #ic.fase1_morte_inicial()
+        #input()
+        #ic.fase1_mensagem()
+        #input()
+        #ic.fase1_morto_alem_fantasma()
+        #input()
+        #ic.fase1_deusa_reincarnacao()
+        #input()
+        #ic.fase1_deusa_reincarnacao2()
+        #input()
+        #ic.fase1_bencao_deusa()
+        #input()
+        nome = ic.esc_nome()
 
         fn.limpar_tela()
         escolha_raca = ic.escolha_seta_raca()
@@ -29,10 +46,17 @@ while True:
         elif escolha_raca == "Sábio Feticeiro":
             raca = 3
             fn.descri_raca(raca)
-
+        elif escolha_raca == "Princesa Medusa":
+            raca = 4
+            fn.descri_raca(raca)
+        elif escolha_raca == "Morte Mormurante":
+            raca = 5
+            fn.descri_raca(raca)
+        elif escolha_raca == "Arqueiro Mágico":
+            raca = 6
+            fn.descri_raca(raca)
 
         player = fn.criar_personagem(nome, raca)
-        input(Fore.GREEN + ("Aperte ENTER para continuar".center(largura_tela)))
         fs.fase_1(fase, player)
 
 

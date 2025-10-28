@@ -121,7 +121,7 @@ def mostrar_creditos() -> None:
 def escolha_seta_raca() -> str:
     idx = 0
     while True:
-        fn.imagem_seta_escolhida(idx)
+        fn.imagem_seta_escolhida_raca(idx)
         print("\n")
         fn.centra_h("\nPARAÍSO MEDIEVAL", Fore.YELLOW + Style.BRIGHT)
         fn.centra_h(Style.DIM + "use ↑/↓ para navegar e ENTER para confirmar")
@@ -858,7 +858,7 @@ def fase_1_fim() -> None:
     ║                                                    ║
     ║                PARABÉNS, GUERREIRO!                  ║
     ║                                                    ║
-    ║    Você conquistou a CIDADELA DO REI DE FERRO!     ║
+    ║    Você conquistou a REINO DO REI DE FERRO!       ║
     ║                                                      ║
     ║    os cidadãos estão muito agradecidos pela sua    ║
     ║                     Bravura                        ║

@@ -1,6 +1,8 @@
 import os
 import shutil
 import re
+import time
+import msvcrt
 from random import randint
 from colorama import Fore, Style, init
 
@@ -8,6 +10,7 @@ from colorama import Fore, Style, init
 init(autoreset= True)
 
 lista_npcs = []
+escolhas_inimigo = [npc['nome'] for npc in lista_npcs[0], npc['nome'] for npc in lista_npcs[:4], npc['nome'] for npc in lista_npcs[:4], npc['nome'] for npc in lista_npcs[:4]]
 player = {}
 tamanho = shutil.get_terminal_size()
 largura_tela = tamanho.columns
@@ -104,7 +107,7 @@ def iniciar(fase: int, player: dict) -> None:
             arte = f"""
 FASE 1
 
-CIDADELA DO REI DE FERRO\n
+REINO DO REI DE FERRO\n
                     """
             for linha in arte.splitlines():
                 print(Fore.YELLOW + linha.center(largura_tela))
@@ -172,7 +175,7 @@ CIDADELA DO REI DE FERRO\n
 
 
 #puxa a imagem baseado na escolha da seta do jogador
-def imagem_seta_escolhida(idx):
+def imagem_seta_escolhida_raca(idx):
     from icons import esqueleto_flamejante, anjo_caido, sabio_feiticeiro, pricesa_medusa, morte_mormurante, arqueiro_magico
     if idx == 0:
         esqueleto_flamejante()
@@ -270,33 +273,33 @@ def criar_npc(level, fase) -> dict:
             if level <= 8:
                 nome = "carceres".upper()
             else:
-                nome = "fraskra".upper()
+                nome = "mytus".upper()
 
         elif level >= 11 and level <= 15:
             if level <= 13:
                 nome = "wetiza".upper()
             else:
-                nome = "prayskurt".upper()
+                nome = "ogroid".upper()
 
         elif level >= 16 and level <= 20:
             if level <= 18:
-                nome = "vyper".upper()
+                nome = "akari".upper()
             else:
-                nome = "fryth".upper()
+                nome = "tarik".upper()
 
     if fase == 2:
 
         if level >= 21 and level <= 25:
             if level <= 23:
-                nome = "akari".upper()
+                nome = "".upper()
             else:
                 nome = "magma".upper()
 
         elif level >= 26 and level <= 30:
             if level <= 28:
-                nome = "tarik".upper()
+                nome = "".upper()
             else:
-                nome = "ogroid".upper()
+                nome = "".upper()
 
         elif level >= 31 and level <= 35:
             if level <= 33:
@@ -306,7 +309,7 @@ def criar_npc(level, fase) -> dict:
 
         elif level >= 36 and level <= 40:
             if level <= 38:
-                nome = "mytus".upper()
+                nome = "fraskra".upper()
             else:
                 nome = "hydra".upper()
 
@@ -435,35 +438,100 @@ def exibir_player(player: dict) -> None:
 
 
 
+
+
+def escolha_seta_inimigo() -> str:
+    _ANSI = re.compile(r"\x1B\[[0-?]*[ -/]*[@-~]")
+    def strip_ansi(s: str) -> str:
+        return _ANSI.sub("", s or "")
+    
+    idx = 0
+    while True:
+        imagem_seta_escolhida_inimigo(idx)
+        print("\n")
+        centra_h("\nPARAÍSO MEDIEVAL", Fore.YELLOW + Style.BRIGHT)
+        centra_h(Style.DIM + "use ↑/↓ para navegar e ENTER para confirmar")
+
+        largura_interna = 56
+        centra_h(Fore.CYAN + "╔" + "═" * largura_interna + "╗")
+
+        for i, esc in enumerate(escolhas_inimigo):
+            selecionado = (i == idx)
+            seta = "➤" if selecionado else " "
+            cor = Fore.GREEN + Style.BRIGHT if selecionado else Fore.WHITE
+            conteudo = f"{seta} {esc}"
+            largura_visivel = len(strip_ansi(conteudo))
+            padding = max(largura_interna - largura_visivel, 0)
+            linha_final = (
+                Fore.CYAN + "║ "
+                + cor + conteudo + Style.RESET_ALL
+                + " " * padding
+                + Fore.CYAN + " ║"
+            )
+            centra_h(linha_final)
+
+        centra_h(Fore.CYAN + "╚" + "═" * largura_interna + "╝")        
+        ch = msvcrt.getch()
+        if ch in (b"\x00", b"\xe0"):
+            ch2 = msvcrt.getch()
+            if ch2 == b"H":
+                idx = (idx - 1) % len(escolhas_inimigo)
+            elif ch2 == b"P":
+                idx = (idx + 1) % len(escolhas_inimigo)
+        elif ch in (b"\r", b"\n"):
+            escolha = escolhas_inimigo[idx]
+            return escolha
+        elif ch in (b"1", b"2", b"3", b"4"):
+            n = int(ch.decode()) - 1
+            if 0 <= n < len(escolhas_inimigo):
+                escolha = escolhas_inimigo[n]
+                return escolha
+        else:
+            time.sleep(0.00000000000000000000000000001)
+
+
+
+
+
+def imagem_seta_escolhida_inimigo(idx: int):
+
+    from icons import dominus_img, draconis_img, carceres_img, mytus_img, wetiza_img, akari_img, ogroid_img, tarik_img
+    if idx == 0:
+        dominus_img()
+    
+    elif idx == 1:
+        draconis_img()
+
+    elif idx == 2:
+        carceres_img()
+
+    elif idx == 3:
+        mytus_img()
+
+    elif idx == 4:
+        wetiza_img()
+
+    elif idx == 5:
+        akari_img()
+    
+    elif idx == 6:
+        ogroid_img()
+
+    elif idx == 7:
+        tarik_img()
+
+
+
+
+
 #exibe npcs
 def exibir_npcs() -> None:
+    limpar_tela()
+    escolha_seta_inimigo()
+    imagem_seta_escolhida_inimigo()
 
-    print("\n" + "-" * (len(lista_npcs) * 12 + 10 ) + "\n")
-    print(f"{'Nome':<8}", end="|")
-    for npc in lista_npcs:
-        print(f"{npc['nome']:<10}", end="|")
-    print()
 
-    print(Fore.CYAN + f"{'Level':<8}", end="|")
-    for npc in lista_npcs:
-        print(Fore.CYAN + f"{npc['level']:<10}", end="|")
-    print()
 
-    print(Fore.RED + f"{'Dano':<8}", end="|")
-    for npc in lista_npcs:
-        print(Fore.RED + f"{npc['dano']:<10}", end="|")
-    print()
-
-    print(Fore.MAGENTA + f"{'Saúde':<8}", end="|")
-    for npc in lista_npcs:
-        print(Fore.MAGENTA + f"{npc['hp']:<10}", end="|")
-    print()
-
-    print(Fore.GREEN + f"{'EXP':<8}", end="|")
-    for npc in lista_npcs:
-        print(Fore.GREEN + f"{npc['exp']:<10}", end="|")
-    print()
-    print("\n" + "-" * (len(lista_npcs) * 12 + 10))
 
 
 

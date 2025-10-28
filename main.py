@@ -12,6 +12,7 @@ altura_tela = shutil.get_terminal_size().lines
 fase = 1
 
 
+
 while True:
 
     escolha_menu = ic.escolha_seta_menu()

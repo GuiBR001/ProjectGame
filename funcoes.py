@@ -10,7 +10,7 @@ from colorama import Fore, Style, init
 init(autoreset= True)
 
 lista_npcs = []
-escolhas_inimigo = [npc['nome'] for npc in lista_npcs[0], npc['nome'] for npc in lista_npcs[:4], npc['nome'] for npc in lista_npcs[:4], npc['nome'] for npc in lista_npcs[:4]]
+escolhas_inimigo = []
 player = {}
 tamanho = shutil.get_terminal_size()
 largura_tela = tamanho.columns
@@ -93,24 +93,44 @@ def centra_h_v(mensagem: str, cor_padrao: str = None):
 
 
 #menu
-def iniciar(fase: int, player: dict) -> None:
+def criar_npcs_em_massa(fase: int, player: dict) -> None:
+
+    orda = 1
 
     match fase:
 
         case 1:
-            for x in range(7):
-                level = randint(1, 20)
-                novo_npc = criar_npc(level, fase)
-                lista_npcs.append(novo_npc)
+            
+            #primeira orda de monstros
+            if orda == 1:
+                for x in range(4):
+                    level = randint(1, 10)
+                    novo_npc = criar_npc(level, fase)
+                    lista_npcs.append(novo_npc)
+                    escolhas_inimigo.append(novo_npc['nome'])
+                
+                escolha_seta_inimigo()
+            
+                if len(lista_npcs) == 0:
+                    orda += 1
 
-            exibir_player(player)
-            arte = f"""
-FASE 1
+                    #segunda orda de monstros 
+                    if orda == 2:
+                        for x in range(4):
+                            level = randint(11, 20)
+                            novo_npc = criar_npc(level, fase)
+                            lista_npcs.append(novo_npc)
+
+                        exibir_player(player)
+                        arte = f"""
+        FASE 1
 
 REINO DO REI DE FERRO\n
-                    """
-            for linha in arte.splitlines():
-                print(Fore.YELLOW + linha.center(largura_tela))
+                                """
+                        centra_h_v(arte)
+                        exibir_npcs()
+                                     
+
     
         case 2:
             for x in range(7):
@@ -143,34 +163,6 @@ REINO DO REI DE FERRO\n
                 lista_npcs.append(novo_npc)
             exibir_player(player)
             print(Fore.MAGENTA + "FORTALEZA DAS SOMBRAS ANTIGAS\n")
-
-            #exibir manualmente para manter a formatacao das letras coloridas corretamente
-            print("\n" + "-" * (len(lista_npcs) * 12 + 10 ) + "\n")
-            print(f"{'Nome':<8}", end="|")
-            for npc in lista_npcs:
-                print(f"{npc['nome']:<15}", end="|")
-            print()
-
-            print(Fore.CYAN + f"{'Level':<8}", end="|")
-            for npc in lista_npcs:
-                print(Fore.CYAN + f"{npc['level']:<10}", end="|")
-            print()
-
-            print(Fore.RED + f"{'Dano':<8}", end="|")
-            for npc in lista_npcs:
-                print(Fore.RED + f"{npc['dano']:<10}", end="|")
-            print()
-
-            print(Fore.MAGENTA + f"{'Saúde':<8}", end="|")
-            for npc in lista_npcs:
-                print(Fore.MAGENTA + f"{npc['hp']:<10}", end="|")
-            print()
-
-            print(Fore.GREEN + f"{'EXP':<8}", end="|")
-            for npc in lista_npcs:
-                print(Fore.GREEN + f"{npc['exp']:<10}", end="|")
-            print()
-            print("\n" + "-" * (len(lista_npcs) * 12 + 10))
 
 
 
@@ -400,17 +392,9 @@ def criar_npc(level, fase) -> dict:
     }
 
     return novo_npc
-
-
-
-#cria varios npcs
-def criar_npc_em_massa(n) -> None:
-
-    for x in range(n):
-       level = randint(1, 100)
-       novo_npc = criar_npc(level)
-       lista_npcs.append(novo_npc)
         
+
+
 
 
 #exibe jogador
@@ -447,12 +431,13 @@ def escolha_seta_inimigo() -> str:
     
     idx = 0
     while True:
+        limpar_tela()
         imagem_seta_escolhida_inimigo(idx)
         print("\n")
         centra_h("\nPARAÍSO MEDIEVAL", Fore.YELLOW + Style.BRIGHT)
         centra_h(Style.DIM + "use ↑/↓ para navegar e ENTER para confirmar")
 
-        largura_interna = 56
+        largura_interna = 35
         centra_h(Fore.CYAN + "╔" + "═" * largura_interna + "╗")
 
         for i, esc in enumerate(escolhas_inimigo):
@@ -497,38 +482,149 @@ def imagem_seta_escolhida_inimigo(idx: int):
 
     from icons import dominus_img, draconis_img, carceres_img, mytus_img, wetiza_img, akari_img, ogroid_img, tarik_img
     if idx == 0:
-        dominus_img()
+        if lista_npcs[0]['nome'] == "DOMINUS":
+            dominus_img()
+        elif lista_npcs[0]['nome'] == "DRACONIS":
+            draconis_img()
+        elif lista_npcs[0]['nome'] == "CARCERES":
+            carceres_img()
+        elif lista_npcs[0]['nome'] == "MYTUS":
+            mytus_img()
+        elif lista_npcs[0]['nome'] == "WETIZA":
+            wetiza_img()
+        elif lista_npcs[0]['nome'] == "AKARI":
+            akari_img()
+        elif lista_npcs[0]['nome'] == "OGROID":
+            ogroid_img()
+        elif lista_npcs[0]['nome'] == "TARIK":
+            tarik_img()
+        
     
     elif idx == 1:
-        draconis_img()
+        if lista_npcs[1]['nome'] == "DOMINUS":
+            dominus_img()
+        elif lista_npcs[1]['nome'] == "DRACONIS":
+            draconis_img()
+        elif lista_npcs[1]['nome'] == "CARCERES":
+            carceres_img()
+        elif lista_npcs[1]['nome'] == "MYTUS":
+            mytus_img()
+        elif lista_npcs[1]['nome'] == "WETIZA":
+            wetiza_img()
+        elif lista_npcs[1]['nome'] == "AKARI":
+            akari_img()
+        elif lista_npcs[1]['nome'] == "OGROID":
+            ogroid_img()
+        elif lista_npcs[1]['nome'] == "TARIK":
+            tarik_img()
 
     elif idx == 2:
-        carceres_img()
+        if lista_npcs[2]['nome'] == "DOMINUS":
+            dominus_img()
+        elif lista_npcs[2]['nome'] == "DRACONIS":
+            draconis_img()
+        elif lista_npcs[2]['nome'] == "CARCERES":
+            carceres_img()
+        elif lista_npcs[2]['nome'] == "MYTUS":
+            mytus_img()
+        elif lista_npcs[2]['nome'] == "WETIZA":
+            wetiza_img()
+        elif lista_npcs[2]['nome'] == "AKARI":
+            akari_img()
+        elif lista_npcs[2]['nome'] == "OGROID":
+            ogroid_img()
+        elif lista_npcs[2]['nome'] == "TARIK":
+            tarik_img()
 
     elif idx == 3:
-        mytus_img()
+        if lista_npcs[3]['nome'] == "DOMINUS":
+            dominus_img()
+        elif lista_npcs[3]['nome'] == "DRACONIS":
+            draconis_img()
+        elif lista_npcs[3]['nome'] == "CARCERES":
+            carceres_img()
+        elif lista_npcs[3]['nome'] == "MYTUS":
+            mytus_img()
+        elif lista_npcs[3]['nome'] == "WETIZA":
+            wetiza_img()
+        elif lista_npcs[3]['nome'] == "AKARI":
+            akari_img()
+        elif lista_npcs[3]['nome'] == "OGROID":
+            ogroid_img()
+        elif lista_npcs[3]['nome'] == "TARIK":
+            tarik_img()
 
     elif idx == 4:
-        wetiza_img()
+        if lista_npcs[0]['nome'] == "DOMINUS":
+            dominus_img()
+        elif lista_npcs[0]['nome'] == "DRACONIS":
+            draconis_img()
+        elif lista_npcs[0]['nome'] == "CARCERES":
+            carceres_img()
+        elif lista_npcs[0]['nome'] == "MYTUS":
+            mytus_img()
+        elif lista_npcs[0]['nome'] == "WETIZA":
+            wetiza_img()
+        elif lista_npcs[0]['nome'] == "AKARI":
+            akari_img()
+        elif lista_npcs[0]['nome'] == "OGROID":
+            ogroid_img()
+        elif lista_npcs[0]['nome'] == "TARIK":
+            tarik_img()
 
     elif idx == 5:
-        akari_img()
+        if lista_npcs[0]['nome'] == "DOMINUS":
+            dominus_img()
+        elif lista_npcs[0]['nome'] == "DRACONIS":
+            draconis_img()
+        elif lista_npcs[0]['nome'] == "CARCERES":
+            carceres_img()
+        elif lista_npcs[0]['nome'] == "MYTUS":
+            mytus_img()
+        elif lista_npcs[0]['nome'] == "WETIZA":
+            wetiza_img()
+        elif lista_npcs[0]['nome'] == "AKARI":
+            akari_img()
+        elif lista_npcs[0]['nome'] == "OGROID":
+            ogroid_img()
+        elif lista_npcs[0]['nome'] == "TARIK":
+            tarik_img()
     
     elif idx == 6:
-        ogroid_img()
+        if lista_npcs[0]['nome'] == "DOMINUS":
+            dominus_img()
+        elif lista_npcs[0]['nome'] == "DRACONIS":
+            draconis_img()
+        elif lista_npcs[0]['nome'] == "CARCERES":
+            carceres_img()
+        elif lista_npcs[0]['nome'] == "MYTUS":
+            mytus_img()
+        elif lista_npcs[0]['nome'] == "WETIZA":
+            wetiza_img()
+        elif lista_npcs[0]['nome'] == "AKARI":
+            akari_img()
+        elif lista_npcs[0]['nome'] == "OGROID":
+            ogroid_img()
+        elif lista_npcs[0]['nome'] == "TARIK":
+            tarik_img()
 
     elif idx == 7:
-        tarik_img()
-
-
-
-
-
-#exibe npcs
-def exibir_npcs() -> None:
-    limpar_tela()
-    escolha_seta_inimigo()
-    imagem_seta_escolhida_inimigo()
+        if lista_npcs[0]['nome'] == "DOMINUS":
+            dominus_img()
+        elif lista_npcs[0]['nome'] == "DRACONIS":
+            draconis_img()
+        elif lista_npcs[0]['nome'] == "CARCERES":
+            carceres_img()
+        elif lista_npcs[0]['nome'] == "MYTUS":
+            mytus_img()
+        elif lista_npcs[0]['nome'] == "WETIZA":
+            wetiza_img()
+        elif lista_npcs[0]['nome'] == "AKARI":
+            akari_img()
+        elif lista_npcs[0]['nome'] == "OGROID":
+            ogroid_img()
+        elif lista_npcs[0]['nome'] == "TARIK":
+            tarik_img()
 
 
 

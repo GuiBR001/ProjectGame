@@ -98,30 +98,83 @@ def criar_npcs_em_massa(fase: int, player: dict) -> None:
     orda = 1
 
     match fase:
-
+        
         case 1:
-            
-            #primeira orda de monstros
-            if orda == 1:
-                for x in range(4):
-                    level = randint(1, 10)
-                    novo_npc = criar_npc(level, fase)
-                    lista_npcs.append(novo_npc)
-                    escolhas_inimigo.append(novo_npc['nome'])
-                
-                escolha_seta_inimigo()
-            
-                if len(lista_npcs) == 0:
-                    orda += 1
 
-                    #segunda orda de monstros 
-                    if orda == 2:
-                        for x in range(4):
-                            level = randint(11, 20)
-                            novo_npc = criar_npc(level, fase)
+            while True:
+                       
+                    #ORDA DE MONSTROS 1
+                    if orda == 1:
+                        for x in range(3):
+                            nivel = randint(1, 5)
+                            novo_npc = criar_npc(nivel, fase)
                             lista_npcs.append(novo_npc)
+                            escolhas_inimigo.append(novo_npc['nome'])
                         
                         escolha_seta_inimigo()
+
+                    elif lista_npcs[randint(0,1)]['nome'] == lista_npcs[randint(2,3)]:
+                        for x in range(3):
+                            nivel = randint(1, 5)
+                            novo_npc = criar_npc(nivel, fase)
+                            lista_npcs.append(novo_npc)
+                            escolhas_inimigo.append(novo_npc['nome'])
+
+                    elif len(lista_npcs) == 0 and player["level"] <= 4:
+                        orda == 1
+
+                    else:
+                        orda == 2
+
+                    #ORDA DE INIMIGOS 2
+                    if orda == 2:
+                        for x in range(5):
+                            nivel = randint(6, 10)
+                            novo_npc = criar_npc(nivel, fase)
+                            lista_npcs.append(novo_npc)
+                            escolhas_inimigo.append(novo_npc['nome'])
+                        
+                        escolha_seta_inimigo()
+
+                    elif lista_npcs[randint(0,1)]['nome'] == lista_npcs[randint(2,3)]:
+                        for x in range(3):
+                            nivel = randint(1, 5)
+                            novo_npc = criar_npc(nivel, fase)
+                            lista_npcs.append(novo_npc)
+                            escolhas_inimigo.append(novo_npc['nome'])
+
+                    elif len(lista_npcs) == 0 and player["level"] <= 9:
+                        orda == 2
+
+                    else:
+                        orda == 3
+                    
+
+                    #ORDA DE INIMIGOS 3
+                    if orda == 3:
+                        for x in range(8):
+                            nivel = randint(6, 10)
+                            novo_npc = criar_npc(nivel, fase)
+                            lista_npcs.append(novo_npc)
+                            escolhas_inimigo.append(novo_npc['nome'])
+                        
+                        escolha_seta_inimigo()
+
+                    elif lista_npcs[randint(0,1)]['nome'] == lista_npcs[randint(2,3)]:
+                        for x in range(3):
+                            nivel = randint(11, 15)
+                            novo_npc = criar_npc(nivel, fase)
+                            lista_npcs.append(novo_npc)
+                            escolhas_inimigo.append(novo_npc['nome'])
+
+                    elif len(lista_npcs) == 0 and player["level"] <= 15:
+                        orda == 3
+
+                    else:
+                        continue
+
+
+
                         
                         
                                      
@@ -438,7 +491,7 @@ def escolha_seta_inimigo() -> str:
         for i, esc in enumerate(escolhas_inimigo):
             selecionado = (i == idx)
             seta = "➤" if selecionado else " "
-            cor = Fore.GREEN + Style.BRIGHT if selecionado else Fore.WHITE
+            cor = Fore.RED + Style.BRIGHT if selecionado else Fore.WHITE
             conteudo = f"{seta} {esc}"
             largura_visivel = len(strip_ansi(conteudo))
             padding = max(largura_interna - largura_visivel, 0)

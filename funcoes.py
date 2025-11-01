@@ -7,24 +7,43 @@ from random import randint
 from colorama import Fore, Style, init
 
 
+#AUTOREST PARA COLORAMA
 init(autoreset= True)
 
+
+#VARIAVEIS
 lista_npcs = []
 escolhas_inimigo = []
+escolhas_menu = ["Começar Novo Jogo", "Ultimos Recordes", "Créditos", "Sair"]
+escolhas_raca = ["Esqueleto Flamejante", "Anjo Caído", "Sábio Feiticeiro", "Princesa Medusa", "Morte Mormurante", "Arqueiro Mágico"]
 player = {}
 tamanho = shutil.get_terminal_size()
 largura_tela = tamanho.columns
 altura_tela = tamanho.lines
+
+
+#COMPILA TODOS OS CARACTERES ESPECIAIS
 ANSI = re.compile(r'\x1B\[[0-?]*[ -/]*[@-~]')
 
 
-#limpa tela
+#regex -------------------------------------------------------------------------------
+_ANSI = re.compile(r"\x1B\[[0-?]*[ -/]*[@-~]")
+def strip_ansi(s: str) -> str:
+    return _ANSI.sub("", s or "")
+
+
+
+
+#LIMPA TUDO QUE TEM NA TELA ANTES
 def limpar_tela() -> None:
     os.system("cls" if os.name == "nt" else "clear" )
 
 
 
-#centraliza no meio vertical
+
+
+
+#CENTRALIZA VERTICALMENTE APENAS
 def centra_v(mensagem: str, cor_padrao: str = None):
     linhas = mensagem.strip('\n').split('\n')
     _, term_rows = shutil.get_terminal_size(fallback=(120, 30))
@@ -45,7 +64,11 @@ def centra_v(mensagem: str, cor_padrao: str = None):
 
 
 
-#centraliza no meio horizontal
+
+
+
+
+#CENTRALIZA HORIZONTALMENTE APENAS
 def centra_h(mensagem: str, cor_padrao: str = None):
     linhas = mensagem.strip('\n').split('\n')
     term_cols, _ = shutil.get_terminal_size(fallback=(120, 30))
@@ -64,7 +87,35 @@ def centra_h(mensagem: str, cor_padrao: str = None):
 
 
 
-#centraliza no meio tanto na horizontal quanto na vertical
+
+
+
+#MOSTRA OS CRÉDITOS DO CRIADOR DO JOGO (EU)
+def mostrar_creditos() -> None:
+    from icons import creditos_img
+    limpar_tela()
+    centra_h_v(creditos_img())
+    centra_h("\nJOGO SINGLE DEVELOPER", Fore.MAGENTA + Style.BRIGHT)
+    centra_h("Dev by Guilherme Barreto Ramos", Fore.WHITE + Style.BRIGHT)
+    centra_h("email: guilhermebramos.dev@gmail.com",  Fore.WHITE + Style.BRIGHT)
+    centra_h(Style.DIM + "\npressione qualquer tecla para voltar")
+    msvcrt.getch()        
+
+
+
+
+
+#MOSTRA OS ULTIMOS RECORDES FEITOS PELO PLAYER NO JOGO ANTERIOR
+def ultimos_recordes():
+    print("em criação!")
+    input()
+
+
+
+
+
+
+#CENTRALIZA VERTICALMENTE E HORIZONTALMENTE
 def centra_h_v(mensagem: str, cor_padrao: str = None):
     linhas = mensagem.strip('\n').split('\n')
     term_cols, term_rows = shutil.get_terminal_size(fallback=(120, 30))
@@ -92,13 +143,17 @@ def centra_h_v(mensagem: str, cor_padrao: str = None):
 
 
 
-#menu
+
+
+
+#CRIA MULTIPLOS INIMIGOS BASEADO EM ORDAS, E NA FASE, 
 def criar_npcs_em_massa(fase: int, player: dict) -> None:
 
     orda = 1
 
     match fase:
         
+        #FASE 1
         case 1:
 
             while True:
@@ -113,7 +168,7 @@ def criar_npcs_em_massa(fase: int, player: dict) -> None:
                         
                         escolha_seta_inimigo()
 
-                    elif lista_npcs[randint(0,1)]['nome'] == lista_npcs[randint(2,3)]:
+                    elif lista_npcs[0]['nome'] == lista_npcs[1]:
                         for x in range(3):
                             nivel = randint(1, 5)
                             novo_npc = criar_npc(nivel, fase)
@@ -172,13 +227,6 @@ def criar_npcs_em_massa(fase: int, player: dict) -> None:
 
                     else:
                         continue
-
-
-
-                        
-                        
-                                     
-
     
         case 2:
             for x in range(7):
@@ -214,7 +262,9 @@ def criar_npcs_em_massa(fase: int, player: dict) -> None:
 
 
 
-#puxa a imagem baseado na escolha da seta do jogador
+
+
+#EXIBE A IMAGEM/DESCRIÇÃO DE ACORDO COM A SETA INDICADORA NA TELA DE ESCOLHA DA RAÇAS
 def imagem_seta_escolhida_raca(idx):
     from icons import esqueleto_flamejante, anjo_caido, sabio_feiticeiro, pricesa_medusa, morte_mormurante, arqueiro_magico
     if idx == 0:
@@ -237,35 +287,9 @@ def imagem_seta_escolhida_raca(idx):
 
 
 
-#descricao da raca + imagem
-def descri_raca(raca) -> None:
-    from icons import esqueleto_flamejante, anjo_caido, sabio_feiticeiro, pricesa_medusa, morte_mormurante, arqueiro_magico
-    limpar_tela()
-    match raca:
-
-        case 1:
-            esqueleto_flamejante()
-        
-        case 2:
-            anjo_caido()
-        
-        case 3:
-            sabio_feiticeiro()
-
-        case 4: 
-            pricesa_medusa()
-        
-        case 5:
-            morte_mormurante()
-        
-        case 6:
-            arqueiro_magico()
 
 
-
-
-
-#gera personagem
+#GERA OS STATUS DO PLAYER (NOME, RAÇA, ETC...)
 def criar_personagem(nome: str,raca: int) -> dict: 
 
     match raca:
@@ -298,7 +322,9 @@ def criar_personagem(nome: str,raca: int) -> dict:
 
 
 
-# cria npc
+
+
+#DECIDE O NOME DO INIMIGO BASEADO NO LEVEL, E NA FASE QUE SE ENCONTRA E NO FINAL RETORNA TODOS OS STATUS DO INIMIGO EM DICT
 def criar_npc(level, fase) -> dict:
 
     if fase == 1:
@@ -445,9 +471,8 @@ def criar_npc(level, fase) -> dict:
 
 
 
-#exibe jogador
-ANSI = re.compile(r'\x1B\[[0-?]*[ -/]*[@-~]')
 
+#EXIBE O PERFIL ATUAL DO JOGADOR (NOME, NIVEL, VIDA, DANO, ETC...)
 def exibir_player(player: dict) -> None:
 
     cabecalho = rgb_text("--------------------- Jogador ---------------------")
@@ -471,7 +496,110 @@ def exibir_player(player: dict) -> None:
 
 
 
+#RETORNA A ESCOLHA DE RAÇA DO PLAYER 
+def escolha_seta_raca() -> str:
+    idx = 0
+    while True:
+        imagem_seta_escolhida_raca(idx)
+        print("\n")
+        centra_h("\nPARAÍSO MEDIEVAL", Fore.YELLOW + Style.BRIGHT)
+        centra_h(Style.DIM + "use ↑/↓ para navegar e ENTER para confirmar")
 
+        largura_interna = 56
+        centra_h(Fore.CYAN + "╔" + "═" * largura_interna + "╗")
+
+        for i, esc in enumerate(escolhas_raca):
+            selecionado = (i == idx)
+            seta = "➤" if selecionado else " "
+            cor = Fore.GREEN + Style.BRIGHT if selecionado else Fore.WHITE
+            conteudo = f"{seta} {esc}"
+            largura_visivel = len(strip_ansi(conteudo))
+            padding = max(largura_interna - largura_visivel, 0)
+            linha_final = (
+                Fore.CYAN + "║ "
+                + cor + conteudo + Style.RESET_ALL
+                + " " * padding
+                + Fore.CYAN + " ║"
+            )
+            centra_h(linha_final)
+
+        centra_h(Fore.CYAN + "╚" + "═" * largura_interna + "╝")        
+        ch = msvcrt.getch()
+        if ch in (b"\x00", b"\xe0"):
+            ch2 = msvcrt.getch()
+            if ch2 == b"H":
+                idx = (idx - 1) % len(escolhas_raca)
+            elif ch2 == b"P":
+                idx = (idx + 1) % len(escolhas_raca)
+        elif ch in (b"\r", b"\n"):
+            escolha = escolhas_raca[idx]
+            return escolha
+        elif ch in (b"1", b"2", b"3", b"4"):
+            n = int(ch.decode()) - 1
+            if 0 <= n < len(escolhas_raca):
+                escolha = escolhas_raca[n]
+                return escolha
+        else:
+            time.sleep(0.00000000000000000000000000001)
+
+
+
+
+
+
+#RETORNA A ESCOLHA FEITA PELO PLAYER DO MENU DA TELA INICIAL
+def escolha_seta_menu() -> str:
+    from icons import design_tela_inicio
+    idx = 0
+    while True:
+        design_tela_inicio(idx)
+        centra_h("\n\nPARAÍSO MEDIEVAL", Fore.YELLOW + Style.BRIGHT)
+        centra_h(Style.DIM + "use ↑/↓ para navegar e ENTER para confirmar")
+
+        largura_interna = 56
+        centra_h(Fore.CYAN + "╔" + "═" * largura_interna + "╗")
+
+        for i, esc in enumerate(escolhas_menu):
+            selecionado = (i == idx)
+            seta = "➤" if selecionado else " "
+            cor = Fore.GREEN + Style.BRIGHT if selecionado else Fore.WHITE
+            conteudo = f"{seta} {esc}"
+            largura_visivel = len(strip_ansi(conteudo))
+            padding = max(largura_interna - largura_visivel, 0)
+            linha_final = (
+                Fore.CYAN + "║ "
+                + cor + conteudo + Style.RESET_ALL
+                + " " * padding
+                + Fore.CYAN + " ║"
+            )
+            centra_h(linha_final)
+
+        centra_h(Fore.CYAN + "╚" + "═" * largura_interna + "╝")
+
+        ch = msvcrt.getch()
+        if ch in (b"\x00", b"\xe0"):
+            ch2 = msvcrt.getch()
+            if ch2 == b"H":
+                idx = (idx - 1) % len(escolhas_menu)
+            elif ch2 == b"P":
+                idx = (idx + 1) % len(escolhas_menu)
+        elif ch in (b"\r", b"\n"):
+            escolha = escolhas_menu[idx]
+            return escolha
+        elif ch in (b"1", b"2", b"3", b"4"):
+            n = int(ch.decode()) - 1
+            if 0 <= n < len(escolhas_menu):
+                escolha = escolhas_menu[n]
+                return escolha
+        else:
+            time.sleep(0.00000000000000000000000000001)
+
+
+
+
+
+
+#RETORNA A ESCOLHA DO INIMIGO SELECIONADO
 def escolha_seta_inimigo() -> str:
     _ANSI = re.compile(r"\x1B\[[0-?]*[ -/]*[@-~]")
     def strip_ansi(s: str) -> str:
@@ -480,7 +608,7 @@ def escolha_seta_inimigo() -> str:
     idx = 0
     while True:
         limpar_tela()
-        imagem_seta_escolhida_inimigo(idx)
+        imagem_seta_escolhida_inimigo_fase1(idx)
         print("\n")
         centra_h("\nQUE INIMIGO DESEJA ATACAR?", Fore.RED + Style.BRIGHT)
         centra_h(Style.DIM + "use ↑/↓ para navegar e ENTER para confirmar")
@@ -526,7 +654,9 @@ def escolha_seta_inimigo() -> str:
 
 
 
-def imagem_seta_escolhida_inimigo(idx: int):
+
+#EXIBE A IMAGEM DO INIMIGO QUE ESTA PRÉ-SELECIONADO (FASE 1)
+def imagem_seta_escolhida_inimigo_fase1(idx: int):
 
     from icons import dominus_img, draconis_img, carceres_img, mytus_img, wetiza_img, akari_img, ogroid_img, tarik_img
     if idx == 0:
@@ -679,7 +809,7 @@ def imagem_seta_escolhida_inimigo(idx: int):
 
 
 
-#cores em rgb pro texto especial
+#TRANSFORMA A COR DO TEXTO EM RGB
 def rgb_text(texto: str) -> str:
     resultado = ""
     comprimento = len(texto)

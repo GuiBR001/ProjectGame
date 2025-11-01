@@ -2,7 +2,7 @@ import os
 import sys
 import shutil
 import funcoes as fn
-import fases as fs
+import fase1 as fs
 import icons as ic
 from colorama import Fore, Style, init
 
@@ -15,7 +15,7 @@ fase = 1
 
 while True:
 
-    escolha_menu = ic.escolha_seta_menu()
+    escolha_menu = fn.escolha_seta_menu()
 
     if escolha_menu == "Começar Novo Jogo":
 
@@ -36,37 +36,30 @@ while True:
         nome = ic.esc_nome()
 
         fn.limpar_tela()
-        escolha_raca = ic.escolha_seta_raca()
+        escolha_raca = fn.escolha_seta_raca()
         
         if escolha_raca == "Esqueleto Flamejante":
             raca = 1
-            fn.descri_raca(raca)
         elif escolha_raca == "Anjo Caído":
             raca = 2
-            fn.descri_raca(raca) 
         elif escolha_raca == "Sábio Feiticeiro":
             raca = 3
-
-            fn.descri_raca(raca)
         elif escolha_raca == "Princesa Medusa":
             raca = 4
-            fn.descri_raca(raca)
         elif escolha_raca == "Morte Mormurante":
             raca = 5
-            fn.descri_raca(raca)
         elif escolha_raca == "Arqueiro Mágico":
             raca = 6
-            fn.descri_raca(raca)
 
         player = fn.criar_personagem(nome, raca)
         fs.fase_1(fase, player)
 
 
     elif escolha_menu == "Ultimos Recordes":
-        ic.ultimos_recordes()
+        fn.ultimos_recordes()
 
     elif escolha_menu == "Créditos":
-        ic.mostrar_creditos()
+        fn.mostrar_creditos()
 
     elif escolha_menu == "Sair":
         fn.limpar_tela()

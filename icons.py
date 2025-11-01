@@ -5,43 +5,14 @@ import msvcrt
 import shutil
 from colorama import Fore, init, Style
 
+
 init(autoreset= True)
 largura_tela = shutil.get_terminal_size().columns
 altura_tela = shutil.get_terminal_size().lines
 
 
-#regex
-_ANSI = re.compile(r"\x1B\[[0-?]*[ -/]*[@-~]")
-def strip_ansi(s: str) -> str:
-    return _ANSI.sub("", s or "")
 
-escolhas_menu = ["Começar Novo Jogo", "Ultimos Recordes", "Créditos", "Sair"]
-escolhas_raca = ["Esqueleto Flamejante", "Anjo Caído", "Sábio Feiticeiro", "Princesa Medusa", "Morte Mormurante", "Arqueiro Mágico"]
 #TELA DE INICIO DO JOGO ----------------------------------------------------------------
-
-def escolha_seta_menu() -> str:
-    idx = 0
-    while True:
-        design_tela_inicio(idx)
-        ch = msvcrt.getch()
-        if ch in (b"\x00", b"\xe0"):
-            ch2 = msvcrt.getch()
-            if ch2 == b"H":
-                idx = (idx - 1) % len(escolhas_menu)
-            elif ch2 == b"P":
-                idx = (idx + 1) % len(escolhas_menu)
-        elif ch in (b"\r", b"\n"):
-            escolha = escolhas_menu[idx]
-            return escolha
-        elif ch in (b"1", b"2", b"3", b"4"):
-            n = int(ch.decode()) - 1
-            if 0 <= n < len(escolhas_menu):
-                escolha = escolhas_menu[n]
-                return escolha
-        else:
-            time.sleep(0.00000000000000000000000000001)
-
-
 
 
 def design_tela_inicio(idx) -> None:
@@ -78,95 +49,9 @@ def design_tela_inicio(idx) -> None:
 ⠀⡀⠄⠂⠁⠀⠀⠂⠀⡀⠠⠀⢀⠀⢿⢠⠟⣦⢹⠻⣾⠀⢀⠀⠂⠈⢿⣿⣿⣿⣿⣿⣾⣄⠀⠀⠠⠀⢀⠠⠀⠀⠂⠀⡀⠀⡀⠁⠀⠠⠀⠀⠂⠀⠠⠐⠈⠀⠀⠂⠀⠀⠄⠀⠁⠀⠀⠂⠀⢀⠠⠀⠀⠂⡟⠈⣹⠏⠀⠀⠄⠀⠠⠀⠀⢀⠀⠹⢦⡖⠛⣆⠐⠀⠐⠈⠀⠀⠀⢀
 ⠀⠀⠀⠀⠠⠀⠁⠀⠄⠀⢀⠠⠀⠀⠟⠋⠀⠸⠟⠀⠁⢀⠀⢀⠠⠀⠀⠻⡏⠻⣏⠻⡎⠹⠀⠀⠂⠀⢀⠀⠀⠐⠀⢀⠀⢀⠀⢀⠈⠀⠀⠂⠀⠁⠀⢀⠀⠄⠂⠀⠈⠀⠀⠄⠂⠁⠀⠂⠈⠀⠀⠀⠐⢠⡇⢐⠏⠀⠀⠄⠀⠐⠀⠀⠈⠀⠀⠀⠀⠙⣄⠹⣄⠀⠄⠀⠐⠈⠀⠀
 ⠀⠈⠀⠈⠀⠀⠐⢀⢠⣐⣀⣀⣀⣄⣐⣠⣐⣄⣄⣄⣔⣠⣠⣄⣄⣄⣌⣄⣄⣄⣑⣀⣁⣀⣀⡄⡂⠈⠀⠀⠈⠀⠠⠀⠀⡀⠀⡀⠀⠐⠀⠐⠀⠈⠀⠀⠀⢀⠀⠀⠁⠀⠁⠀⠀⠠⠀⡠⣀⣂⣠⣵⣚⣉⣀⣸⣅⣄⣄⣄⣔⣠⣠⣁⣄⣂⣨⣀⣌⣤⣞⣀⣹⣄⣀⣀⣂⠀⠐⠈
-    """.strip("\n")
+    """
 
-    fn.centra_h_v(tela, Fore.RED + Style.BRIGHT)
-    fn.centra_h("\n\nPARAÍSO MEDIEVAL", Fore.YELLOW + Style.BRIGHT)
-    fn.centra_h(Style.DIM + "use ↑/↓ para navegar e ENTER para confirmar")
-
-    largura_interna = 56
-    fn.centra_h(Fore.CYAN + "╔" + "═" * largura_interna + "╗")
-
-    for i, esc in enumerate(escolhas_menu):
-        selecionado = (i == idx)
-        seta = "➤" if selecionado else " "
-        cor = Fore.GREEN + Style.BRIGHT if selecionado else Fore.WHITE
-        conteudo = f"{seta} {esc}"
-        largura_visivel = len(strip_ansi(conteudo))
-        padding = max(largura_interna - largura_visivel, 0)
-        linha_final = (
-            Fore.CYAN + "║ "
-            + cor + conteudo + Style.RESET_ALL
-            + " " * padding
-            + Fore.CYAN + " ║"
-        )
-        fn.centra_h(linha_final)
-
-    fn.centra_h(Fore.CYAN + "╚" + "═" * largura_interna + "╝")
-
-
-
-def mostrar_creditos() -> None:
-    fn.limpar_tela()
-    fn.centra_h_v(creditos_img())
-    fn.centra_h("\nJOGO SINGLE DEVELOPER", Fore.MAGENTA + Style.BRIGHT)
-    fn.centra_h("Dev by Guilherme Barreto Ramos", Fore.WHITE + Style.BRIGHT)
-    fn.centra_h("email: guilhermebramos.dev@gmail.com",  Fore.WHITE + Style.BRIGHT)
-    fn.centra_h(Style.DIM + "\npressione qualquer tecla para voltar")
-    msvcrt.getch()
-
-
-
-
-def escolha_seta_raca() -> str:
-    idx = 0
-    while True:
-        fn.imagem_seta_escolhida_raca(idx)
-        print("\n")
-        fn.centra_h("\nPARAÍSO MEDIEVAL", Fore.YELLOW + Style.BRIGHT)
-        fn.centra_h(Style.DIM + "use ↑/↓ para navegar e ENTER para confirmar")
-
-        largura_interna = 56
-        fn.centra_h(Fore.CYAN + "╔" + "═" * largura_interna + "╗")
-
-        for i, esc in enumerate(escolhas_raca):
-            selecionado = (i == idx)
-            seta = "➤" if selecionado else " "
-            cor = Fore.GREEN + Style.BRIGHT if selecionado else Fore.WHITE
-            conteudo = f"{seta} {esc}"
-            largura_visivel = len(strip_ansi(conteudo))
-            padding = max(largura_interna - largura_visivel, 0)
-            linha_final = (
-                Fore.CYAN + "║ "
-                + cor + conteudo + Style.RESET_ALL
-                + " " * padding
-                + Fore.CYAN + " ║"
-            )
-            fn.centra_h(linha_final)
-
-        fn.centra_h(Fore.CYAN + "╚" + "═" * largura_interna + "╝")        
-        ch = msvcrt.getch()
-        if ch in (b"\x00", b"\xe0"):
-            ch2 = msvcrt.getch()
-            if ch2 == b"H":
-                idx = (idx - 1) % len(escolhas_raca)
-            elif ch2 == b"P":
-                idx = (idx + 1) % len(escolhas_raca)
-        elif ch in (b"\r", b"\n"):
-            escolha = escolhas_raca[idx]
-            return escolha
-        elif ch in (b"1", b"2", b"3", b"4"):
-            n = int(ch.decode()) - 1
-            if 0 <= n < len(escolhas_raca):
-                escolha = escolhas_raca[n]
-                return escolha
-        else:
-            time.sleep(0.00000000000000000000000000001)
-
-
-
-def ultimos_recordes():
-    print("em criação!")
+    fn.centra_h_v(tela, Fore.RED)
 
 
 
@@ -207,6 +92,13 @@ def creditos_img():
 ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣾⣿⣿⣿⣷⣿⣿⣿⣿⣿⣿⣿⣷⣿⣿⣷⣿⣽⣿⣷⣿⣻⣷⣭⡳⣯⣲⣵⣲⣝⡿⣿⣿⣿⣾⣾⣯⣾⣯⣿⣿⣿⣿⣿⣾⣷⣖⣤⣀⣀⡀⠁⠀⠀⠁⠀⠀
 """
 
+    fn.centra_h_v(tela, Fore.RED)
+
+
+
+
+
+
 def jogo_encerrado():
     mensagem = """
 ⡤⡤⡤⡤⡤⡤⡤⡤⡤⡤⡤⡤⡤⡦⡦⡤⡤⡤⡤⡦⡴⡤⡤⡴⡴⡴⡤⡦⡦⡤⡦⡦⡤⡤⡤⡤⡤⡤⡴⡴⡤⡤⡤⡤⡦⡦⡦⡤⡤⡤⡤⡤⡴⡤⡴⡤⡴⡤⡦⡦⡦⡤⡤⡤⡤⡤⡤⡤⡤⡤⡤⡤⡤⡤⡤⡴⡤⡤⡤⡦⡴⡤⡤⡤⡤⡤⡤⡤⡤⡤⡤⡤⡤⡤⡤⡤⡄⠀⠀⠀
@@ -235,7 +127,7 @@ def jogo_encerrado():
 ⠁⠁⠉⠉⠉⠉⠉⠉⠁⠁⠉⠉⠉⠉⠁⠉⠉⠉⠁⠁⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠁⠁⠉⠁⠑⠁⠃⠃⠁⠁⠁⠁⠁⠁⠁⠁⠉⠁⠁⠁⠉⠉⠁⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠁⠉⠉⠉⠁⠉⠉⠈⠈⠉⠁⠁⠁⠁⠉⠉⠉⠉⠉⠈⠉⠑⠉⠉⠉⠉⠉⠉⠁
 """
 
-    return mensagem
+    fn.centra_h_v(mensagem, Fore.RED)
 
 
     
@@ -1211,7 +1103,7 @@ def anjo_caido():
 ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣴⡿⣫⣾⡟⢕⣫⣽⣷⣿⡿⣫⣿⣿⣷⣦⠀⠻⣦⡀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣀⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⡟⣿⠀⠀⠀⠀⠀⠉⠉⠉⠛⠛⠿⠶⣦⣬⣉⡛⠦⢝⠻⣿⣶⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
 ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣴⡟⣋⣪⣵⣿⢿⣿⡿⡳⣟⣽⣮⣷⡿⣿⣿⣿⣷⡀⡙⠿⣦⣀⠀⠀⢀⣀⣤⣾⡟⣭⣽⣝⡷⣦⡄⠀⠀⠀⠀⠀⠀⠀⠀⣼⢳⡏⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠉⠙⠛⠷⣦⣅⡂⠙⢿⣷⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
 ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣴⣿⣿⣾⣟⣽⡿⣣⡿⣻⣷⣾⣿⢏⡾⣿⣭⣵⣿⣿⣿⣿⣥⣤⣈⣙⣿⣶⠿⣯⠻⣆⠹⢮⡻⣿⣿⣿⡟⣶⣄⠀⠀⠀⠀⠀⢀⡿⣼⠃⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠉⠛⢷⣤⡈⠻⣷⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-{ Fore.BLACK + "⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠐⠋⢋⣵⡿⣫⣾⡿⢑⣫⣾⣿⣻⣿⣿⣼⣾⣿⣿⣿⣸⣵⣟⣿⣿⣿⣿⣿⡟⠁⠠⠈⠣⡈⠂⢈⠻⢶⣾⡿⢨⣿⢻⣷⠀⠀⠀⠀⢸⡇⣿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠛⢷⣜⡻⣦" + Style.RESET_ALL}           {fn.rgb_text("PODER DO CEIFEIRO")}      
+{ Fore.BLACK + "⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠐⠋⢋⣵⡿⣫⣾⡿⢑⣫⣾⣿⣻⣿⣿⣼⣾⣿⣿⣿⣸⣵⣟⣿⣿⣿⣿⣿⡟⠁⠠⠈⠣⡈⠂⢈⠻⢶⣾⡿⢨⣿⢻⣷⠀⠀⠀⠀⢸⡇⣿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠛⢷⣜⡻⣦" + Style.RESET_ALL}          {fn.rgb_text("PODER DO CEIFEIRO")}      
 ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢠⣾⢟⣼⣟⣿⣿⣿⣿⡿⣵⡿⣽⡿⣻⡿⣳⣿⡿⣿⣿⣴⣿⡏⣫⣿⣿⠀⢸⠀⣇⠰⡀⠐⣄⠑⠶⣤⣶⢟⡇⣺⣿⡇⠀⠀⠀⣿⢹⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠻⢿⣧⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀
 { Fore.BLACK + "⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣰⡿⣣⡾⣫⣾⣿⣳⣿⢟⣼⡟⣽⡿⣹⡿⣱⣿⣿⣳⣿⣿⣿⣿⣿⣿⣿⠇⢸⡈⡇⣿⡆⢷⠀⠈⢷⣄⠀⠤⢏⢀⡇⣿⣗⠀⠀⣰⣿⣼⡃⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠙⢧" + Style.RESET_ALL}        { Fore.BLACK + "Anjos Caídos tem:" + Style.RESET_ALL}
 { Fore.BLACK + "⠀⠀⠀⠀⠀⠀⠀⠀⠀⣰⡟⡴⣫⣾⢿⣿⢣⣿⢏⣾⢟⣼⣿⢳⢏⣾⣿⡿⣱⣿⢯⣾⡟⣾⡟⣿⡟⠠⣀⢷⣻⣿⣷⠸⣧⠰⡀⠙⠿⠞⠁⣴⢣⣿⣿⣆⣼⢧⣿⢭⡷" + Style.RESET_ALL}                                         { Fore.MAGENTA + "Saúde" + Fore.WHITE + " Normal" + Style.RESET_ALL}
@@ -1242,25 +1134,25 @@ def sabio_feiticeiro():
     #chance de dar varios tipos de efeitos no oponente
     fn.limpar_tela()
     mensagem = fr"""
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⡠⠂⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡀⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⢠⢶⣳⣻⣺⣲⢦⣄⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⠂⢀⣠⢶⣺⠻⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⢐⠆⡀⠀⠀⠀⠀⠊⠀⠀⡤⣦⡖⠗⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣴⠛⠛⠝⣟⣷⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⣴⣻⢻⡺⣺⢾⢽⢽⠊⠻⡆⠀⠀⠀⠀⢀⠀⠀⢀⠀⠀⢀⠀⠀⢀⠀⢀⡤⡾⡝⢀⡾⢽⡻⠀⢀⣤⣄⡀⠐⠙⠙⠁⠀⠀⠀⡀⠀⣌⡹⡝⡠⠀⢀⠀⠀⠂⠀⠉⠉⠁⠀⠀⠀⠀⠀⢀⢀⠀⠀⡀⠀⡤⡆⠀⠀⡾⡆⠈⣀⠘⣷⡯⣟⡦⠀⠀⠀⠀⡀⠀⠀⡀
-⠀⠈⠀⠀⠁⠀⣸⣗⡯⡾⢡⢯⢯⠯⢃⡼⡮⡇⠀⠀⠀⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢠⢯⠏⣿⠽⠙⢁⡼⣽⣲⣻⠊⠀⠀⠀⠀⠀⠀⠀⠈⢣⣿⢠⡂⢙⠍⢠⡂⡷⡜⠂⠀⠀⠰⠂⠀⠀⠀⢀⣰⣺⠽⠝⠝⠷⣄⠀⠀⠀⠀⢸⡏⠉⠀⣘⣦⢾⢽⡷⡯⠀⠀⠀⠁⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠈⢘⣿⠃⡾⡽⠝⣠⢯⢯⢯⡇⠀⠀⠀⠀⠀⠀⠀⠀⡀⠠⠀⠀⠄⠀⡿⠁⠰⠁⠀⠚⠏⠋⣗⣷⣁⣤⣖⠗⠶⠲⠒⠀⠀⠀⠁⡥⠏⠣⡴⡥⠞⠹⠬⠉⠀⠀⠀⠀⠀⠀⠀⢀⣞⡞⢠⡶⡾⣖⣦⡈⠃⠀⠀⠀⠀⣗⠐⢾⣷⣡⡿⡽⣯⠃⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠈⠀⠀⠐⠀⣠⢿⠊⣼⢽⠍⡴⣯⡯⣯⢳⡇⠀⠀⠀⠀⠠⠐⠀⠁⠀⠀⠀⠀⣠⢤⠀⠀⠀⠀⠠⢤⣖⠯⣻⣺⣺⠚⠈⠀⠀⠀⠀⠀⠀⠀⢤⣐⣲⡲⢙⠝⢲⣖⣃⢤⠀⠀⠀⠀⢀⡶⣤⢐⡷⡅⡯⡏⣁⣄⠉⢳⠀⠀⠀⠀⠀⠙⠻⡺⣞⢾⠽⠋⠁⠀⠀⠀⠀⠀⡀⠄⠐⠈
-⠀⠀⠀⠀⠀⠐⢯⣟⣇⣻⢽⡀⢯⣗⡯⡿⢐⡇⠀⠀⠀⡀⠀⠀⠀⠀⠀⡀⠀⡼⡽⡴⣓⡁⠀⠀⠀⢀⣠⣾⣓⣁⣁⠀⠀⠀⠀⠀⠀⠀⠀⠠⠒⡽⠐⢡⠴⡧⡐⠃⢯⠳⠀⠀⠀⠀⠈⢨⣟⢀⣟⠆⣯⢯⠓⠫⣿⡀⠀⠙⠉⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⢤⡤⣄⠀⠀⠀⠀⠀⠀
-{Fore.BLUE + "⠀⠀⠀⠀⣰⢿⢽⣮⣘⠺⢽⣳⣌⡳⣻⡴⡯⡯⣗⣖⣦⢤⢤⢦⣖⡾⡝⢰⣺⢽⢽⢽⢥⣉⠀⠈⠫⠟⢞⠞⠞⠈⠀⠀⠀⠀⠀⠠⠀⠀⡀⠀⠀⠀⠀⠠⢺⡳⠄⠀⠀⠀⠀⠀⠀⢀⡤⡟⢠⢾⡟⢠⠯⠁⠰⡼⡷⠁⠀⠀⠀⢀⣀⡀⠀⠀⠀⠀⢠⠞⢉⠀⢉⣯⢿⡀" + Style.RESET_ALL}                   {fn.rgb_text("PODER DO FEITICEIRO")} 
-⠀⡀⠐⢰⢯⢯⣇⠻⣺⢳⢦⣌⡓⣟⣷⡻⣰⢯⢓⣗⠇⣟⠏⣽⠨⣟⠆⣟⣊⠋⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠐⠁⠀⠀⠀⠀⠀⠒⢊⣋⣥⢾⠝⢃⣴⣏⢴⣳⣆⠀⠀⠀⠀⢠⠼⠉⠈⡹⣺⣄⠀⠀⢽⣶⡀⠘⢯⢻⢽⣗⠀⠀⠀⡀
-{Fore.BLUE + "⠀⠀⢠⢯⡯⣷⢙⣆⢻⢸⢽⣺⣝⠗⢗⡯⡯⣿⢰⣷⡺⠍⣼⡳⣸⢽⢀⡯⣟⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠐⠀⠀⠀⠀⡀⠄⠀⠀⠂⢁⠀⠀⠀⠀⠀⠀⠈⠉⠉⠋⢊⠬⠴⠺⠙⠁⠀⠰⠲⠏⠀⠀⠀⠀⣟⠀⣱⢶⣖⢗⣿⡄⠀⠈⣗⣗⡖⡾⡽⣽⠊" + Style.RESET_ALL}                  {Fore.BLACK + "Sábios Feiticeiros tem:" + Style.RESET_ALL}
-{Fore.BLUE + "⠀⠀⡼⡽⡽⡝⠇⢹⢼⣸⡝⢠⢤⣑⠒⠌⡙⢽⠽⢚⣙⣙⣳⢯⢯⡗⢸⢽⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠄⠐⠀⠁⠀⠀⢀⣤⣖⣷⣲⣲⣲⠳⠋⠁⠀⠀⢀⠀⠠⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢽⣳⣯⣋⣾⣺⣷⠁⠀⠀⠈⠚⠟⠟⠙⠁" + Style.RESET_ALL}                       {Fore.MAGENTA + ("Sáude") + Fore.WHITE + (" normal")}
-{Fore.BLUE + "⠀⢠⣯⠿⢙⠙⢷⢼⢽⡚⣠⢯⣟⡾⣽⣲⢤⣄⣠⢦⢦⢦⠦⣨⢯⠇⣺⢽⠀⠀⠀⠀⠀⠀⠀⡀⠄⠈⠀⠀⠀⠀⠀⣠⢮⣟⠞⣪⣾⡺⠈⠀⢀⣀⣀⡀⠈⠉⠋⠉⠀⠀⢀⠠⠀⠀⠰⠒⠁⠀⠀⠐⠀⠀⠠⠀⠀⠐⠀⠈⠘⠺⣺⠺⠚⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠄" + Style.RESET_ALL}                   {Fore.RED + ("Dano") + Fore.WHITE + (" menor")}
-{Fore.BLUE + "⠀⣸⣺⣞⠏⣋⡉⠫⣏⡴⡯⣟⡾⠍⣗⣇⣞⣎⡾⡽⡽⡝⣰⡯⡿⣌⣯⠃⠀⠀⠀⠀⠀⢀⠀⠀⠀⠀⠀⠀⠀⠀⣼⠝⠁⣠⣖⣗⣗⣟⣶⣺⢽⣺⣺⢽⣲⢤⣄⣤⣴⣺⠝⠉⠁" + Style.RESET_ALL}                                                     {Fore.GREEN + ("Sorte") + Fore.WHITE + (" maior")}
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⡠⠂⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⢠⢶⣳⣻⣺⣲⢦⣄⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⠂⢀⣠⢶⣺⠻⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⢐⠆⡀⠀⠀⠀⠀⠊⠀⠀⡤⣦⡖⠗⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⣴⣻⢻⡺⣺⢾⢽⢽⠊⠻⡆⠀⠀⠀⠀⢀⠀⠀⢀⠀⠀⢀⠀⠀⢀⠀⢀⡤⡾⡝⢀⡾⢽⡻⠀⢀⣤⣄⡀⠐⠙⠙⠁⠀⠀⠀⡀⠀⣌⡹⡝⡠⠀⢀⠀⠀⠂⠀⠉⠉⠁⠀⠀⠀⠀⠀⢀⢀⠀⠀⡀⠀
+⠀⠈⠀⠀⠁⠀⣸⣗⡯⡾⢡⢯⢯⠯⢃⡼⡮⡇⠀⠀⠀⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢠⢯⠏⣿⠽⠙⢁⡼⣽⣲⣻⠊⠀⠀⠀⠀⠀⠀⠀⠈⢣⣿⢠⡂⢙⠍⢠⡂⡷⡜⠂⠀⠀⠰⠂⠀⠀⠀⢀⣰⣺⠽⠝⠝⠷⣄⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠈⢘⣿⠃⡾⡽⠝⣠⢯⢯⢯⡇⠀⠀⠀⠀⠀⠀⠀⠀⡀⠠⠀⠀⠄⠀⡿⠁⠰⠁⠀⠚⠏⠋⣗⣷⣁⣤⣖⠗⠶⠲⠒⠀⠀⠀⠁⡥⠏⠣⡴⡥⠞⠹⠬⠉⠀⠀⠀⠀⠀⠀⠀⢀⣞⡞⢠⡶⡾⣖⣦⡈⠃⠀⠀⠀
+⠀⠈⠀⠀⠐⠀⣠⢿⠊⣼⢽⠍⡴⣯⡯⣯⢳⡇⠀⠀⠀⠀⠠⠐⠀⠁⠀⠀⠀⠀⣠⢤⠀⠀⠀⠀⠠⢤⣖⠯⣻⣺⣺⠚⠈⠀⠀⠀⠀⠀⠀⠀⢤⣐⣲⡲⢙⠝⢲⣖⣃⢤⠀⠀⠀⠀⢀⡶⣤⢐⡷⡅⡯⡏⣁⣄⠉⢳⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠐⢯⣟⣇⣻⢽⡀⢯⣗⡯⡿⢐⡇⠀⠀⠀⡀⠀⠀⠀⠀⠀⡀⠀⡼⡽⡴⣓⡁⠀⠀⠀⢀⣠⣾⣓⣁⣁⠀⠀⠀⠀⠀⠀⠀⠀⠠⠒⡽⠐⢡⠴⡧⡐⠃⢯⠳⠀⠀⠀⠀⠈⢨⣟⢀⣟⠆⣯⢯⠓⠫⣿⡀⠀⠙⠉⠀⠀⠀⠀⠀⠀⠀⠀⠀
+{Fore.BLUE + "⠀⠀⠀⠀⣰⢿⢽⣮⣘⠺⢽⣳⣌⡳⣻⡴⡯⡯⣗⣖⣦⢤⢤⢦⣖⡾⡝⢰⣺⢽⢽⢽⢥⣉⠀⠈⠫⠟⢞⠞⠞⠈⠀⠀⠀⠀⠀⠠⠀⠀⡀⠀⠀⠀⠀⠠⢺⡳⠄⠀⠀⠀⠀⠀⠀⢀⡤⡟⢠⢾⡟⢠⠯⠁" + Style.RESET_ALL}                         {fn.rgb_text("PODER DO FEITICEIRO")} 
+⠀⡀⠐⢰⢯⢯⣇⠻⣺⢳⢦⣌⡓⣟⣷⡻⣰⢯⢓⣗⠇⣟⠏⣽⠨⣟⠆⣟⣊⠋⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠐⠁⠀⠀⠀⠀⠀⠒⢊⣋⣥⢾⠝⢃⣴⣏⢴⣳⣆⠀⠀⠀⠀⠀
+{Fore.BLUE + "⠀⠀⢠⢯⡯⣷⢙⣆⢻⢸⢽⣺⣝⠗⢗⡯⡯⣿⢰⣷⡺⠍⣼⡳⣸⢽⢀⡯⣟⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠐⠀⠀⠀⠀⡀⠄⠀⠀⠂⢁⠀⠀⠀⠀⠀⠀⠈⠉⠉⠋⢊⠬⠴⠺⠙⠁⠀⠰⠲⠏⠀⠀⠀⠀" + Style.RESET_ALL}                  {Fore.BLACK + "Sábios Feiticeiros tem:" + Style.RESET_ALL}
+{Fore.BLUE + "⠀⠀⡼⡽⡽⡝⠇⢹⢼⣸⡝⢠⢤⣑⠒⠌⡙⢽⠽⢚⣙⣙⣳⢯⢯⡗⢸⢽⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠄⠐⠀⠁⠀⠀⢀⣤⣖⣷⣲⣲⣲⠳⠋⠁⠀⠀⢀⠀⠠⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀" + Style.RESET_ALL}                       {Fore.MAGENTA + ("Sáude") + Fore.WHITE + (" normal")}
+{Fore.BLUE + "⠀⢠⣯⠿⢙⠙⢷⢼⢽⡚⣠⢯⣟⡾⣽⣲⢤⣄⣠⢦⢦⢦⠦⣨⢯⠇⣺⢽⠀⠀⠀⠀⠀⠀⠀⡀⠄⠈⠀⠀⠀⠀⠀⣠⢮⣟⠞⣪⣾⡺⠈⠀⢀⣀⣀⡀⠈⠉⠋⠉⠀⠀⢀⠠⠀⠀⠰⠒⠁⠀⠀⠐⠀⠀" + Style.RESET_ALL}                            {Fore.RED + ("Dano") + Fore.WHITE + (" menor")}
+{Fore.BLUE + "⠀⣸⣺⣞⠏⣋⡉⠫⣏⡴⡯⣟⡾⠍⣗⣇⣞⣎⡾⡽⡽⡝⣰⡯⡿⣌⣯⠃⠀⠀⠀⠀⠀⢀⠀⠀⠀⠀⠀⠀⠀⠀⣼⠝⠁⣠⣖⣗⣗⣟⣶⣺⢽⣺⣺⢽⣲⢤⣄⣤⣴⣺⠝⠉⠁" + Style.RESET_ALL}                                     {Fore.GREEN + ("Sorte") + Fore.WHITE + (" maior")}
 ⠀⢺⣳⢧⢾⠇⣡⠀⣤⡉⢙⡷⠉⠐⠗⢓⡡⣗⡯⡯⡏⠀⠀⠈⠉⠓⠃⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠐⣟⠀⠀⠗⠓⠓⠓⠓⠓⣩⣟⣞⡾⢽⠺⣽⣺⡺⠚⠀⠀⠀⠀⠀
-{Fore.BLUE + "⠀⠘⡾⡽⣝⣼⡳⣸⣳⠁⣟⣖⡶⣄⠠⢥⣲⠳⠯⠋⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠀⠀⠀⡀⠄⠐⠀⠁⠀⢻⡀⠀⠀⣀⡤⣖⣖⣞⣗⢷⣳⢥⣀⣀" + Style.RESET_ALL}                                              {Fore.WHITE + ("Ser apenas feiticeiro já é algo incrivel...")}
-{Fore.BLUE + "⠀⠀⠘⢯⣗⣗⣇⣗⡯⢰⣳⢁⡯⡯⡯⣟⣾⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠙⢦⣄⡁⣋⣳⣳⣳⡤⣤⡀⠉⠈" + Style.RESET_ALL}                                               {Fore.WHITE + ("Ser um sábio só melhora, sua sabedoria em ")}
-{Fore.BLUE + "⠀⠀⢠⡌⢺⣺⣺⣺⠇⡼⡎⡼⡽⡽⣽⣳⣻⣆⠀⠀⠀⠀⠀⠀⠀⠀           ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠙⠓⠓⠓⠁⠁⠁⠉" + Style.RESET_ALL}                                               {Fore.WHITE + ("combate é quase imcomparavel, pode não ser")}                           
-{Fore.BLUE + "⠐⠀⣸⣻⢦⣜⣞⡞⢰⢯⣱⢯⢯⢯⣗⣗⢳⣻⡄" + Style.RESET_ALL}                                                                                    {Fore.WHITE + ("muito afetivo no ataque, mas além da sua sorte")}
-{Fore.BLUE + "⠀⠀⣗⡯⣟⣞⡾⡽⣼⣳⢯⢯⢿⢘⣞⢾⡄⢗⣿⡀" + Style.RESET_ALL}                                                                                    {fn.rgb_text("eles conseguem dar danos elementais variados")}
+{Fore.BLUE + "⠀⠘⡾⡽⣝⣼⡳⣸⣳⠁⣟⣖⡶⣄⠠⢥⣲⠳⠯⠋⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠀⠀⠀⡀⠄⠐⠀⠁⠀⢻⡀⠀⠀⣀⡤⣖⣖⣞⣗⢷⣳⢥⣀⣀" + Style.RESET_ALL}                              {Fore.WHITE + ("Ser apenas feiticeiro já é algo incrivel...")}
+{Fore.BLUE + "⠀⠀⠘⢯⣗⣗⣇⣗⡯⢰⣳⢁⡯⡯⡯⣟⣾⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠙⢦⣄⡁⣋⣳⣳⣳⡤⣤⡀⠉⠈" + Style.RESET_ALL}                               {Fore.WHITE + ("Ser um sábio só melhora, sua sabedoria em ")}
+{Fore.BLUE + "⠀⠀⢠⡌⢺⣺⣺⣺⠇⡼⡎⡼⡽⡽⣽⣳⣻⣆⠀⠀⠀⠀⠀⠀⠀⠀           ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠙⠓⠓⠓⠁⠁⠁⠉" + Style.RESET_ALL}                               {Fore.WHITE + ("combate é quase imcomparavel, pode não ser")}                           
+{Fore.BLUE + "⠐⠀⣸⣻⢦⣜⣞⡞⢰⢯⣱⢯⢯⢯⣗⣗⢳⣻⡄" + Style.RESET_ALL}                                                                    {Fore.WHITE + ("muito afetivo no ataque, mas além da sua sorte")}
+{Fore.BLUE + "⠀⠀⣗⡯⣟⣞⡾⡽⣼⣳⢯⢯⢿⢘⣞⢾⡄⢗⣿⡀" + Style.RESET_ALL}                                                                    {fn.rgb_text("eles conseguem dar danos elementais variados")}
 ⠀⣸⣳⢯⣗⣗⢏⡯⣗⡯⡇⡯⣟⢐⣿⢹⣳⠘⣞⣧⠀⠀
 ⢀⣗⡯⣿⣺⠊⡼⣽⣳⡏⣸⡽⡇⢸⣺⠂⣟⡆⢱⢯⡇⠀⠀⠀
 ⣸⣺⣟⡗⢃⡼⣽⣳⡳⢁⣗⣯⠃⡼⣾⠁⣗⣿⠈⡯⣗⠀⠀
@@ -1286,12 +1178,12 @@ def arqueiro_magico():
 ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⣀⠀⠀⠀⠀⣀⣴⣿⣿⣷⣄⠙⡝⣶⣬⣹⢏⣼⠏⣴⠟⠡⣽⠟⢼⡏⠀⠀⠀⠀⠀⠀⣰⡟⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢠⣾⣫⣵⡟⠋⢻⣞⣯⢣⠀⢠⣞⣿⠏⠀⠀⣀⠀⠀⠈⢻⣦⠀⠀⢻⠀⠈⠀⢰⠃⢀⡿⠁⠀⢀⣴⠟⠁⠀⠀⠀⠀⠀⠀
 ⠀⠀⢀⠴⠻⠻⠿⢿⢷⣦⣤⣩⣻⣷⣶⡾⣛⣽⣿⢻⡿⣿⣷⣦⣈⣿⢫⡾⢡⣾⣿⡀⠀⠀⠀⠸⣷⠀⠀⠀⠀⢠⡾⠋⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠉⠉⠉⠁⠀⠀⠀⢹⣿⣿⢃⡿⠞⠋⠀⠀⠀⠈⠱⢤⣀⠀⠘⢷⡀⠀⠁⢠⡄⠘⠀⡾⠁⢀⣴⠟⠁⠀⠀⠀⠀⠀⠀⠀⠀
 ⠀⠀⠀⣠⣴⣶⣶⣷⣶⣾⣭⣽⣛⣿⣶⣾⡿⠟⣡⡟⣱⣿⢯⣿⣿⣷⠟⣰⢻⡿⠀⠑⠀⠀⠓⣶⣿⡀⠀⢀⣴⠟⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢶⣤⣄⣿⠇⣾⡧⠶⣆⠀⠀⠀⠀⠀⠈⠙⠶⣄⠀⠁⠀⠀⣼⡇⠀⠘⠁⠰⠋⠁⢀⣠⠔⠂⠀⠀⠀⠀⠀⠀
-{Fore.CYAN + "⢀⣠⡿⠟⣩⣵⣶⣾⣶⣿⣿⣿⣟⣛⣋⣍⣴⣿⣯⣾⠟⣡⣿⣿⡻⢡⣾⠇⣾⣧⡀⠀⠀⠉⣻⣿⣿⡇⣠⠞⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠘⣷⣝⣿⣽⣿⡇⠐⠋⠀⠀⠓⠲⣦⣤⣀⠀⠈⠁⠀⢀⣴⠟ ⣿⠀⠀⠀⠀⣠⠾⠋⠁⠀⠀⠀⠀⠀⠀⠀⠀" + Style.RESET_ALL}           {fn.rgb_text("PODER DO ARQUEIRO")}
+{Fore.CYAN + "⢀⣠⡿⠟⣩⣵⣶⣾⣶⣿⣿⣿⣟⣛⣋⣍⣴⣿⣯⣾⠟⣡⣿⣿⡻⢡⣾⠇⣾⣧⡀⠀⠀⠉⣻⣿⣿⡇⣠⠞⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠘⣷⣝⣿⣽⣿⡇⠐⠋⠀⠀⠓⠲⣦⣤⣀⠀⠈⠁⠀⢀⣴⠟ ⣿⠀⠀⠀⠀⣠⠾⠋⠁⠀⠀⠀⠀⠀⠀⠀⠀" + Style.RESET_ALL}                 {fn.rgb_text("PODER DO ARQUEIRO")}
 ⠋⠉⢠⣾⣿⣿⡿⣿⣷⣶⣬⣙⠿⣿⣛⣻⠛⠛⣉⣤⣾⣿⣛⣥⣾⡿⢃⣼⡟⠉⣻⣷⣦⣄⣿⣇⣿⡷⠋⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀ ⠀⠀ ⠀⠀⠀⢀⣠⣍⣹⣿⣻⣷⠀⠀⠀⠀⠀⠀⠀⠈⠉⠓⠂⠀⢀⡿⠁     ⣼⠇⣠⠖⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀   ⠀
-{Fore.CYAN + "⠀⣰⠟⠋⠀⠀⡀⠤⢶⣿⣿⣿⣿⣾⣿⣿⣿⣿⣿⣿⣯⡛⢿⣿⣭⣶⢿⣏⠀⢠⣿⣿⣿⣿⣿⡾⢋⣤⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀ ⠀⠀⠀⠀⠀⠀⠀⠾⠿⣵⠾⠉⣿⡞⣼⠀⠠⠤⢶⢶⢶⠶⠶⠦⠄⠀⢸⣖⡏⠀    ⢹⣦⢿⠄⠀⠘⠚⠛⠟⠟⠟⠟⠓⠒⠂⠀⠀⠀" + Style.RESET_ALL}     {Fore.BLACK + "Arqueiros Mágicos tem:" + Style.RESET_ALL}
-{Fore.CYAN + "⠀⣠⣴⣾⠿⠿⠿⢿⣷⣦⣌⠛⢿⣯⣏⢿⣿⣯⣝⠿⣿⣿⣶⣌⠻⣿⣮⡹⣷⣿⢛⣴⡿⣹⠟⣰⣿⡿⢋⣥⣦⣄⠀⠀⠀⠀⠀⠀⠀⠀ ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣸⣯⡾⣿⠀⠀⠀⠀⠀⠀⠀⠀⣀⡀⢀⣾⠹⢁       ⢸⠇⠀⠤⣄⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀" + Style.RESET_ALL}           {Fore.MAGENTA + ("Sáude") + Fore.WHITE + (" menor")}
-{Fore.CYAN + "⣾⣿⣿⣿⢿⠿⠲⣂⣀⣙⠻⣿⣦⣌⠻⣷⣮⣻⣿⣷⣮⣻⣿⣿⣿⣮⣿⢿⣾⣵⣿⣿⠟⣡⣾⠿⣩⣶⡿⢟⣻⣷⣦⣄⣀⡀⠀⠀ ⠀⠀⠀⠀⠀⠀⠀ ⠀⠀⠀⠀⠀⢐⣿⣇⣾⡇⠀⠀⠀⠀⠀⠠⠒⠋⠁⠀⢾⡁⣴⣟⣴⠞⢁⡿⠁⠠⡀⠀⠙⠳⢦⣀⠀⠀⠀⠀⠀⠀⠀" + Style.RESET_ALL}               {Fore.RED + ("Dano") + Fore.WHITE + (" normal")}
-{Fore.CYAN + "⣿⣿⡿⢉⣴⣾⣿⡿⣛⣿⠿⠛⠋⣛⠷⠿⠿⠿⠿⠽⠿⢿⣿⠿⠙⠉⢀⠠⢬⣉⠻⣯⣴⣿⣿⣿⣿⣯⣶⣿⣿⣵⣿⣿⣿⣿⣿⣶⣦⣴⣤⣄⣀⣄⣠⣀⣀⣀⣄⣠⣀⣴⡟⠉⡈⢹⠶⣄⣀⣀⣀⣀⣀⣀⣀⣀⣠⣼⣿⣿⣧⣤⣘⣉⠁⠀⠀⠙⢦⡄⠀⠀  ⠀⠀⠀" + Style.RESET_ALL}⠀⠀⠀               {Fore.GREEN + ("Sorte") + Fore.WHITE + (" maior")}
+{Fore.CYAN + "⠀⣰⠟⠋⠀⠀⡀⠤⢶⣿⣿⣿⣿⣾⣿⣿⣿⣿⣿⣿⣯⡛⢿⣿⣭⣶⢿⣏⠀⢠⣿⣿⣿⣿⣿⡾⢋⣤⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀ ⠀⠀⠀⠀⠀⠀⠀⠾⠿⣵⠾⠉⣿⡞⣼⠀⠠⠤⢶⢶⢶⠶⠶⠦⠄⠀⢸⣖⡏⠀    ⢹⣦⢿⠄⠀⠘⠚⠛⠟⠟⠟⠟⠓⠒⠂⠀⠀⠀" + Style.RESET_ALL}           {Fore.BLACK + "Arqueiros Mágicos tem:" + Style.RESET_ALL}
+{Fore.CYAN + "⠀⣠⣴⣾⠿⠿⠿⢿⣷⣦⣌⠛⢿⣯⣏⢿⣿⣯⣝⠿⣿⣿⣶⣌⠻⣿⣮⡹⣷⣿⢛⣴⡿⣹⠟⣰⣿⡿⢋⣥⣦⣄⠀⠀⠀⠀⠀⠀⠀⠀ ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣸⣯⡾⣿⠀⠀⠀⠀⠀⠀⠀⠀⣀⡀⢀⣾⠹⢁       ⢸⠇⠀⠤⣄⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀" + Style.RESET_ALL}                 {Fore.MAGENTA + ("Sáude") + Fore.WHITE + (" menor")}
+{Fore.CYAN + "⣾⣿⣿⣿⢿⠿⠲⣂⣀⣙⠻⣿⣦⣌⠻⣷⣮⣻⣿⣷⣮⣻⣿⣿⣿⣮⣿⢿⣾⣵⣿⣿⠟⣡⣾⠿⣩⣶⡿⢟⣻⣷⣦⣄⣀⡀⠀⠀ ⠀⠀⠀⠀⠀⠀⠀ ⠀⠀⠀⠀⠀⢐⣿⣇⣾⡇⠀⠀⠀⠀⠀⠠⠒⠋⠁⠀⢾⡁⣴⣟⣴⠞⢁⡿⠁⠠⡀⠀⠙⠳⢦⣀⠀⠀⠀⠀⠀⠀⠀" + Style.RESET_ALL}                     {Fore.RED + ("Dano") + Fore.WHITE + (" normal")}
+{Fore.CYAN + "⣿⣿⡿⢉⣴⣾⣿⡿⣛⣿⠿⠛⠋⣛⠷⠿⠿⠿⠿⠽⠿⢿⣿⠿⠙⠉⢀⠠⢬⣉⠻⣯⣴⣿⣿⣿⣿⣯⣶⣿⣿⣵⣿⣿⣿⣿⣿⣶⣦⣴⣤⣄⣀⣄⣠⣀⣀⣀⣄⣠⣀⣴⡟⠉⡈⢹⠶⣄⣀⣀⣀⣀⣀⣀⣀⣀⣠⣼⣿⣿⣧⣤⣘⣉⠁⠀⠀⠙⢦⡄⠀⠀  ⠀⠀⠀" + Style.RESET_ALL}⠀⠀⠀                     {Fore.GREEN + ("Sorte") + Fore.WHITE + (" maior")}
 ⣿⣿⣰⣿⣿⡿⢃⣾⠟⣡⠞⣡⣾⣿⣼⣱⣎⣴⣶⡆⣶⠋⠀⠀⠀⠀⢄⠙⣦⠙⣶⣘⣷⣶⣴⣴⣴⣴⣴⣴⣴⣶⣴⣶⣶⣶⣶⣶⣶⣶⡿⢋⡛⣛⣙⣛⣛⢛⣛⢛⡿⠁⠀⣼⢷⣸⠶⡿⠋⠋⠋⠋⠋⢛⠛⠛⠻⠷⢶⣶⡶⠾⠟⠛⠛⠑⠀⠀⠈⠻⢦⡀⠀⠀⠀⠀⠀⠀⠀⠀
 {Fore.CYAN + "⣿⣿⣿⣿⡿⣱⣿⣫⣾⠏⣰⣿⣿⣿⢿⣿⣿⣿⣿⣗⣿⣀⠀⣀⣠⣦⠈⡇⣸⣰⣿⡙⢿⣿⣿⢏⣿⣿⢟⣿⣿⣿⣿⢿⢏⣾⡿⣹⣿⢽⡏⣼⣸⣿⣿⣿⣿⣿⣿⣸⡇⠰⢺⣿⠚⠳⢲⡏⠀⠀⢀⣴⠟⠁⠀⡤⠀⠀⠀⠀⠠⡄⠀⢰⡀⠀⢳⣄⠀⠀⠀⠙⠄⠀⠀⠀⠀⠀⠀⠀" + Style.RESET_ALL}       {Fore.WHITE + ("Orelhas pontudas... Arco mágico... quer algo mais?")}
 {Fore.CYAN + "⣿⡿⣱⣿⣿⣿⣿⣿⠋⣼⡿⠟⢛⢛⣋⣩⣥⣥⣶⣾⣿⣿⣿⣿⣯⣍⣴⣷⣿⡿⣿⣿⣆⠻⣏⣼⣿⣷⡿⠟⣓⣵⣿⣏⣾⡿⢣⣿⣟⢼⣷⣿⣿⣿⣿⣿⡷⡿⠿⠿⠿⣦⣤⣿⣏⣙⣿⠁⠀⠀⠋⠀⠀⢠⡾⠃⠀⣰⠇⠀⢘⡧⠀⠀⣷⡀⠀⠙⢆⠀⠀⠀⠀⠀⠀⠀⠀⠀ ⠀" + Style.RESET_ALL}       {Fore.WHITE + ("Arqueiros mágicos são criaturas extremamente tranquilas ")}
@@ -1358,12 +1250,12 @@ def morte_mormurante():
 ⠠⠐⠀⠐⠀⠀⠂⠀⠀⠂⢠⣾⣿⣿⡿⣽⡇⢼⣿⣷⣍⠻⣷⡈⠓⠢⠀⡁⠠⢀⣁⠤⢄⡊⡰⢿⡄⠀⠈⠉⠛⠳⠷⠶⠄⢠⣿⠃⠀⢠⣿⠁⠀⢠⡿⠁⠀⠲⢤⠁⢀⣥⣶⠶⣶⣤⣈⠀⠴⢚⠟⠁⠀⣆⠀⠀⠹⣷⠀⠀⢸⣿⡄⠀⠸⡇⠀⢼⡟⠀⠀⣀⣐⣀⡀⠄⠀⠀⢀⠠
 ⠀⠀⠀⠀⠀⠄⠀⠄⢁⣴⣿⣿⣿⣿⡇⣿⡇⢽⣿⣿⢿⣇⢿⠇⢐⣶⣶⣮⣵⣤⣈⠉⣁⣴⣒⡈⣿⠀⠀⠄⠀⠀⠀⠀⠀⢸⣿⠀⠀⣺⡏⢀⠀⣿⠃⠀⠄⠀⣠⡾⢋⣥⣶⢶⣶⣬⡙⢷⣄⠁⡀⠀⠀⠸⣆⡀⠈⣿⡇⠀⠀⣿⡇⠀⠀⠃⠀⣿⡃⠀⣴⡟⠉⠉⠻⣦⠀⠈⠀⠀
 ⠀⠀⢀⠀⠁⠀⠀⣠⣾⣿⣿⣿⣿⢿⣿⢸⣿⢸⣿⣟⠻⠿⠟⡄⢺⣿⣿⣿⣿⣿⡿⠙⢻⣿⣿⣿⠇⠀⠠⠤⠤⠵⠶⡶⢷⢾⡷⠤⠀⣿⡇⠀⠠⣿⠀⠰⠴⣿⡉⠐⠚⢽⣇⠀⢨⣿⠙⠢⣈⣷⠦⠀⣷⣟⠙⣳⠆⢸⡇⠀⠀⣿⡇⠠⠐⠀⣠⡿⠂⠀⢿⣇⣈⣗⠀⣿⡇⠀⠀⡀
-{Fore.MAGENTA + "⠀⠈⠀⠀⠀⠐⢨⣿⣿⠟⠛⠻⣾⣿⣿⡌⣿⢐⣿⣿⣿⣶⣴⣳⡈⠪⡛⢟⢏⡟⡡⣠⡨⡿⠿⢹⡆⠀⠄⠀⠀⡀⠄⠀⠀⢸⣿⠀⠀⢽⡧⠀⠈⣿⡀⠀⠀⠀⠙⢷⣤⡈⠛⠟⠟⢁⣠⡾⠋⢀⠀⠀⠀⢹⡟⠁⠀⣺⠇⠀⠀⣿⠇⠀⡴⠋⠉⠀⠀⠀⠀⠉⠉⢀⣴⡿⠀⠀⠀⠀" + Style.RESET_ALL}                {fn.rgb_text("PODER DO ILUSIONISTA")}                            
+{Fore.MAGENTA + "⠀⠈⠀⠀⠀⠐⢨⣿⣿⠟⠛⠻⣾⣿⣿⡌⣿⢐⣿⣿⣿⣶⣴⣳⡈⠪⡛⢟⢏⡟⡡⣠⡨⡿⠿⢹⡆⠀⠄⠀⠀⡀⠄⠀⠀⢸⣿⠀⠀⢽⡧⠀⠈⣿⡀⠀⠀⠀⠙⢷⣤⡈⠛⠟⠟⢁⣠⡾⠋⢀⠀⠀⠀⢹⡟⠁⠀⣺⠇⠀⠀⣿⠇⠀⡴⠋⠉⠀⠀⠀⠀⠉⠉⢀⣴⡿⠀⠀⠀⠀" + Style.RESET_ALL}                      {fn.rgb_text("PODER DO ILUSIONISTA")}                            
 ⠈⠀⠀⡀⠂⠀⢹⣿⠃⠀⠀⠀⠈⢿⣿⣷⢹⡆⢿⣿⣿⣷⢹⣷⣭⣳⣲⠖⠫⡎⣴⢟⡇⣽⣭⡾⠃⠀⢀⢠⡷⠛⠛⠚⠀⠨⣿⡀⠀⠘⣿⡀⠀⠹⣧⠀⠀⣡⡖⠀⡈⠛⠿⠾⠾⠛⠉⡀⠀⠉⠶⣌⡀⠜⠀⠄⠀⡟⠀⠀⢨⡿⠁⠀⠀⣀⣴⣶⢷⣶⣧⣶⡷⠟⠋⠀⠀⠀⠈⠀
-{Fore.MAGENTA + "⠀⠂⠀⠀⠀⢀⠈⠻⢧⡀⠀⠁⠀⢼⣟⢿⣿⣷⢘⣿⣷⣿⢸⢻⢜⣿⡝⣧⢀⠃⡘⠘⠂⣹⠏⠀⡀⡦⠞⠏⠁⠀⠠⢀⡠⠀⢻⣇⠀⠀⢹⣷⠀⠀⠙⢁⣴⠟⠀⡴⠃⠀⠀⢤⠀⢀⠀⠘⣆⠀⠀⠈⠙⠦⠄⠀⠘⠀⠀⡀⢼⠃⠀⢀⡼⠋⠁⠀⠀⢀⠀⠀⠀⠀⠀⠄⠀⠁⠀⠂" + Style.RESET_ALL}               {Fore.BLACK + "Mortes Mormurantes tem:"}
-{Fore.MAGENTA + "⠀⠄⠀⠂⠁⠀⠀⠀⠀⠀⠀⠐⣰⣿⣿⣎⢻⣿⣇⢹⣿⣿⡈⢸⡀⣿⠇⠊⣼⣰⣼⣼⡰⣼⠅⠀⠀⠀⠀⡀⠠⠰⠞⣻⠇⠀⠀⢿⣆⠈⠀⠹⣷⠀⣰⡾⠁⡀⠀⠁⢠⡏⠀⣽⠀⠸⣆⠀⠈⠀⠁⠀⢢⡀⠀⠈⠀⠀⣤⠀⠀⠀⠀⠘⠁⢀⡶⠟⠛⠛⠛⢷⣦⡀⠁⠀⢀⡇⠀⠠" + Style.RESET_ALL}                    {Fore.MAGENTA + ("Sáude") + Fore.WHITE + (" normal")}
-{Fore.MAGENTA + "⠀⠀⠀⡀⠀⠠⠐⢈⣠⣶⣿⣿⠿⢿⣿⣿⣎⢿⣿⡄⢿⣿⣿⣦⡂⢽⢰⢸⣿⣿⣿⣿⣿⡟⠀⠀⠈⠀⣠⣤⣦⡶⡾⠏⠀⠐⣀⠀⠻⣦⠀⠀⠀⡰⠋⢀⡼⠁⠀⣰⣿⣄⡀⣿⠀⠀⢻⣦⠀⠁⠀⠂⣸⢷⠀⠁⠀⣡⢻⡄⠀⣬⡆⠀⠄⠊⠀⣠⣤⣤⣄⡀⠙⢿⣦⣶⠾⠁⠀⠀" + Style.RESET_ALL}                    {Fore.RED + ("Dano") + Fore.WHITE + (" maior")}
-{Fore.MAGENTA + "⠂⠈⠀⠀⠀⣤⣶⣿⡻⡛⠿⢻⣿⣦⣕⠻⣿⣷⣻⣷⡈⢿⣿⣻⣿⣄⠸⡌⠇⠣⢋⢎⡾⠂⠀⢀⣈⣴⠟⠁⠀⠀⠀⠀⢠⡽⢹⡆⠀⠈⠁⠄⠂⠀⣰⡟⠁⠀⢰⠋⠀⠈⠛⣿⠀⠀⠀⠈⠁⠀⠄⠀⢿⡈⢷⣄⠀⢹⡌⢷⣸⡫⣇⠀⠀⠀⠊⠀⠀⠀⠙⣷⡄⠀⠀⠠⠀⠀⠄⠂" + Style.RESET_ALL}                    {Fore.GREEN + ("Sorte") + Fore.WHITE + (" menor")}
+{Fore.MAGENTA + "⠀⠂⠀⠀⠀⢀⠈⠻⢧⡀⠀⠁⠀⢼⣟⢿⣿⣷⢘⣿⣷⣿⢸⢻⢜⣿⡝⣧⢀⠃⡘⠘⠂⣹⠏⠀⡀⡦⠞⠏⠁⠀⠠⢀⡠⠀⢻⣇⠀⠀⢹⣷⠀⠀⠙⢁⣴⠟⠀⡴⠃⠀⠀⢤⠀⢀⠀⠘⣆⠀⠀⠈⠙⠦⠄⠀⠘⠀⠀⡀⢼⠃⠀⢀⡼⠋⠁⠀⠀⢀⠀⠀⠀⠀⠀⠄⠀⠁⠀⠂" + Style.RESET_ALL}                     {Fore.BLACK + "Mortes Mormurantes tem:"}
+{Fore.MAGENTA + "⠀⠄⠀⠂⠁⠀⠀⠀⠀⠀⠀⠐⣰⣿⣿⣎⢻⣿⣇⢹⣿⣿⡈⢸⡀⣿⠇⠊⣼⣰⣼⣼⡰⣼⠅⠀⠀⠀⠀⡀⠠⠰⠞⣻⠇⠀⠀⢿⣆⠈⠀⠹⣷⠀⣰⡾⠁⡀⠀⠁⢠⡏⠀⣽⠀⠸⣆⠀⠈⠀⠁⠀⢢⡀⠀⠈⠀⠀⣤⠀⠀⠀⠀⠘⠁⢀⡶⠟⠛⠛⠛⢷⣦⡀⠁⠀⢀⡇⠀⠠" + Style.RESET_ALL}                          {Fore.MAGENTA + ("Sáude") + Fore.WHITE + (" normal")}
+{Fore.MAGENTA + "⠀⠀⠀⡀⠀⠠⠐⢈⣠⣶⣿⣿⠿⢿⣿⣿⣎⢿⣿⡄⢿⣿⣿⣦⡂⢽⢰⢸⣿⣿⣿⣿⣿⡟⠀⠀⠈⠀⣠⣤⣦⡶⡾⠏⠀⠐⣀⠀⠻⣦⠀⠀⠀⡰⠋⢀⡼⠁⠀⣰⣿⣄⡀⣿⠀⠀⢻⣦⠀⠁⠀⠂⣸⢷⠀⠁⠀⣡⢻⡄⠀⣬⡆⠀⠄⠊⠀⣠⣤⣤⣄⡀⠙⢿⣦⣶⠾⠁⠀⠀" + Style.RESET_ALL}                          {Fore.RED + ("Dano") + Fore.WHITE + (" maior")}
+{Fore.MAGENTA + "⠂⠈⠀⠀⠀⣤⣶⣿⡻⡛⠿⢻⣿⣦⣕⠻⣿⣷⣻⣷⡈⢿⣿⣻⣿⣄⠸⡌⠇⠣⢋⢎⡾⠂⠀⢀⣈⣴⠟⠁⠀⠀⠀⠀⢠⡽⢹⡆⠀⠈⠁⠄⠂⠀⣰⡟⠁⠀⢰⠋⠀⠈⠛⣿⠀⠀⠀⠈⠁⠀⠄⠀⢿⡈⢷⣄⠀⢹⡌⢷⣸⡫⣇⠀⠀⠀⠊⠀⠀⠀⠙⣷⡄⠀⠀⠠⠀⠀⠄⠂" + Style.RESET_ALL}                          {Fore.GREEN + ("Sorte") + Fore.WHITE + (" menor")}
 ⠀⠀⠀⢐⣾⣿⡿⡿⣿⣿⣷⣦⡉⠻⣿⣷⣌⢻⣿⣿⣷⡈⢿⣿⣿⣿⣦⣉⠁⠊⣠⣾⣷⣀⠀⠉⠁⠀⠀⠐⠀⠐⠀⣡⡞⣡⡟⠀⠀⢀⣂⣤⠀⠀⠋⠀⠀⠠⠀⡀⠀⠄⠀⡿⠀⠀⠀⡀⣶⡀⠀⡀⠈⢻⡆⢹⡄⠀⣿⠀⣿⡆⢿⡀⠀⠂⣴⡿⠛⢻⡆⠘⢿⣤⣄⣄⡀⠄⠀⠀
 {Fore.MAGENTA + "⠂⠈⢠⣿⣿⣿⣾⣾⣶⣬⡙⠿⣿⣧⡘⢿⣿⣦⡘⢿⣿⣿⣌⠻⣷⣿⡿⣿⣿⣿⣿⡿⣿⣿⣿⣦⡀⠂⠁⠀⠂⠀⣾⡋⣴⠏⣀⣤⠶⢛⣽⠇⠀⠂⠀⠠⠐⠀⣰⠁⠀⢀⠀⢏⠀⢀⠀⣼⢋⡷⠀⠀⠀⢘⣷⢌⡷⠀⣯⠀⣿⠃⣼⠃⠀⠀⢿⡆⠀⠞⠁⠀⠀⠉⠉⠙⠛⣦⠀⠀" + Style.RESET_ALL}           {Fore.WHITE + ("As Mortes Mormurantes são seres mitícos vindos")}
 {Fore.MAGENTA + "⠄⠀⣺⣿⣿⣾⣿⣟⣿⣿⡻⣦⡉⢿⣿⣄⠻⣿⣿⣤⠙⣿⣿⣷⣌⠛⠿⠟⣫⣾⡿⣸⣿⡇⣿⡿⣿⡄⠀⠀⠂⢸⡇⢰⡏⣴⠛⣤⠶⠛⢁⣠⡶⢾⡿⠁⠀⣰⡏⠀⠀⡆⠀⠀⡀⠀⣼⢋⣴⠏⠀⠀⠁⣼⠅⣰⣯⡞⢉⣤⢿⠠⡯⠀⠀⡀⠈⠻⢷⣶⣶⣶⣶⣤⡀⠄⠀⠘⠀⠀" + Style.RESET_ALL}           {Fore.WHITE + ("em sua maior parte das profundezas do submundo")}

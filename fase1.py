@@ -6,12 +6,10 @@ from colorama import Fore, Style, init
 largura_tela = shutil.get_terminal_size().columns
 altura_tela = shutil.get_terminal_size().lines
 
-#fase 1
+#INICIALIZA A FASE 1 CRIANDO TUDO QUE A DE FUNÇÕES DENTRO DELA
 def fase_1(fase: int, player: dict) -> None:
 
     fn.limpar_tela()
-    
-    npc_atacado = ""
 
     fn.criar_npcs_em_massa(fase, player)
 

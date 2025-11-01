@@ -10,7 +10,7 @@ init(autoreset= True)
 largura_tela = os.get_terminal_size().columns
 altura_tela = shutil.get_terminal_size().lines
 fase = 1
-
+orda = 1
 
 
 while True:
@@ -59,7 +59,9 @@ while True:
         print("\n" * 2)
         fn.centra_h(fn.rgb_text("Aperte ENTER para continuar"))
         input()
-        fs.fase_1(fase, player)
+        fn.criar_inimigos(fase, orda, player)
+        while True:
+            fs.fase_1(fase, orda, player)
 
 
     elif escolha_menu == "Ultimos Recordes":

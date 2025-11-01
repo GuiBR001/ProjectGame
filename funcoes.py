@@ -147,74 +147,40 @@ def centra_h_v(mensagem: str, cor_padrao: str = None) -> None:
 
 
 #CRIA MULTIPLOS INIMIGOS BASEADO EM ORDAS E NAS FASES
-def criar_inimigos(fase: int, player: dict) -> None:
-
-    orda = 1
+def criar_inimigos(fase: int, orda: int, player: dict) -> None:
 
     match fase:
         
         #FASE 1
         case 1:
+            #ORDA DE MONSTROS 1
+            if orda == 1:
+                while len(lista_npcs) < 3:
+                    for x in range(3):
+                        nivel = randint(1, 5)
+                        novo_npc = criar_npc(nivel, fase)
+                        lista_npcs.append(novo_npc)
+                        escolhas_inimigo.append(novo_npc['nome'])
+                        
+            #ORDA DE INIMIGOS 2
+            if orda == 2:
+                while len(lista_npcs) < 5:
+                    for x in range(5):
+                        nivel = randint(3, 10)
+                        novo_npc = criar_npc(nivel, fase)
+                        lista_npcs.append(novo_npc)
+                        escolhas_inimigo.append(novo_npc['nome'])
+            
 
-            while True:
-                       
-                    #ORDA DE MONSTROS 1
-                    if orda == 1:
-                        while True:
-                            for x in range(3):
-                                nivel = randint(1, 5)
-                                novo_npc = criar_npc(nivel, fase)
-                                lista_npcs.append(novo_npc)
-                                escolhas_inimigo.append(novo_npc['nome'])
+            #ORDA DE INIMIGOS 3
+            if orda == 3:
+                while len(lista_npcs) < 7:
+                    for x in range(7):
+                        nivel = randint(6, 15)
+                        novo_npc = criar_npc(nivel, fase)
+                        lista_npcs.append(novo_npc)
+                        escolhas_inimigo.append(novo_npc['nome'])
 
-                            if lista_npcs[0]['nome'] == lista_npcs[1]['nome']:
-                                for x in range(3):
-                                    nivel = randint(1, 5)
-                                    novo_npc = criar_npc(nivel, fase)
-                                    lista_npcs.append(novo_npc)
-                                    escolhas_inimigo.append(novo_npc['nome'])
-
-                            else:
-                                continue
-
-                    #ORDA DE INIMIGOS 2
-                    if orda == 2:
-                        while True:
-                            for x in range(5):
-                                nivel = randint(6, 10)
-                                novo_npc = criar_npc(nivel, fase)
-                                lista_npcs.append(novo_npc)
-                                escolhas_inimigo.append(novo_npc['nome'])
-
-                            if lista_npcs[0]['nome'] == lista_npcs[1]['nome'] or lista_npcs[2]['nome'] == lista_npcs[3]['nome'] or lista_npcs[4]['nome'] == lista_npcs[5]['nome']:
-                                for x in range(5):
-                                    nivel = randint(6, 10)
-                                    novo_npc = criar_npc(nivel, fase)
-                                    lista_npcs.append(novo_npc)
-                                    escolhas_inimigo.append(novo_npc['nome'])
-
-                            else:
-                                continue
-                    
-
-                    #ORDA DE INIMIGOS 3
-                    if orda == 3:
-                        while True:
-                            for x in range(7):
-                                nivel = randint(11, 15)
-                                novo_npc = criar_npc(nivel, fase)
-                                lista_npcs.append(novo_npc)
-                                escolhas_inimigo.append(novo_npc['nome'])
-
-                            if lista_npcs[0]['nome'] == lista_npcs[1]['nome'] or lista_npcs[2]['nome'] == lista_npcs[3]['nome'] or lista_npcs[4]['nome'] == lista_npcs[5]['nome']:
-                                for x in range(7):
-                                    nivel = randint(11, 15)
-                                    novo_npc = criar_npc(nivel, fase)
-                                    lista_npcs.append(novo_npc)
-                                    escolhas_inimigo.append(novo_npc['nome'])
-
-                            else:
-                                continue
     
         case 2:
             for x in range(7):

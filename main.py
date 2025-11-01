@@ -52,7 +52,12 @@ while True:
             raca = 6
 
         player = fn.criar_personagem(nome, raca)
+        fn.limpar_tela()
         fn.exibir_player(player)
+        print("\n" * 2)
+        ic.exibir_player_img()
+        print("\n" * 2)
+        fn.centra_h(fn.rgb_text("Aperte ENTER para continuar"))
         input()
         fs.fase_1(fase, player)
 

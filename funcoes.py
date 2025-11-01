@@ -168,7 +168,7 @@ def criar_npcs_em_massa(fase: int, player: dict) -> None:
                         
                         escolha_seta_inimigo()
 
-                    elif lista_npcs[0]['nome'] == lista_npcs[1]:
+                    elif lista_npcs[0]['nome'] == lista_npcs[1]['nome']:
                         for x in range(3):
                             nivel = randint(1, 5)
                             novo_npc = criar_npc(nivel, fase)
@@ -498,12 +498,8 @@ def exibir_player(player: dict) -> None:
  \\                                /
   \\______________________________/
 """
-    print(rgb_text(status))
+    centra_h_v(rgb_text(status))
 
-
-
-
-    
 
 
 

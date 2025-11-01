@@ -52,6 +52,8 @@ while True:
             raca = 6
 
         player = fn.criar_personagem(nome, raca)
+        fn.exibir_player(player)
+        input()
         fs.fase_1(fase, player)
 
 

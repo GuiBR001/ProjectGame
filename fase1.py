@@ -17,5 +17,4 @@ def fase_1(fase: int, player: dict) -> None:
 
         input(Fore.GREEN + ("Aperte ENTER para continuar".center(largura_tela).center(altura_tela)))
         fn.limpar_tela()
-        fn.exibir_player(player)
         fn.escolha_seta_inimigo()

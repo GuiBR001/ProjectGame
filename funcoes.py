@@ -44,7 +44,7 @@ def limpar_tela() -> None:
 
 
 #CENTRALIZA VERTICALMENTE APENAS
-def centra_v(mensagem: str, cor_padrao: str = None):
+def centra_v(mensagem: str, cor_padrao: str = None) -> None:
     linhas = mensagem.strip('\n').split('\n')
     _, term_rows = shutil.get_terminal_size(fallback=(120, 30))
     padrao_ansi = re.compile(r'\x1b\[[0-9;]*m')
@@ -69,7 +69,7 @@ def centra_v(mensagem: str, cor_padrao: str = None):
 
 
 #CENTRALIZA HORIZONTALMENTE APENAS
-def centra_h(mensagem: str, cor_padrao: str = None):
+def centra_h(mensagem: str, cor_padrao: str = None) -> None:
     linhas = mensagem.strip('\n').split('\n')
     term_cols, _ = shutil.get_terminal_size(fallback=(120, 30))
     padrao_ansi = re.compile(r'\x1b\[[0-9;]*m')
@@ -106,7 +106,7 @@ def mostrar_creditos() -> None:
 
 
 #MOSTRA OS ULTIMOS RECORDES FEITOS PELO PLAYER NO JOGO ANTERIOR
-def ultimos_recordes():
+def ultimos_recordes() -> None:
     print("em criação!")
     input()
 
@@ -116,7 +116,7 @@ def ultimos_recordes():
 
 
 #CENTRALIZA VERTICALMENTE E HORIZONTALMENTE
-def centra_h_v(mensagem: str, cor_padrao: str = None):
+def centra_h_v(mensagem: str, cor_padrao: str = None) -> None:
     linhas = mensagem.strip('\n').split('\n')
     term_cols, term_rows = shutil.get_terminal_size(fallback=(120, 30))
     padrao_ansi = re.compile(r'\x1b\[[0-9;]*m')
@@ -265,7 +265,7 @@ def criar_npcs_em_massa(fase: int, player: dict) -> None:
 
 
 #EXIBE A IMAGEM/DESCRIÇÃO DE ACORDO COM A SETA INDICADORA NA TELA DE ESCOLHA DA RAÇAS
-def imagem_seta_escolhida_raca(idx):
+def imagem_seta_escolhida_raca(idx) -> None:
     from icons import esqueleto_flamejante, anjo_caido, sabio_feiticeiro, pricesa_medusa, morte_mormurante, arqueiro_magico
     if idx == 0:
         esqueleto_flamejante()
@@ -474,24 +474,38 @@ def criar_npc(level, fase) -> dict:
 
 #EXIBE O PERFIL ATUAL DO JOGADOR (NOME, NIVEL, VIDA, DANO, ETC...)
 def exibir_player(player: dict) -> None:
+    nome = player['nome']
+    raca = player['raca']
+    level = player['level']
+    exp = player['exp']
+    vida = player['hp']
+    dano = player['dano']
 
-    cabecalho = rgb_text("--------------------- Jogador ---------------------")
-    corpo = f"""
-{rgb_text(player['nome'])}
+    largura = 26
 
-{Fore.YELLOW}Raça: {player['raca']}
-{Fore.BLUE}Level: {player['level']}
-{Fore.RED}Dano: {player['dano']}
-{Fore.MAGENTA}Saúde: {player['hp']}
-{Fore.GREEN}EXP: {player['exp']}
+    status = f"""
+  ________________________________
+ /                                \\
+/        Status Do Jogador         \\
+|----------------------------------|
+| Nome : {str(nome).ljust(largura)}|
+| Raça : {str(raca).ljust(largura)}|
+| Level: {str(level).ljust(largura)}|
+| EXP  : {str(exp).ljust(largura)}|
+| HP   : {str(vida).ljust(largura)}|
+| Dano : {str(dano).ljust(largura)}|
+|__________________________________|
+ \\                                /
+  \\______________________________/
 """
-    rodape = rgb_text("---------------------------------------------------")
+    print(rgb_text(status))
 
-    texto_final = f"\n{cabecalho}\n{corpo}\n{rodape}\n"
-    for linha in texto_final.splitlines():
-        texto_puro = ANSI.sub('', linha)
-        espacos_h = max((largura_tela - len(texto_puro)) // 2, 0)
-        print(' ' * espacos_h + linha)
+
+
+
+    
+
+
 
 
 
@@ -656,7 +670,7 @@ def escolha_seta_inimigo() -> str:
 
 
 #EXIBE A IMAGEM DO INIMIGO QUE ESTA PRÉ-SELECIONADO (FASE 1)
-def imagem_seta_escolhida_inimigo_fase1(idx: int):
+def imagem_seta_escolhida_inimigo_fase1(idx: int) -> None:
 
     from icons import dominus_img, draconis_img, carceres_img, mytus_img, wetiza_img, akari_img, ogroid_img, tarik_img
     if idx == 0:

@@ -136,9 +136,9 @@ def criar_npcs_em_massa(fase: int, player: dict) -> None:
                         
                         escolha_seta_inimigo()
 
-                    elif lista_npcs[randint(0,1)]['nome'] == lista_npcs[randint(2,3)]:
-                        for x in range(3):
-                            nivel = randint(1, 5)
+                    elif lista_npcs[randint(0,2)]['nome'] == lista_npcs[randint(3,5)]:
+                        for x in range(5):
+                            nivel = randint(6, 10)
                             novo_npc = criar_npc(nivel, fase)
                             lista_npcs.append(novo_npc)
                             escolhas_inimigo.append(novo_npc['nome'])
@@ -153,15 +153,15 @@ def criar_npcs_em_massa(fase: int, player: dict) -> None:
                     #ORDA DE INIMIGOS 3
                     if orda == 3:
                         for x in range(8):
-                            nivel = randint(6, 10)
+                            nivel = randint(11, 15)
                             novo_npc = criar_npc(nivel, fase)
                             lista_npcs.append(novo_npc)
                             escolhas_inimigo.append(novo_npc['nome'])
                         
                         escolha_seta_inimigo()
 
-                    elif lista_npcs[randint(0,1)]['nome'] == lista_npcs[randint(2,3)]:
-                        for x in range(3):
+                    elif lista_npcs[randint(0,5)]['nome'] == lista_npcs[randint(6,8)]:
+                        for x in range(8):
                             nivel = randint(11, 15)
                             novo_npc = criar_npc(nivel, fase)
                             lista_npcs.append(novo_npc)

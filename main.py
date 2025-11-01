@@ -33,9 +33,9 @@ while True:
         #input()
         #ic.fase1_bencao_deusa()
         #input()
-        #nome = ic.esc_nome()
+        nome = ic.esc_nome()
 
-        #fn.limpar_tela()
+        fn.limpar_tela()
         escolha_raca = ic.escolha_seta_raca()
         
         if escolha_raca == "Esqueleto Flamejante":

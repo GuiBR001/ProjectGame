@@ -146,8 +146,8 @@ def centra_h_v(mensagem: str, cor_padrao: str = None) -> None:
 
 
 
-#CRIA MULTIPLOS INIMIGOS BASEADO EM ORDAS, E NA FASE, 
-def criar_npcs_em_massa(fase: int, player: dict) -> None:
+#CRIA MULTIPLOS INIMIGOS BASEADO EM ORDAS E NAS FASES
+def criar_inimigos(fase: int, player: dict) -> None:
 
     orda = 1
 
@@ -160,73 +160,61 @@ def criar_npcs_em_massa(fase: int, player: dict) -> None:
                        
                     #ORDA DE MONSTROS 1
                     if orda == 1:
-                        for x in range(3):
-                            nivel = randint(1, 5)
-                            novo_npc = criar_npc(nivel, fase)
-                            lista_npcs.append(novo_npc)
-                            escolhas_inimigo.append(novo_npc['nome'])
-                        
-                        escolha_seta_inimigo()
+                        while True:
+                            for x in range(3):
+                                nivel = randint(1, 5)
+                                novo_npc = criar_npc(nivel, fase)
+                                lista_npcs.append(novo_npc)
+                                escolhas_inimigo.append(novo_npc['nome'])
 
-                    elif lista_npcs[0]['nome'] == lista_npcs[1]['nome']:
-                        for x in range(3):
-                            nivel = randint(1, 5)
-                            novo_npc = criar_npc(nivel, fase)
-                            lista_npcs.append(novo_npc)
-                            escolhas_inimigo.append(novo_npc['nome'])
+                            if lista_npcs[0]['nome'] == lista_npcs[1]['nome']:
+                                for x in range(3):
+                                    nivel = randint(1, 5)
+                                    novo_npc = criar_npc(nivel, fase)
+                                    lista_npcs.append(novo_npc)
+                                    escolhas_inimigo.append(novo_npc['nome'])
 
-                    elif len(lista_npcs) == 0 and player["level"] <= 4:
-                        orda == 1
-
-                    else:
-                        orda == 2
+                            else:
+                                continue
 
                     #ORDA DE INIMIGOS 2
                     if orda == 2:
-                        for x in range(5):
-                            nivel = randint(6, 10)
-                            novo_npc = criar_npc(nivel, fase)
-                            lista_npcs.append(novo_npc)
-                            escolhas_inimigo.append(novo_npc['nome'])
-                        
-                        escolha_seta_inimigo()
+                        while True:
+                            for x in range(5):
+                                nivel = randint(6, 10)
+                                novo_npc = criar_npc(nivel, fase)
+                                lista_npcs.append(novo_npc)
+                                escolhas_inimigo.append(novo_npc['nome'])
 
-                    elif lista_npcs[randint(0,2)]['nome'] == lista_npcs[randint(3,5)]:
-                        for x in range(5):
-                            nivel = randint(6, 10)
-                            novo_npc = criar_npc(nivel, fase)
-                            lista_npcs.append(novo_npc)
-                            escolhas_inimigo.append(novo_npc['nome'])
+                            if lista_npcs[0]['nome'] == lista_npcs[1]['nome'] or lista_npcs[2]['nome'] == lista_npcs[3]['nome'] or lista_npcs[4]['nome'] == lista_npcs[5]['nome']:
+                                for x in range(5):
+                                    nivel = randint(6, 10)
+                                    novo_npc = criar_npc(nivel, fase)
+                                    lista_npcs.append(novo_npc)
+                                    escolhas_inimigo.append(novo_npc['nome'])
 
-                    elif len(lista_npcs) == 0 and player["level"] <= 9:
-                        orda == 2
-
-                    else:
-                        orda == 3
+                            else:
+                                continue
                     
 
                     #ORDA DE INIMIGOS 3
                     if orda == 3:
-                        for x in range(8):
-                            nivel = randint(11, 15)
-                            novo_npc = criar_npc(nivel, fase)
-                            lista_npcs.append(novo_npc)
-                            escolhas_inimigo.append(novo_npc['nome'])
-                        
-                        escolha_seta_inimigo()
+                        while True:
+                            for x in range(7):
+                                nivel = randint(11, 15)
+                                novo_npc = criar_npc(nivel, fase)
+                                lista_npcs.append(novo_npc)
+                                escolhas_inimigo.append(novo_npc['nome'])
 
-                    elif lista_npcs[randint(0,5)]['nome'] == lista_npcs[randint(6,8)]:
-                        for x in range(8):
-                            nivel = randint(11, 15)
-                            novo_npc = criar_npc(nivel, fase)
-                            lista_npcs.append(novo_npc)
-                            escolhas_inimigo.append(novo_npc['nome'])
+                            if lista_npcs[0]['nome'] == lista_npcs[1]['nome'] or lista_npcs[2]['nome'] == lista_npcs[3]['nome'] or lista_npcs[4]['nome'] == lista_npcs[5]['nome']:
+                                for x in range(7):
+                                    nivel = randint(11, 15)
+                                    novo_npc = criar_npc(nivel, fase)
+                                    lista_npcs.append(novo_npc)
+                                    escolhas_inimigo.append(novo_npc['nome'])
 
-                    elif len(lista_npcs) == 0 and player["level"] <= 15:
-                        orda == 3
-
-                    else:
-                        continue
+                            else:
+                                continue
     
         case 2:
             for x in range(7):

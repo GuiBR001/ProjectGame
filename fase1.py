@@ -12,5 +12,5 @@ def fase_1(fase: int, orda: int, player: dict) -> None:
     while fase == 1:
 
         fn.limpar_tela()
-        escolha = fn.escolha_seta_inimigo()
-        
+        escolha = fn.escolha_seta_inimigo_fase1()
+        fn.atacar_monstro(escolha, player)

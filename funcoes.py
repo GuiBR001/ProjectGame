@@ -155,31 +155,54 @@ def criar_inimigos(fase: int, orda: int, player: dict) -> None:
         case 1:
             #ORDA DE MONSTROS 1
             if orda == 1:
-                while len(lista_npcs) < 3:
+                while True:
                     for x in range(3):
                         nivel = randint(1, 5)
                         novo_npc = criar_npc(nivel, fase)
                         lista_npcs.append(novo_npc)
                         escolhas_inimigo.append(novo_npc['nome'])
+
+                    if lista_npcs[0]['nome'] == lista_npcs[1]['nome']:
+                        lista_npcs.clear()
+                        escolhas_inimigo.clear()
+                        continue
+                    else:
+                        break
+
+
                         
             #ORDA DE INIMIGOS 2
             if orda == 2:
-                while len(lista_npcs) < 5:
+                while True:
                     for x in range(5):
-                        nivel = randint(3, 10)
+                        nivel = randint(6, 10)
                         novo_npc = criar_npc(nivel, fase)
                         lista_npcs.append(novo_npc)
                         escolhas_inimigo.append(novo_npc['nome'])
+
+                    if lista_npcs[0]['nome'] == lista_npcs[1 or 2]['nome'] or lista_npcs[3]['nome'] == lista_npcs[4 or 5]['nome']:
+                        lista_npcs.clear()
+                        escolhas_inimigo.clear()
+                        continue
+                    else: 
+                        break
             
 
             #ORDA DE INIMIGOS 3
             if orda == 3:
-                while len(lista_npcs) < 7:
+                while True:
                     for x in range(7):
-                        nivel = randint(6, 15)
+                        nivel = randint(8, 15)
                         novo_npc = criar_npc(nivel, fase)
                         lista_npcs.append(novo_npc)
                         escolhas_inimigo.append(novo_npc['nome'])
+
+                    if lista_npcs[0]['nome'] == lista_npcs[1 or 2]['nome'] or lista_npcs[3]['nome'] == lista_npcs[4 or 5]['nome'] or lista_npcs[5]['nome'] == lista_npcs[6 or 7]['nome']:
+                        lista_npcs.clear()
+                        escolhas_inimigo.clear()
+                        continue
+                    else: 
+                        break
 
     
         case 2:
@@ -218,29 +241,6 @@ def criar_inimigos(fase: int, orda: int, player: dict) -> None:
 
 
 
-#EXIBE A IMAGEM/DESCRIÇÃO DE ACORDO COM A SETA INDICADORA NA TELA DE ESCOLHA DA RAÇAS
-def imagem_seta_escolhida_raca(idx) -> None:
-    from icons import esqueleto_flamejante, anjo_caido, sabio_feiticeiro, pricesa_medusa, morte_mormurante, arqueiro_magico
-    if idx == 0:
-        esqueleto_flamejante()
-    
-    elif idx == 1:
-        anjo_caido()
-
-    elif idx == 2:
-        sabio_feiticeiro()
-
-    elif idx == 3:
-        pricesa_medusa()
-
-    elif idx == 4:
-        morte_mormurante()
-
-    elif idx == 5:
-        arqueiro_magico()
-
-
-
 
 
 #GERA OS STATUS DO PLAYER (NOME, RAÇA, ETC...)
@@ -273,6 +273,8 @@ def criar_personagem(nome: str,raca: int) -> dict:
         "hp": 150,
         "dano": 100000000
     }
+
+
 
 
 
@@ -511,6 +513,32 @@ def escolha_seta_raca() -> str:
 
 
 
+#EXIBE A IMAGEM/DESCRIÇÃO DE ACORDO COM A SETA INDICADORA NA TELA DE ESCOLHA DA RAÇAS
+def imagem_seta_escolhida_raca(idx) -> None:
+    from icons import esqueleto_flamejante, anjo_caido, sabio_feiticeiro, pricesa_medusa, morte_mormurante, arqueiro_magico
+    if idx == 0:
+        esqueleto_flamejante()
+    
+    elif idx == 1:
+        anjo_caido()
+
+    elif idx == 2:
+        sabio_feiticeiro()
+
+    elif idx == 3:
+        pricesa_medusa()
+
+    elif idx == 4:
+        morte_mormurante()
+
+    elif idx == 5:
+        arqueiro_magico()
+
+
+
+
+
+
 #RETORNA A ESCOLHA FEITA PELO PLAYER DO MENU DA TELA INICIAL
 def escolha_seta_menu() -> str:
     from icons import design_tela_inicio
@@ -564,7 +592,7 @@ def escolha_seta_menu() -> str:
 
 
 #RETORNA A ESCOLHA DO INIMIGO SELECIONADO
-def escolha_seta_inimigo() -> str:
+def escolha_seta_inimigo_fase1() -> str:
     _ANSI = re.compile(r"\x1B\[[0-?]*[ -/]*[@-~]")
     def strip_ansi(s: str) -> str:
         return _ANSI.sub("", s or "")
@@ -767,6 +795,53 @@ def imagem_seta_escolhida_inimigo_fase1(idx: int) -> None:
             ogroid_img()
         elif lista_npcs[0]['nome'] == "TARIK":
             tarik_img()
+
+
+
+
+
+def atacar_monstro(escolha: int, player: dict) -> None:
+
+    if escolha == lista_npcs[0]['nome']:
+        lista_npcs[0]['hp'] -= player['dano']
+
+        if lista_npcs[0]['hp'] <= 0:
+            del escolhas_inimigo[0]
+            del lista_npcs[0]
+            centra_h(f"\n{escolha} Derrotado! {len(lista_npcs)} Restantes...")
+            centra_h(rgb_text(f"\nAperte ENTER para continuar"))
+            input()
+        
+        else:
+            centra_h(f"Dano dado: {player['dano']}")
+
+    elif escolha == lista_npcs[1]['nome']:
+        lista_npcs[1]['hp'] -= player['dano']
+
+        if lista_npcs[1]['hp'] <= 0:
+            del escolhas_inimigo[1]
+            del lista_npcs[1]
+            centra_h(f"\n{escolha} Derrotado! {len(lista_npcs)} Restantes...")
+            centra_h(rgb_text(f"\nAperte ENTER para continuar"))
+            input()
+        
+        else:
+            centra_h(f"Dano dado: {player['dano']}")
+    
+    elif escolha == lista_npcs[2]['nome']:
+        lista_npcs[2]['hp'] -= player['dano']
+
+        if lista_npcs[2]['hp'] <= 0:
+            del escolhas_inimigo[2]
+            del lista_npcs[2]
+            centra_h(f"\n{escolha} Derrotado! {len(lista_npcs)} Restantes...")
+            centra_h(rgb_text(f"\nAperte ENTER para continuar"))
+            input()
+        
+        else:
+            centra_h(f"Dano dado: {player['dano']}")
+
+
 
 
 

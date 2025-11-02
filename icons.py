@@ -1,7 +1,5 @@
 import funcoes as fn
-import re
-import time
-import msvcrt
+from random import randint
 import shutil
 from colorama import Fore, init, Style
 
@@ -1330,6 +1328,7 @@ def draconis_img():
 ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠓⠊⠁⠀⠀⠀⠀⠈⠙⠋⠁⠀⠀⠀⠀⠀⠀⠀⠀
 ⠀⠀⠀⠀⠀⠀⠠⠤⠠⠤⠴⠠⠠⠠⠤⠤⠀⠠⠲⠀⠆⠤⠦⠴⠰⠀⠀⠀⠀
 """
+
     fn.centra_h_v(mensagem)
     
 

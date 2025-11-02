@@ -246,32 +246,63 @@ def criar_inimigos(fase: int, orda: int, player: dict) -> None:
 #GERA OS STATUS DO PLAYER (NOME, RAÇA, ETC...)
 def criar_personagem(nome: str,raca: int) -> dict: 
 
+    hp_normal = 150
+    dano_normal = 30
+    sorte_normal = 2
+    habilidade = None
+
     match raca:
         case 1:
             raca = "Esqueleto Flamejante"
+            hp = hp_normal // 2
+            dano = dano_normal * 2
+            sorte = sorte_normal
+            habilidade = "CHAMAS INFERNAIS"
         
         case 2:
             raca = "Anjo caído"
+            hp = hp_normal
+            dano = dano_normal * 2
+            sorte = sorte_normal - 1
+            habilidade = "CEIFEIRO"
         
         case 3:
             raca = "Sábio Feiticeiro"
+            hp = hp_normal 
+            dano = dano_normal // 2
+            sorte = sorte_normal + 1
+            habilidade = "FEITIÇOS ELEMENTAIS"
         
         case 4: 
             raca = "Pricesa Medusa"
+            hp = hp_normal * 2
+            dano = dano_normal 
+            sorte = sorte_normal - 1
+            habilidade = "ENCANTO DE PEDRA"
         
         case 5:
             raca = "Morte Mormurante"
+            hp = hp_normal 
+            dano = dano_normal * 2
+            sorte = sorte_normal - 1
+            habilidade = "ILUSÃO"
         
         case 6:
             raca = "Arqueiro Mágico"
+            hp = hp_normal // 2
+            dano = dano_normal 
+            sorte = sorte_normal + 1
+            habilidade = "FLECHA MÁGICA"
 
     return  {
         "nome": nome,
         "raca": raca,
         "level": 1,
         "exp": 0,
-        "hp": 150,
-        "dano": 100000000
+        "hp": hp,
+        "dano": dano,
+        "sorte": sorte,
+        "habilidade": habilidade
     }
 
 
@@ -413,8 +444,14 @@ def criar_npc(level, fase) -> dict:
             else:
                 nome = Fore.RED + "foguinho".upper()
 
+    f_ou_m = randint(1,2)
+    if f_ou_m == 1:
+        f_ou_m = Fore.BLUE + "(Macho)"
+    else:
+        f_ou_m = Fore.MAGENTA + "(Femea)"
+
     novo_npc = {
-        "nome": f"{nome}",
+        "nome": f"{nome} {f_ou_m}",
         "level": level,
         "dano": 5 * level,
         "hp": 100 * level,
@@ -436,25 +473,35 @@ def exibir_player(player: dict) -> None:
     exp = player['exp']
     vida = player['hp']
     dano = player['dano']
+    sorte = player['sorte']
+    habilidade = player['habilidade'] 
 
-    largura = 26
+    if sorte == 1:
+        sorte = "Baixa"
+    elif sorte == 2:
+        sorte = "Normal"
+    else:
+        sorte = "Alta"
 
-    status = f"""
-  ________________________________
- /                                \\
-/        Status Do Jogador         \\
-|----------------------------------|
-| Nome : {str(nome).ljust(largura)}|
-| Raça : {str(raca).ljust(largura)}|
-| Level: {str(level).ljust(largura)}|
-| EXP  : {str(exp).ljust(largura)}|
-| HP   : {str(vida).ljust(largura)}|
-| Dano : {str(dano).ljust(largura)}|
-|__________________________________|
- \\                                /
-  \\______________________________/
-"""
-    centra_h_v(rgb_text(status))
+    largura = 21 
+
+    status = (
+        "  ╔" + "═" * 34 + "╗\n"
+        "  ║         STATUS DO JOGADOR        ║\n"
+        "  ╠" + "═" * 34 + "╣\n"
+        f"  ║    Nome   : {str(nome).ljust(largura)}║\n"
+        f"  ║    Raça   : {str(raca).ljust(largura)}║\n"
+        f"  ║    Level  : {str(level).ljust(largura)}║\n"
+        f"  ║     EXP   : {str(exp).ljust(largura)}║\n"
+        "  ╠" + "═" * 34 + "╣\n"
+        f"  ║      HP   : {str(vida).ljust(largura)}║\n"
+        f"  ║     Dano  : {str(dano).ljust(largura)}║\n"
+        f"  ║    Sorte  : {str(sorte).ljust(largura)}║\n"
+        f"  ║ Habilidade: {str(habilidade).ljust(largura)}║\n"
+        "  ╚" + "═" * 34 + "╝\n"
+    )
+
+    centra_h(rgb_text(status))
 
 
 
@@ -647,199 +694,59 @@ def escolha_seta_inimigo_fase1() -> str:
 
 
 
-#EXIBE A IMAGEM DO INIMIGO QUE ESTA PRÉ-SELECIONADO (FASE 1)
+#EXIBE A IMAGEM DO INIMIGO QUE ESTA SENDO SELECIONADO (FASE 1)
 def imagem_seta_escolhida_inimigo_fase1(idx: int) -> None:
 
     from icons import dominus_img, draconis_img, carceres_img, mytus_img, wetiza_img, akari_img, ogroid_img, tarik_img
-    if idx == 0:
-        if lista_npcs[0]['nome'] == "DOMINUS":
-            dominus_img()
-        elif lista_npcs[0]['nome'] == "DRACONIS":
-            draconis_img()
-        elif lista_npcs[0]['nome'] == "CARCERES":
-            carceres_img()
-        elif lista_npcs[0]['nome'] == "MYTUS":
-            mytus_img()
-        elif lista_npcs[0]['nome'] == "WETIZA":
-            wetiza_img()
-        elif lista_npcs[0]['nome'] == "AKARI":
-            akari_img()
-        elif lista_npcs[0]['nome'] == "OGROID":
-            ogroid_img()
-        elif lista_npcs[0]['nome'] == "TARIK":
-            tarik_img()
-        
-    
-    elif idx == 1:
-        if lista_npcs[1]['nome'] == "DOMINUS":
-            dominus_img()
-        elif lista_npcs[1]['nome'] == "DRACONIS":
-            draconis_img()
-        elif lista_npcs[1]['nome'] == "CARCERES":
-            carceres_img()
-        elif lista_npcs[1]['nome'] == "MYTUS":
-            mytus_img()
-        elif lista_npcs[1]['nome'] == "WETIZA":
-            wetiza_img()
-        elif lista_npcs[1]['nome'] == "AKARI":
-            akari_img()
-        elif lista_npcs[1]['nome'] == "OGROID":
-            ogroid_img()
-        elif lista_npcs[1]['nome'] == "TARIK":
-            tarik_img()
+    imgs = {
+        "DOMINUS": dominus_img,
+        "DRACONIS": draconis_img,
+        "CARCERES": carceres_img,
+        "MYTUS": mytus_img,
+        "WETIZA": wetiza_img,
+        "AKARI": akari_img,
+        "OGROID": ogroid_img,
+        "TARIK": tarik_img,
+    }
 
-    elif idx == 2:
-        if lista_npcs[2]['nome'] == "DOMINUS":
-            dominus_img()
-        elif lista_npcs[2]['nome'] == "DRACONIS":
-            draconis_img()
-        elif lista_npcs[2]['nome'] == "CARCERES":
-            carceres_img()
-        elif lista_npcs[2]['nome'] == "MYTUS":
-            mytus_img()
-        elif lista_npcs[2]['nome'] == "WETIZA":
-            wetiza_img()
-        elif lista_npcs[2]['nome'] == "AKARI":
-            akari_img()
-        elif lista_npcs[2]['nome'] == "OGROID":
-            ogroid_img()
-        elif lista_npcs[2]['nome'] == "TARIK":
-            tarik_img()
+    nome_sexo = lista_npcs[idx]['nome']
+    so_nome = nome_sexo.split()[0].upper()
 
-    elif idx == 3:
-        if lista_npcs[3]['nome'] == "DOMINUS":
-            dominus_img()
-        elif lista_npcs[3]['nome'] == "DRACONIS":
-            draconis_img()
-        elif lista_npcs[3]['nome'] == "CARCERES":
-            carceres_img()
-        elif lista_npcs[3]['nome'] == "MYTUS":
-            mytus_img()
-        elif lista_npcs[3]['nome'] == "WETIZA":
-            wetiza_img()
-        elif lista_npcs[3]['nome'] == "AKARI":
-            akari_img()
-        elif lista_npcs[3]['nome'] == "OGROID":
-            ogroid_img()
-        elif lista_npcs[3]['nome'] == "TARIK":
-            tarik_img()
-
-    elif idx == 4:
-        if lista_npcs[0]['nome'] == "DOMINUS":
-            dominus_img()
-        elif lista_npcs[0]['nome'] == "DRACONIS":
-            draconis_img()
-        elif lista_npcs[0]['nome'] == "CARCERES":
-            carceres_img()
-        elif lista_npcs[0]['nome'] == "MYTUS":
-            mytus_img()
-        elif lista_npcs[0]['nome'] == "WETIZA":
-            wetiza_img()
-        elif lista_npcs[0]['nome'] == "AKARI":
-            akari_img()
-        elif lista_npcs[0]['nome'] == "OGROID":
-            ogroid_img()
-        elif lista_npcs[0]['nome'] == "TARIK":
-            tarik_img()
-
-    elif idx == 5:
-        if lista_npcs[0]['nome'] == "DOMINUS":
-            dominus_img()
-        elif lista_npcs[0]['nome'] == "DRACONIS":
-            draconis_img()
-        elif lista_npcs[0]['nome'] == "CARCERES":
-            carceres_img()
-        elif lista_npcs[0]['nome'] == "MYTUS":
-            mytus_img()
-        elif lista_npcs[0]['nome'] == "WETIZA":
-            wetiza_img()
-        elif lista_npcs[0]['nome'] == "AKARI":
-            akari_img()
-        elif lista_npcs[0]['nome'] == "OGROID":
-            ogroid_img()
-        elif lista_npcs[0]['nome'] == "TARIK":
-            tarik_img()
-    
-    elif idx == 6:
-        if lista_npcs[0]['nome'] == "DOMINUS":
-            dominus_img()
-        elif lista_npcs[0]['nome'] == "DRACONIS":
-            draconis_img()
-        elif lista_npcs[0]['nome'] == "CARCERES":
-            carceres_img()
-        elif lista_npcs[0]['nome'] == "MYTUS":
-            mytus_img()
-        elif lista_npcs[0]['nome'] == "WETIZA":
-            wetiza_img()
-        elif lista_npcs[0]['nome'] == "AKARI":
-            akari_img()
-        elif lista_npcs[0]['nome'] == "OGROID":
-            ogroid_img()
-        elif lista_npcs[0]['nome'] == "TARIK":
-            tarik_img()
-
-    elif idx == 7:
-        if lista_npcs[0]['nome'] == "DOMINUS":
-            dominus_img()
-        elif lista_npcs[0]['nome'] == "DRACONIS":
-            draconis_img()
-        elif lista_npcs[0]['nome'] == "CARCERES":
-            carceres_img()
-        elif lista_npcs[0]['nome'] == "MYTUS":
-            mytus_img()
-        elif lista_npcs[0]['nome'] == "WETIZA":
-            wetiza_img()
-        elif lista_npcs[0]['nome'] == "AKARI":
-            akari_img()
-        elif lista_npcs[0]['nome'] == "OGROID":
-            ogroid_img()
-        elif lista_npcs[0]['nome'] == "TARIK":
-            tarik_img()
+    img = imgs[so_nome]
+    if img:
+        img()
 
 
 
 
 
-def atacar_monstro(escolha: int, player: dict) -> None:
 
-    if escolha == lista_npcs[0]['nome']:
-        lista_npcs[0]['hp'] -= player['dano']
+def atacar_monstro(escolha: str, player: dict) -> None:
 
-        if lista_npcs[0]['hp'] <= 0:
-            del escolhas_inimigo[0]
-            del lista_npcs[0]
-            centra_h(f"\n{escolha} Derrotado! {len(lista_npcs)} Restantes...")
-            centra_h(rgb_text(f"\nAperte ENTER para continuar"))
-            input()
-        
-        else:
-            centra_h(f"Dano dado: {player['dano']}")
+    idx = None
+    for i, npc in enumerate(lista_npcs):
+        if npc["nome"] == escolha:
+            idx = i
+            break
 
-    elif escolha == lista_npcs[1]['nome']:
-        lista_npcs[1]['hp'] -= player['dano']
+    limpar_tela()
+    imagem_seta_escolhida_inimigo_fase1(idx)
 
-        if lista_npcs[1]['hp'] <= 0:
-            del escolhas_inimigo[1]
-            del lista_npcs[1]
-            centra_h(f"\n{escolha} Derrotado! {len(lista_npcs)} Restantes...")
-            centra_h(rgb_text(f"\nAperte ENTER para continuar"))
-            input()
-        
-        else:
-            centra_h(f"Dano dado: {player['dano']}")
-    
-    elif escolha == lista_npcs[2]['nome']:
-        lista_npcs[2]['hp'] -= player['dano']
+    lista_npcs[idx]['hp'] -= player['dano']
 
-        if lista_npcs[2]['hp'] <= 0:
-            del escolhas_inimigo[2]
-            del lista_npcs[2]
-            centra_h(f"\n{escolha} Derrotado! {len(lista_npcs)} Restantes...")
-            centra_h(rgb_text(f"\nAperte ENTER para continuar"))
-            input()
-        
-        else:
-            centra_h(f"Dano dado: {player['dano']}")
+    if lista_npcs[idx]['hp'] <= 0:
+
+        del escolhas_inimigo[idx]
+        del lista_npcs[idx]
+        centra_h(f"\n{Fore.RED + escolha + Style.RESET_ALL} Derrotado! {len(lista_npcs)} Restantes...")
+        centra_h(rgb_text("\nAperte ENTER para continuar"))
+        input()
+
+    else:
+        centra_h(f"Dano dado: {player['dano']}")
+        centra_h(f"HP restante: {lista_npcs[idx]['hp']}")
+        input("Aperte ENTER para continuar")
+
 
 
 

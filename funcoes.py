@@ -644,10 +644,13 @@ def escolha_seta_inimigo_fase1() -> str:
     def strip_ansi(s: str) -> str:
         return _ANSI.sub("", s or "")
     
-    idx = 0
+    idx = 1
     while True:
+        from icons import descri_draconis
+        img = imagem_seta_escolhida_inimigo_fase1(idx)
+        extra = descri_draconis()
         limpar_tela()
-        imagem_seta_escolhida_inimigo_fase1(idx)
+        descri_monstro_mais_img(img, extra)
         print("\n")
         centra_h("\nQUE INIMIGO DESEJA ATACAR?", Fore.RED + Style.BRIGHT)
         centra_h(Style.DIM + "use ↑/↓ para navegar e ENTER para confirmar")
@@ -712,15 +715,25 @@ def imagem_seta_escolhida_inimigo_fase1(idx: int) -> None:
     nome_sexo = lista_npcs[idx]['nome']
     so_nome = nome_sexo.split()[0].upper()
 
-    img = imgs[so_nome]
-    if img:
-        img()
+    img = imgs.get(so_nome)
+    if not img:
+        return ""
+    img_str = img()
+    return img_str
+
+
+
+
+
+#ADICIONA UMA DESCRICAO AO LADO ESQUERDO DE CADA IMAGEM
+def descri_escolha_img():
 
 
 
 
 
 
+#FUNCAO DE ATACAR OS MONSTROS APENAS (DANO) NORMAL DO JOGADOR
 def atacar_monstro(escolha: str, player: dict) -> None:
 
     idx = None
@@ -746,6 +759,21 @@ def atacar_monstro(escolha: str, player: dict) -> None:
         centra_h(f"Dano dado: {player['dano']}")
         centra_h(f"HP restante: {lista_npcs[idx]['hp']}")
         input("Aperte ENTER para continuar")
+
+
+
+
+#PEGA A IMAGEM DO MONSTRO E ADICIONA A DESCRICAO QUE EU QUERO QUE O MONSTRO TENHA
+def descri_monstro_mais_img(imagem: str, extra: str) -> None:
+
+    linhas = imagem.splitlines()
+    extras = extra.splitlines()
+
+    for i, msg in enumerate(extras, start=len(linhas) // 2):
+        if i < len(linhas):
+            linhas[i] = linhas[i] + (" " * 13) + msg
+        
+    centra_h_v("\n".join(linhas))
 
 
 

@@ -1298,7 +1298,7 @@ def morte_mormurante():
 
 #IMAGENS (SPRITES) DOS MONSTROS DO JOGO --------------------------------------------------------
 
-def draconis_img():
+def draconis_img() -> str:
     mensagem = fr"""
  
  
@@ -1329,11 +1329,14 @@ def draconis_img():
 ⠀⠀⠀⠀⠀⠀⠠⠤⠠⠤⠴⠠⠠⠠⠤⠤⠀⠠⠲⠀⠆⠤⠦⠴⠰⠀⠀⠀⠀
 """
 
-    fn.centra_h_v(mensagem)
+    return mensagem
+
+
+
     
 
 
-def dominus_img():
+def dominus_img() -> str:
     mensagem = fr"""
  
  
@@ -1363,7 +1366,10 @@ def dominus_img():
   
 _^^__--_^^__~~^^^~^^^^^^^^~^^^~~^^^~^^^^^^^-___----_^^^
 """
-    fn.centra_h_v(mensagem)
+    return mensagem
+
+
+
     
 
 

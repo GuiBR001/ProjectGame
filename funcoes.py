@@ -160,7 +160,7 @@ def criar_inimigos(fase: int, orda: int, player: dict) -> None:
                         nivel = randint(1, 5)
                         novo_npc = criar_npc(nivel, fase)
                         lista_npcs.append(novo_npc)
-                        escolhas_inimigo.append(novo_npc['nome'] + " " + novo_npc['sexo'])
+                        escolhas_inimigo.append(novo_npc['nome'])
 
                     if lista_npcs[0]['nome'] == lista_npcs[1]['nome']:
                         lista_npcs.clear()
@@ -178,7 +178,7 @@ def criar_inimigos(fase: int, orda: int, player: dict) -> None:
                         nivel = randint(6, 10)
                         novo_npc = criar_npc(nivel, fase)
                         lista_npcs.append(novo_npc)
-                        escolhas_inimigo.append(novo_npc['nome'] + " " + novo_npc['sexo'])
+                        escolhas_inimigo.append(novo_npc['nome'])
 
                     if lista_npcs[0]['nome'] == lista_npcs[1 or 2]['nome'] or lista_npcs[3]['nome'] == lista_npcs[4 or 5]['nome']:
                         lista_npcs.clear()
@@ -195,7 +195,7 @@ def criar_inimigos(fase: int, orda: int, player: dict) -> None:
                         nivel = randint(8, 15)
                         novo_npc = criar_npc(nivel, fase)
                         lista_npcs.append(novo_npc)
-                        escolhas_inimigo.append(novo_npc['nome'] + " " + novo_npc['sexo'])
+                        escolhas_inimigo.append(novo_npc['nome'])
 
                     if lista_npcs[0]['nome'] == lista_npcs[1 or 2]['nome'] or lista_npcs[3]['nome'] == lista_npcs[4 or 5]['nome'] or lista_npcs[5]['nome'] == lista_npcs[6 or 7]['nome']:
                         lista_npcs.clear()
@@ -446,9 +446,9 @@ def criar_npc(level, fase) -> dict:
 
     sexo = randint(1,2)
     if sexo == 1:
-        sexo = Fore.BLUE + "(Macho)" + Style.RESET_ALL
+        sexo = "Macho"
     else:
-        sexo = Fore.MAGENTA + "(Femea)" + Style.RESET_ALL
+        sexo = "Femea"
 
     novo_npc = {
         "nome": nome,
@@ -711,10 +711,9 @@ def imagem_seta_escolhida_inimigo_fase1(idx: int) -> None:
         "TARIK": tarik_img,
     }
 
-    nome_sexo = lista_npcs[idx]['nome']
-    so_nome = nome_sexo.split()[0].upper()
+    nome = lista_npcs[idx]['nome']
 
-    img = imgs.get(so_nome)
+    img = imgs.get(nome)
     if not img:
         return ""
     img_str = img()
@@ -727,6 +726,7 @@ def imagem_seta_escolhida_inimigo_fase1(idx: int) -> None:
 #DESCRICAO COM STATUS DO NPC SELECIONADO
 def exibe_status_monstro(idx: int) -> list[str]:
     nome = lista_npcs[idx]['nome']
+    sexo = lista_npcs[idx]['sexo']
     level = lista_npcs[idx]['level']
     exp = lista_npcs[idx]['exp']
     vida = lista_npcs[idx]['hp']
@@ -739,6 +739,7 @@ def exibe_status_monstro(idx: int) -> list[str]:
         "  ║         STATUS DO INIMIGO        ║\n"
         "  ╠" + "═" * 34 + "╣\n"
         f"  ║    Nome   : {str(nome).ljust(largura)}║\n"
+        f"  ║    Sexo   : {str(sexo).ljust(largura)}║\n"
         f"  ║    Level  : {str(level).ljust(largura)}║\n"
         f"  ║     EXP   : {str(exp).ljust(largura)}║\n"
         "  ╠" + "═" * 34 + "╣\n"
@@ -760,14 +761,14 @@ def exibe_status_monstro(idx: int) -> list[str]:
 
 
 #FUNCAO DE ATACAR OS MONSTROS APENAS (DANO) NORMAL DO JOGADOR
-def atacar_monstro(escolha: str, player: dict) -> None:
+def atacar_monstro(escolha: str, player: dict) -> None:  
 
     idx = None
     for i, npc in enumerate(lista_npcs):
         if npc["nome"] == escolha:
             idx = i
             break
-
+    
     limpar_tela()
     img = imagem_seta_escolhida_inimigo_fase1(idx)
     centra_h_v(img)
@@ -828,7 +829,6 @@ def rgb_text(texto: str) -> str:
     
     resultado += "\033[0m" 
     return resultado
-
 
 
 

@@ -842,7 +842,17 @@ def atacar_monstro_habilidade(player: dict) -> None:
         )
         linhas_texto.append(" ")
         for npc in lista_npcs:
-            linhas_texto.append(Fore.RED + npc['nome'] + Style.RESET_ALL + " " + Fore.BLACK + "vida atual: " + f"{npc['hp']}" + Style.RESET_ALL)
+            if npc['hp'] <= 0:
+                npc['hp'] = 0
+                linhas_texto.append(Fore.RED + npc['nome'] + Style.RESET_ALL + " " + Fore.BLACK + "vida atual: " + f"{npc['hp']}" + Style.RESET_ALL)
+                nome_npc = npc['nome']
+                for i, esc in enumerate(escolhas_inimigo):
+                    if esc == nome_npc:
+                        idx = i
+                del escolhas_inimigo[i]
+                del npc
+            else:
+                linhas_texto.append(Fore.RED + npc['nome'] + Style.RESET_ALL + " " + Fore.BLACK + "vida atual: " + f"{npc['hp']}" + Style.RESET_ALL)
 
 
         largura_bloco = max(len(strip_ansi(l)) for l in linhas_texto)

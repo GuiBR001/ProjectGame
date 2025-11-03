@@ -160,7 +160,7 @@ def criar_inimigos(fase: int, orda: int, player: dict) -> None:
                         nivel = randint(1, 5)
                         novo_npc = criar_npc(nivel, fase)
                         lista_npcs.append(novo_npc)
-                        escolhas_inimigo.append(novo_npc['nome'])
+                        escolhas_inimigo.append(novo_npc['nome'] + " " + novo_npc['sexo'])
 
                     if lista_npcs[0]['nome'] == lista_npcs[1]['nome']:
                         lista_npcs.clear()
@@ -178,7 +178,7 @@ def criar_inimigos(fase: int, orda: int, player: dict) -> None:
                         nivel = randint(6, 10)
                         novo_npc = criar_npc(nivel, fase)
                         lista_npcs.append(novo_npc)
-                        escolhas_inimigo.append(novo_npc['nome'])
+                        escolhas_inimigo.append(novo_npc['nome'] + " " + novo_npc['sexo'])
 
                     if lista_npcs[0]['nome'] == lista_npcs[1 or 2]['nome'] or lista_npcs[3]['nome'] == lista_npcs[4 or 5]['nome']:
                         lista_npcs.clear()
@@ -195,7 +195,7 @@ def criar_inimigos(fase: int, orda: int, player: dict) -> None:
                         nivel = randint(8, 15)
                         novo_npc = criar_npc(nivel, fase)
                         lista_npcs.append(novo_npc)
-                        escolhas_inimigo.append(novo_npc['nome'])
+                        escolhas_inimigo.append(novo_npc['nome'] + " " + novo_npc['sexo'])
 
                     if lista_npcs[0]['nome'] == lista_npcs[1 or 2]['nome'] or lista_npcs[3]['nome'] == lista_npcs[4 or 5]['nome'] or lista_npcs[5]['nome'] == lista_npcs[6 or 7]['nome']:
                         lista_npcs.clear()
@@ -444,14 +444,15 @@ def criar_npc(level, fase) -> dict:
             else:
                 nome = Fore.RED + "foguinho".upper()
 
-    f_ou_m = randint(1,2)
-    if f_ou_m == 1:
-        f_ou_m = Fore.BLUE + "(Macho)"
+    sexo = randint(1,2)
+    if sexo == 1:
+        sexo = Fore.BLUE + "(Macho)" + Style.RESET_ALL
     else:
-        f_ou_m = Fore.MAGENTA + "(Femea)"
+        sexo = Fore.MAGENTA + "(Femea)" + Style.RESET_ALL
 
     novo_npc = {
-        "nome": f"{nome} {f_ou_m}",
+        "nome": nome,
+        "sexo": sexo,
         "level": level,
         "dano": 5 * level,
         "hp": 100 * level,
@@ -640,17 +641,15 @@ def escolha_seta_menu() -> str:
 
 #RETORNA A ESCOLHA DO INIMIGO SELECIONADO
 def escolha_seta_inimigo_fase1() -> str:
-    _ANSI = re.compile(r"\x1B\[[0-?]*[ -/]*[@-~]")
     def strip_ansi(s: str) -> str:
         return _ANSI.sub("", s or "")
     
-    idx = 1
+    idx = 0
     while True:
-        from icons import descri_draconis
         img = imagem_seta_escolhida_inimigo_fase1(idx)
-        extra = descri_draconis()
+        extra = exibe_status_monstro(idx)
         limpar_tela()
-        descri_monstro_mais_img(img, extra)
+        descri_monstro_mais_img(img, "\n".join(extra))
         print("\n")
         centra_h("\nQUE INIMIGO DESEJA ATACAR?", Fore.RED + Style.BRIGHT)
         centra_h(Style.DIM + "use ↑/↓ para navegar e ENTER para confirmar")
@@ -725,8 +724,35 @@ def imagem_seta_escolhida_inimigo_fase1(idx: int) -> None:
 
 
 
-#ADICIONA UMA DESCRICAO AO LADO ESQUERDO DE CADA IMAGEM
-def descri_escolha_img():
+#DESCRICAO COM STATUS DO NPC SELECIONADO
+def exibe_status_monstro(idx: int) -> list[str]:
+    nome = lista_npcs[idx]['nome']
+    level = lista_npcs[idx]['level']
+    exp = lista_npcs[idx]['exp']
+    vida = lista_npcs[idx]['hp']
+    dano = lista_npcs[idx]['dano']
+
+    largura = 21
+
+    status = (
+        "  ╔" + "═" * 34 + "╗\n"
+        "  ║         STATUS DO INIMIGO        ║\n"
+        "  ╠" + "═" * 34 + "╣\n"
+        f"  ║    Nome   : {str(nome).ljust(largura)}║\n"
+        f"  ║    Level  : {str(level).ljust(largura)}║\n"
+        f"  ║     EXP   : {str(exp).ljust(largura)}║\n"
+        "  ╠" + "═" * 34 + "╣\n"
+        f"  ║    Saúde  : {str(vida).ljust(largura)}║\n"
+        f"  ║     Dano  : {str(dano).ljust(largura)}║\n"
+        "  ╚" + "═" * 34 + "╝\n"
+    )
+
+    linhas = status.split("\n")
+
+    linhas_rgb = [rgb_text(l) for l in linhas if l]
+
+    return linhas_rgb
+
 
 
 
@@ -743,7 +769,8 @@ def atacar_monstro(escolha: str, player: dict) -> None:
             break
 
     limpar_tela()
-    imagem_seta_escolhida_inimigo_fase1(idx)
+    img = imagem_seta_escolhida_inimigo_fase1(idx)
+    centra_h_v(img)
 
     lista_npcs[idx]['hp'] -= player['dano']
 
@@ -751,7 +778,8 @@ def atacar_monstro(escolha: str, player: dict) -> None:
 
         del escolhas_inimigo[idx]
         del lista_npcs[idx]
-        centra_h(f"\n{Fore.RED + escolha + Style.RESET_ALL} Derrotado! {len(lista_npcs)} Restantes...")
+        print("\n" * 2)
+        centra_h(f"\n{rgb_text(escolha)} Derrotado! {len(lista_npcs)} Restantes...\n")
         centra_h(rgb_text("\nAperte ENTER para continuar"))
         input()
 
@@ -763,13 +791,16 @@ def atacar_monstro(escolha: str, player: dict) -> None:
 
 
 
-#PEGA A IMAGEM DO MONSTRO E ADICIONA A DESCRICAO QUE EU QUERO QUE O MONSTRO TENHA
+
+
+
+#PEGA A IMAGEM DO MONSTRO E ADICIONA A DESCRICAO QUE EU QUERO QUE O MONSTRO TENHA, JUNTANDO OS DOIS
 def descri_monstro_mais_img(imagem: str, extra: str) -> None:
 
     linhas = imagem.splitlines()
     extras = extra.splitlines()
 
-    for i, msg in enumerate(extras, start=len(linhas) // 2):
+    for i, msg in enumerate(extras, start=(len(linhas) // 2) - (len(linhas) // 4)):
         if i < len(linhas):
             linhas[i] = linhas[i] + (" " * 13) + msg
         

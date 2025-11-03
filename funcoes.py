@@ -17,6 +17,7 @@ escolhas_inimigo = []
 escolhas_menu = ["Começar Novo Jogo", "Ultimos Recordes", "Créditos", "Sair"]
 escolhas_raca = ["Esqueleto Flamejante", "Anjo Caído", "Sábio Feiticeiro", "Princesa Medusa", "Morte Mormurante", "Arqueiro Mágico"]
 player = {}
+habilidade = []
 tamanho = shutil.get_terminal_size()
 largura_tela = tamanho.columns
 altura_tela = tamanho.lines
@@ -520,6 +521,7 @@ def escolha_seta_raca() -> str:
         centra_h(Style.DIM + "use ↑/↓ para navegar e ENTER para confirmar")
 
         largura_interna = 56
+        
         centra_h(Fore.CYAN + "╔" + "═" * largura_interna + "╗")
 
         for i, esc in enumerate(escolhas_raca):
@@ -528,16 +530,17 @@ def escolha_seta_raca() -> str:
             cor = Fore.GREEN + Style.BRIGHT if selecionado else Fore.WHITE
             conteudo = f"{seta} {esc}"
             largura_visivel = len(strip_ansi(conteudo))
-            padding = max(largura_interna - largura_visivel, 0)
+            espaco = max(largura_interna - largura_visivel, 0)
             linha_final = (
                 Fore.CYAN + "║ "
                 + cor + conteudo + Style.RESET_ALL
-                + " " * padding
+                + " " * espaco
                 + Fore.CYAN + " ║"
             )
             centra_h(linha_final)
 
-        centra_h(Fore.CYAN + "╚" + "═" * largura_interna + "╝")        
+        centra_h(Fore.CYAN + "╚" + "═" * largura_interna + "╝")      
+
         ch = msvcrt.getch()
         if ch in (b"\x00", b"\xe0"):
             ch2 = msvcrt.getch()
@@ -605,11 +608,11 @@ def escolha_seta_menu() -> str:
             cor = Fore.GREEN + Style.BRIGHT if selecionado else Fore.WHITE
             conteudo = f"{seta} {esc}"
             largura_visivel = len(strip_ansi(conteudo))
-            padding = max(largura_interna - largura_visivel, 0)
+            espaco = max(largura_interna - largura_visivel, 0)
             linha_final = (
                 Fore.CYAN + "║ "
                 + cor + conteudo + Style.RESET_ALL
-                + " " * padding
+                + " " * espaco
                 + Fore.CYAN + " ║"
             )
             centra_h(linha_final)
@@ -640,7 +643,7 @@ def escolha_seta_menu() -> str:
 
 
 #RETORNA A ESCOLHA DO INIMIGO SELECIONADO
-def escolha_seta_inimigo_fase1() -> str:
+def escolha_seta_inimigo_fase1(player) -> str:
     def strip_ansi(s: str) -> str:
         return _ANSI.sub("", s or "")
     
@@ -669,26 +672,40 @@ def escolha_seta_inimigo_fase1() -> str:
                 coresc = Fore.MAGENTA + sexo + Style.RESET_ALL
             conteudo = f"{seta} {nome} {coresc}"
             largura_visivel = len(strip_ansi(conteudo))
-            padding = max(largura_interna - largura_visivel, 0)
+            espaco = max(largura_interna - largura_visivel, 0)
             linha_final = (
                 Fore.CYAN + "║ "
                 + cor + conteudo + Style.RESET_ALL
-                + " " * padding
+                + " " * espaco
                 + Fore.CYAN + " ║"
             )
             centra_h(linha_final)
 
-        centra_h(Fore.CYAN + "╚" + "═" * largura_interna + "╝")        
+        centra_h(Fore.CYAN + "╚" + "═" * largura_interna + "╝") 
+        caixa_cor = rgb_text(caixa_poder_heroi(player))
+        centra_h(caixa_cor)
+
         ch = msvcrt.getch()
+
         if ch in (b"\x00", b"\xe0"):
             ch2 = msvcrt.getch()
+
             if ch2 == b"H":
                 idx = (idx - 1) % len(escolhas_inimigo)
+                
             elif ch2 == b"P":
                 idx = (idx + 1) % len(escolhas_inimigo)
+
         elif ch in (b"\r", b"\n"):
             escolha = escolhas_inimigo[idx]
             return escolha
+        
+        elif ch in (b"p", b"P"):
+            atacar_monstro_habilidade(player)
+            print("\n" * 3)
+            centra_h(rgb_text("Aperte ENTER para continuar"))
+            input()
+
         elif ch in (b"1", b"2", b"3", b"4"):
             n = int(ch.decode()) - 1
             if 0 <= n < len(escolhas_inimigo):
@@ -759,6 +776,92 @@ def exibe_status_monstro(idx: int) -> list[str]:
     linhas_rgb = [rgb_text(l) for l in linhas if l]
 
     return linhas_rgb
+
+
+
+
+
+
+
+#CAIXA COM O PODER DO HEROI, DEPENDENDO DE QUAL RACA ELE ESCOLHE
+def caixa_poder_heroi(player: dict) -> str:
+    titulo = "PODER DO HERÓI DISPONÍVEL"
+    habilidade = str(player["habilidade"])
+
+    largura_interna = 34 
+
+    dica = 'clique em "P" para usar'
+    dica_linha = dica[:largura_interna]
+    hab_linha = habilidade[:largura_interna]
+
+    caixa = (
+        "  ╔" + "═" * largura_interna + "╗\n"
+        f" ║ {titulo.center(largura_interna)} ║\n"
+        "  ╠" + "═" * largura_interna + "╣\n"
+        f" ║ {dica_linha.center(largura_interna)} ║\n"
+        f" ║ {hab_linha.center(largura_interna)} ║\n"
+        "  ╚" + "═" * largura_interna + "╝\n"
+    )
+    return caixa
+
+
+
+
+
+
+
+#USA A HABILIDADE DO PLAYER PARA ATACAR MONSTROS
+def atacar_monstro_habilidade(player: dict) -> None:
+    from icons import esqueleto_flamejante_especial
+
+    habilidade = player['habilidade']
+
+    if habilidade == "CHAMAS INFERNAIS" and lista_npcs:
+
+        player['dano por fogo'] = player['dano'] // len(lista_npcs)
+        for npc in lista_npcs:
+            npc['hp'] -= player['dano por fogo']
+
+        img = esqueleto_flamejante_especial(player)
+        linhas_img = img.splitlines()
+
+        for i, linha in enumerate(linhas_img):
+            linhas_img[i] = Fore.RED + linha + Style.RESET_ALL
+
+        linhas_texto = []
+        linhas_texto.append(
+            rgb_text(f"{player['nome']} ATIVOU A HABILIDADE {player['habilidade']}")
+        )
+        linhas_texto.append(" ")
+        linhas_texto.append(
+            f"Causando {Fore.RED}{player['dano por fogo']}{Style.RESET_ALL} de dano por fogo em {Fore.RED + 'AREA' + Style.RESET_ALL}"
+        )
+        linhas_texto.append(" ")
+        linhas_texto.append(
+            f"{rgb_text("Monstros afetados em área:")}"
+        )
+        linhas_texto.append(" ")
+        for npc in lista_npcs:
+            linhas_texto.append(Fore.RED + npc['nome'] + Style.RESET_ALL + " " + Fore.BLACK + "vida atual: " + f"{npc['hp']}" + Style.RESET_ALL)
+
+
+        largura_bloco = max(len(strip_ansi(l)) for l in linhas_texto)
+
+        for i, linha in enumerate(linhas_texto, start= 7):
+
+            visivel = strip_ansi(linha)
+            espaco_esq = (largura_bloco - len(visivel)) // 2
+            linha_centro = " " * espaco_esq + linha
+
+            linhas_img[i] = linhas_img[i] + " " * 8 + linha_centro
+
+        img_final = "\n".join(linhas_img)
+        centra_h_v(img_final)
+
+            
+
+            
+
 
 
 

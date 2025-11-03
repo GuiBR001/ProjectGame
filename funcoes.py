@@ -160,7 +160,7 @@ def criar_inimigos(fase: int, orda: int, player: dict) -> None:
                         nivel = randint(1, 5)
                         novo_npc = criar_npc(nivel, fase)
                         lista_npcs.append(novo_npc)
-                        escolhas_inimigo.append(novo_npc['nome'])
+                        escolhas_inimigo.append(novo_npc['nome'] + " " + novo_npc['sexo'])
 
                     if lista_npcs[0]['nome'] == lista_npcs[1]['nome']:
                         lista_npcs.clear()
@@ -661,7 +661,13 @@ def escolha_seta_inimigo_fase1() -> str:
             selecionado = (i == idx)
             seta = "➤" if selecionado else " "
             cor = Fore.RED + Style.BRIGHT if selecionado else Fore.WHITE
-            conteudo = f"{seta} {esc}"
+            nome = esc.split()[0]
+            sexo = esc.split()[-1]
+            if sexo == "Macho": 
+                coresc = Fore.BLUE + sexo + Style.RESET_ALL
+            else:
+                coresc = Fore.MAGENTA + sexo + Style.RESET_ALL
+            conteudo = f"{seta} {nome} {coresc}"
             largura_visivel = len(strip_ansi(conteudo))
             padding = max(largura_interna - largura_visivel, 0)
             linha_final = (
@@ -711,7 +717,7 @@ def imagem_seta_escolhida_inimigo_fase1(idx: int) -> None:
         "TARIK": tarik_img,
     }
 
-    nome = lista_npcs[idx]['nome']
+    nome = escolhas_inimigo[idx].split()[0]
 
     img = imgs.get(nome)
     if not img:
@@ -765,7 +771,7 @@ def atacar_monstro(escolha: str, player: dict) -> None:
 
     idx = None
     for i, npc in enumerate(lista_npcs):
-        if npc["nome"] == escolha:
+        if npc["nome"] == escolha.split()[0]:
             idx = i
             break
     

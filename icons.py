@@ -1089,14 +1089,14 @@ def esqueleto_flamejante():
 { Fore.RED + "⠀⠀⠀⠀⢱⡀⠀⣿⣿⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠙⠻⣿⣆⠈⠃⢰⣿⣿⣽⣬⡀⠀⠀⠐⠀⠀⢻⡄⣻⢀" + Style.RESET_ALL}                                                       {fn.rgb_text("PODER INCENDIÁRIO")}
 ⠀⠀⠀⠀⣾⡇⠀⢿⣿⣷⡄⠀⢀⡄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠐⣄⠈⣿⡇⠀⣿⣿⣿⣿⣿⠟⢀⡀⠀⡀⠀⠘⣧⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⣧⡀
 { Fore.RED + "⠀⠀⢀⣾⣿⡇⠀⣸⣿⢹⣿⠀⢸⣇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠘⣿⣾⣧⠀⢿⣇⠻⣿⡿⢀⣿⣿⣦⠇⢰⣠⣹⠄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿⣷" + Style.RESET_ALL}                                      {Fore.BLACK + ("Esqueletos Flamejantes tem:")}
-{ Fore.RED + "⠀⠀⣼⣿⢿⣧⣴⣿⠃⢰⣿⠀⢸⣿⡆⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠻⠿⣦⡈⢿⣷⣤⣄⠀⠻⠿⠋⣠⡜⡿⣟⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⡄⠀⣰⣿⣟⠀⣼" + Style.RESET_ALL}                                           {Fore.MAGENTA + ("Sáude") + Fore.WHITE + (" Menor")}
-{ Fore.RED + "⣽⠀⢸⣿⡈⢻⡟⠀⠀⢺⣿⣠⣾⢻⣿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢤⣾⡏⡟⣷⣶⠂⠐⠟⠇⣀⡟⠀⠀⠀⠀⠀⠀⠀⠀⠀⣾⠄⢠⣿⢿⣇⠀⢿⣷⣀" + Style.RESET_ALL}                                         {Fore.RED + ("Dano") + Fore.WHITE + (" Maior")}
-{ Fore.RED + "⢻⣷⡀⢹⡇⠀⢁⣴⠁⠈⢿⠏⢁⣾⠇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠠⣮⣿⠄⠃⣿⣧⣯⣸⣠⢲⠋⠀⠀⠀⠀⠀⠀⠀⠀⠀⠐⣿⣧⡀⣿⡎⢻⣆⠈⣿⢻⣆" + Style.RESET_ALL}                                        {Fore.GREEN + ("Sorte") + Fore.WHITE + (" Normal")}
+{ Fore.RED + "⠀⠀⣼⣿⢿⣧⣴⣿⠃⢰⣿⠀⢸⣿⡆⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠻⠿⣦⡈⢿⣷⣤⣄⠀⠻⠿⠋⣠⡜⡿⣟⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⡄⠀⣰⣿⣟⠀⣼" + Style.RESET_ALL}                                           {Fore.MAGENTA + ("Sáude") + Fore.RED + (" ★")}
+{ Fore.RED + "⣽⠀⢸⣿⡈⢻⡟⠀⠀⢺⣿⣠⣾⢻⣿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢤⣾⡏⡟⣷⣶⠂⠐⠟⠇⣀⡟⠀⠀⠀⠀⠀⠀⠀⠀⠀⣾⠄⢠⣿⢿⣇⠀⢿⣷⣀" + Style.RESET_ALL}                                         {Fore.RED + ("Dano") + Fore.GREEN + ("  ★★★")}
+{ Fore.RED + "⢻⣷⡀⢹⡇⠀⢁⣴⠁⠈⢿⠏⢁⣾⠇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠠⣮⣿⠄⠃⣿⣧⣯⣸⣠⢲⠋⠀⠀⠀⠀⠀⠀⠀⠀⠀⠐⣿⣧⡀⣿⡎⢻⣆⠈⣿⢻⣆" + Style.RESET_ALL}                                        {Fore.GREEN + ("Sorte") + Fore.YELLOW + (" ★★")}
 ⢀⣿⠇⠈⣠⠆⣺⡇⠀⢀⣠⠀⢾⠃⢠⡶⠀⠀⠀⠀⣠⡶⡶⣤⣤⣀⠀⠀⡀⢶⣼⣿⣷⣆⠁⠏⡿⢮⣍⠉⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠙⣿⣿⣾⣿⠀⢹⣿⡿⢸⡿
 { Fore.RED + "⢸⡿⠀⢸⡏⣰⣿⠁⢠⣿⠁⠀⠙⠀⣿⠁⠀⠀⣰⡾⠻⠷⢶⣄⣉⠙⢿⣟⣻⣾⡿⣭⣹⡿⢷⣄⡁⢡⠇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⣷⠀⣹⡇⢹⡏⠀⡀⠟⠀⣼⡇⢠⡇" + Style.RESET_ALL}                       {Fore.WHITE + ("Esqueletos Flamejantes são otimos em ataques")}
 { Fore.RED + "⢹⣿⠀⣿⣇⢸⣗⢰⣿⠃⣠⡶⠃⢰⣿⠀⠀⠀⣿⡰⠀⡠⢘⣿⡿⢷⣄⡉⠛⠿⠷⢦⣿⣷⣦⡉⡛⣋⣀⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢠⣿⠅⣾⢃⠀⠁⠀⢻⡄⢠⠙⢇⠨⣷⡀" + Style.RESET_ALL}                      {Fore.WHITE + ("porém por terem apenas ossos, são frágeis...")}
 { Fore.RED + "⠈⠻⣇⠈⣿⣜⣿⢸⡯⢰⡿⠁⣠⣾⠟⠀⠀⣰⡿⠁⣈⣤⣾⣿⣯⡈⠻⣿⣷⣦⣤⡀⠛⠏⠉⠛⠛⢙⣉⣙⣿⡆⠀⠀⠀⠀⠀⠀⠀⣿⡿⣧⣿⠀⢳⣆⠀⢼⣧⠈⢷⡀⠀⢹⡇" + Style.RESET_ALL}                      {Fore.WHITE + ("Possuem o péssimo hábito de se incendiar, e ")}
-{ Fore.RED + "⠀⠀⠈⠀⢿⡟⣷⡟⣧⣿⠇⢸⠋⠁⠀⠀⣰⡟⢁⣴⣿⣿⣿⠀⢻⣷⣆⡈⠙⠛⠛⠃⠀⠀⢼⣷⣿⠟⣿⡿⠟⢻⡄⠀⠀⠀⠀⠀⠀⢺⣷⠈⠙⠃⠈⣿⣆⠨⣿⠆⢿⡅⠀⡿⠅" + Style.RESET_ALL}                      {Fore.WHITE + (f"consequentemente deixar tudo que toca em {Fore.RED + "chamas"},")}
+{ Fore.RED + "⠀⠀⠈⠀⢿⡟⣷⡟⣧⣿⠇⢸⠋⠁⠀⠀⣰⡟⢁⣴⣿⣿⣿⠀⢻⣷⣆⡈⠙⠛⠛⠃⠀⠀⢼⣷⣿⠟⣿⡿⠟⢻⡄⠀⠀⠀⠀⠀⠀⢺⣷⠈⠙⠃⠈⣿⣆⠨⣿⠆⢿⡅⠀⡿⠅" + Style.RESET_ALL}                      {Fore.WHITE + (f"consequentemente deixar tudo que toca em {fn.rgb_text("chamas")},")}
 { Fore.RED + "⠀⠀⠀⠀⠈⢷⣞⣧⢿⢸⡇⠀⠀⠀⠀⣴⡟⢀⣾⠋⣿⡟⢿⣷⣄⠘⠻⢿⣷⣶⡾⡎⠀⠀⣤⣈⣈⣤⡿⣇⡄⢰⡏⠀⠀⠀⠀⠀⠀⠀⠙⢇⠹⣦⠀⢸⡯⢸⡿⢰⡿⠃⠸⠁⠀⠀" + Style.RESET_ALL}                            {fn.rgb_text(f"inclusive os inimigos atacados...")}
 ⠀⠀⠀⠀⠀⠈⠻⣿⣿⣾⢿⡄⠀⢀⣼⠏⢠⡿⠁⢠⣿⣷⡈⠛⢿⣷⣦⣤⣠⣠⣤⡆⠀⢠⣌⠙⠛⠋⣸⣿⣿⠈⣧⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢿⣇⢼⣿⣸⣧⣿⠃⠀⠀
 ⠀⠀⠀⠀⠀⠀⠈⠻⣿⣷⡄⢿⣤⡾⢋⢠⡿⠁⠀⢰⣿⠹⣿⣦⣀⠈⠙⠋⠛⠉⣁⡄⠀⢀⠙⠻⢿⠟⣿⠸⣿⡆⢹⡄⠀⠀⠀⠀⠀⠀⠀⠀⠀⣸⣿⢻⡟⣽⣫⡟⠀⠀
@@ -1164,9 +1164,9 @@ def anjo_caido():
 { Fore.BLACK + "⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠐⠋⢋⣵⡿⣫⣾⡿⢑⣫⣾⣿⣻⣿⣿⣼⣾⣿⣿⣿⣸⣵⣟⣿⣿⣿⣿⣿⡟⠁⠠⠈⠣⡈⠂⢈⠻⢶⣾⡿⢨⣿⢻⣷⠀⠀⠀⠀⢸⡇⣿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠛⢷⣜⡻⣦" + Style.RESET_ALL}          {fn.rgb_text("PODER DO CEIFEIRO")}      
 ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢠⣾⢟⣼⣟⣿⣿⣿⣿⡿⣵⡿⣽⡿⣻⡿⣳⣿⡿⣿⣿⣴⣿⡏⣫⣿⣿⠀⢸⠀⣇⠰⡀⠐⣄⠑⠶⣤⣶⢟⡇⣺⣿⡇⠀⠀⠀⣿⢹⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠻⢿⣧⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀
 { Fore.BLACK + "⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣰⡿⣣⡾⣫⣾⣿⣳⣿⢟⣼⡟⣽⡿⣹⡿⣱⣿⣿⣳⣿⣿⣿⣿⣿⣿⣿⠇⢸⡈⡇⣿⡆⢷⠀⠈⢷⣄⠀⠤⢏⢀⡇⣿⣗⠀⠀⣰⣿⣼⡃⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠙⢧" + Style.RESET_ALL}        { Fore.BLACK + "Anjos Caídos tem:" + Style.RESET_ALL}
-{ Fore.BLACK + "⠀⠀⠀⠀⠀⠀⠀⠀⠀⣰⡟⡴⣫⣾⢿⣿⢣⣿⢏⣾⢟⣼⣿⢳⢏⣾⣿⡿⣱⣿⢯⣾⡟⣾⡟⣿⡟⠠⣀⢷⣻⣿⣷⠸⣧⠰⡀⠙⠿⠞⠁⣴⢣⣿⣿⣆⣼⢧⣿⢭⡷" + Style.RESET_ALL}                                         { Fore.MAGENTA + "Saúde" + Fore.WHITE + " Normal" + Style.RESET_ALL}
-{ Fore.BLACK + "⠀⠀⠀⠀⠀⠀⠀⠀⣴⢏⣨⣾⣿⢫⣿⢣⣿⡟⣼⢫⣾⣿⣏⣵⡿⢩⣿⡾⢻⣿⣿⣿⣽⣿⣽⣿⡥⢂⣈⢻⣿⣿⣏⢧⣻⣧⡻⣮⡒⢊⡼⣟⣾⣿⣳⡟⣼⣿⡫⣽⡇" + Style.RESET_ALL}                                         { Fore.RED + "Dano" + Fore.WHITE + " Maior" + Style.RESET_ALL}
-{ Fore.BLACK + "⠀⠀⠀⠀⠀⠀⠀⣼⣿⢿⣿⡿⣣⣿⢧⣿⣿⢘⣵⣿⢯⣿⣿⡿⠁⠟⠉⠀⠿⠋⣼⠿⣹⣿⢿⡿⠁⢀⣉⢷⣿⣿⣿⠷⠿⠿⠿⠿⠿⢿⣿⣿⣿⡏⣿⢸⣿⡟⣿⠟" + Style.RESET_ALL}                                          { Fore.GREEN + "Sorte" + Fore.WHITE + " Menor" + Style.RESET_ALL}
+{ Fore.BLACK + "⠀⠀⠀⠀⠀⠀⠀⠀⠀⣰⡟⡴⣫⣾⢿⣿⢣⣿⢏⣾⢟⣼⣿⢳⢏⣾⣿⡿⣱⣿⢯⣾⡟⣾⡟⣿⡟⠠⣀⢷⣻⣿⣷⠸⣧⠰⡀⠙⠿⠞⠁⣴⢣⣿⣿⣆⣼⢧⣿⢭⡷" + Style.RESET_ALL}                                         { Fore.MAGENTA + "Saúde" + Fore.YELLOW + " ★★" + Style.RESET_ALL}
+{ Fore.BLACK + "⠀⠀⠀⠀⠀⠀⠀⠀⣴⢏⣨⣾⣿⢫⣿⢣⣿⡟⣼⢫⣾⣿⣏⣵⡿⢩⣿⡾⢻⣿⣿⣿⣽⣿⣽⣿⡥⢂⣈⢻⣿⣿⣏⢧⣻⣧⡻⣮⡒⢊⡼⣟⣾⣿⣳⡟⣼⣿⡫⣽⡇" + Style.RESET_ALL}                                         { Fore.RED + "Dano" + Fore.GREEN + "  ★★★" + Style.RESET_ALL}
+{ Fore.BLACK + "⠀⠀⠀⠀⠀⠀⠀⣼⣿⢿⣿⡿⣣⣿⢧⣿⣿⢘⣵⣿⢯⣿⣿⡿⠁⠟⠉⠀⠿⠋⣼⠿⣹⣿⢿⡿⠁⢀⣉⢷⣿⣿⣿⠷⠿⠿⠿⠿⠿⢿⣿⣿⣿⡏⣿⢸⣿⡟⣿⠟" + Style.RESET_ALL}                                          { Fore.GREEN + "Sorte" + Fore.RED + " ★" + Style.RESET_ALL}
 ⠀⠀⠀⠀⠀⠀⠸⠋⢁⣾⡿⣱⣿⣯⣿⣿⣧⣾⣿⢏⣿⣳⡿⠁⠀⠀⠀⠀⠀⠀⠀⠀⠈⠀⣼⢇⠂⢀⠹⣾⡇⣿⣿⣿⣽⣽⣹⣫⣿⣻⣿⣿⣿⣷⣿⢪⣿⢧⣿
 { Fore.BLACK + "⠀⠀⠀⠀⠀⠀⠀⢀⣾⡟⣱⡿⣻⣿⢯⣿⢯⣿⢏⡾⣱⡟⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿⡎⣰⠏⣀⣹⣿⣿⢷⡟⣾⡏⡿⣿⣟⡯⣿⣽⣿⣿⣿⢸⣿⢸⡇" + Style.RESET_ALL}                               { Fore.WHITE + "Anjos da morte costumam ser assustadores e" + Style.RESET_ALL}
 { Fore.BLACK + "⠀⠀⠀⠀⠀⠀⠀⣾⡟⣴⡿⣽⣿⢏⣾⢏⣿⡏⢎⣵⠟⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣸⡿⣼⢫⣾⠛⠻⣿⣿⣼⠥⣿⠐⡇⣿⣟⣗⢻⡎⣿⢿⣟⣿⡇⣿⠃" + Style.RESET_ALL}                               { Fore.WHITE + "em sua maior parte são muito agressivos..." + Style.RESET_ALL}
@@ -1202,9 +1202,9 @@ def sabio_feiticeiro():
 {Fore.BLUE + "⠀⠀⠀⠀⣰⢿⢽⣮⣘⠺⢽⣳⣌⡳⣻⡴⡯⡯⣗⣖⣦⢤⢤⢦⣖⡾⡝⢰⣺⢽⢽⢽⢥⣉⠀⠈⠫⠟⢞⠞⠞⠈⠀⠀⠀⠀⠀⠠⠀⠀⡀⠀⠀⠀⠀⠠⢺⡳⠄⠀⠀⠀⠀⠀⠀⢀⡤⡟⢠⢾⡟⢠⠯⠁" + Style.RESET_ALL}                         {fn.rgb_text("PODER DO FEITICEIRO")} 
 ⠀⡀⠐⢰⢯⢯⣇⠻⣺⢳⢦⣌⡓⣟⣷⡻⣰⢯⢓⣗⠇⣟⠏⣽⠨⣟⠆⣟⣊⠋⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠐⠁⠀⠀⠀⠀⠀⠒⢊⣋⣥⢾⠝⢃⣴⣏⢴⣳⣆⠀⠀⠀⠀⠀
 {Fore.BLUE + "⠀⠀⢠⢯⡯⣷⢙⣆⢻⢸⢽⣺⣝⠗⢗⡯⡯⣿⢰⣷⡺⠍⣼⡳⣸⢽⢀⡯⣟⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠐⠀⠀⠀⠀⡀⠄⠀⠀⠂⢁⠀⠀⠀⠀⠀⠀⠈⠉⠉⠋⢊⠬⠴⠺⠙⠁⠀⠰⠲⠏⠀⠀⠀⠀" + Style.RESET_ALL}                  {Fore.BLACK + "Sábios Feiticeiros tem:" + Style.RESET_ALL}
-{Fore.BLUE + "⠀⠀⡼⡽⡽⡝⠇⢹⢼⣸⡝⢠⢤⣑⠒⠌⡙⢽⠽⢚⣙⣙⣳⢯⢯⡗⢸⢽⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠄⠐⠀⠁⠀⠀⢀⣤⣖⣷⣲⣲⣲⠳⠋⠁⠀⠀⢀⠀⠠⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀" + Style.RESET_ALL}                       {Fore.MAGENTA + ("Sáude") + Fore.WHITE + (" normal")}
-{Fore.BLUE + "⠀⢠⣯⠿⢙⠙⢷⢼⢽⡚⣠⢯⣟⡾⣽⣲⢤⣄⣠⢦⢦⢦⠦⣨⢯⠇⣺⢽⠀⠀⠀⠀⠀⠀⠀⡀⠄⠈⠀⠀⠀⠀⠀⣠⢮⣟⠞⣪⣾⡺⠈⠀⢀⣀⣀⡀⠈⠉⠋⠉⠀⠀⢀⠠⠀⠀⠰⠒⠁⠀⠀⠐⠀⠀" + Style.RESET_ALL}                            {Fore.RED + ("Dano") + Fore.WHITE + (" menor")}
-{Fore.BLUE + "⠀⣸⣺⣞⠏⣋⡉⠫⣏⡴⡯⣟⡾⠍⣗⣇⣞⣎⡾⡽⡽⡝⣰⡯⡿⣌⣯⠃⠀⠀⠀⠀⠀⢀⠀⠀⠀⠀⠀⠀⠀⠀⣼⠝⠁⣠⣖⣗⣗⣟⣶⣺⢽⣺⣺⢽⣲⢤⣄⣤⣴⣺⠝⠉⠁" + Style.RESET_ALL}                                     {Fore.GREEN + ("Sorte") + Fore.WHITE + (" maior")}
+{Fore.BLUE + "⠀⠀⡼⡽⡽⡝⠇⢹⢼⣸⡝⢠⢤⣑⠒⠌⡙⢽⠽⢚⣙⣙⣳⢯⢯⡗⢸⢽⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠄⠐⠀⠁⠀⠀⢀⣤⣖⣷⣲⣲⣲⠳⠋⠁⠀⠀⢀⠀⠠⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀" + Style.RESET_ALL}                       {Fore.MAGENTA + ("Sáude") + Fore.YELLOW + (" ★★")}
+{Fore.BLUE + "⠀⢠⣯⠿⢙⠙⢷⢼⢽⡚⣠⢯⣟⡾⣽⣲⢤⣄⣠⢦⢦⢦⠦⣨⢯⠇⣺⢽⠀⠀⠀⠀⠀⠀⠀⡀⠄⠈⠀⠀⠀⠀⠀⣠⢮⣟⠞⣪⣾⡺⠈⠀⢀⣀⣀⡀⠈⠉⠋⠉⠀⠀⢀⠠⠀⠀⠰⠒⠁⠀⠀⠐⠀⠀" + Style.RESET_ALL}                            {Fore.RED + ("Dano") + Fore.RED + ("  ★")}
+{Fore.BLUE + "⠀⣸⣺⣞⠏⣋⡉⠫⣏⡴⡯⣟⡾⠍⣗⣇⣞⣎⡾⡽⡽⡝⣰⡯⡿⣌⣯⠃⠀⠀⠀⠀⠀⢀⠀⠀⠀⠀⠀⠀⠀⠀⣼⠝⠁⣠⣖⣗⣗⣟⣶⣺⢽⣺⣺⢽⣲⢤⣄⣤⣴⣺⠝⠉⠁" + Style.RESET_ALL}                                     {Fore.GREEN + ("Sorte") + Fore.GREEN + (" ★★★")}
 ⠀⢺⣳⢧⢾⠇⣡⠀⣤⡉⢙⡷⠉⠐⠗⢓⡡⣗⡯⡯⡏⠀⠀⠈⠉⠓⠃⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠐⣟⠀⠀⠗⠓⠓⠓⠓⠓⣩⣟⣞⡾⢽⠺⣽⣺⡺⠚⠀⠀⠀⠀⠀
 {Fore.BLUE + "⠀⠘⡾⡽⣝⣼⡳⣸⣳⠁⣟⣖⡶⣄⠠⢥⣲⠳⠯⠋⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠀⠀⠀⡀⠄⠐⠀⠁⠀⢻⡀⠀⠀⣀⡤⣖⣖⣞⣗⢷⣳⢥⣀⣀" + Style.RESET_ALL}                              {Fore.WHITE + ("Ser apenas feiticeiro já é algo incrivel...")}
 {Fore.BLUE + "⠀⠀⠘⢯⣗⣗⣇⣗⡯⢰⣳⢁⡯⡯⡯⣟⣾⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠙⢦⣄⡁⣋⣳⣳⣳⡤⣤⡀⠉⠈" + Style.RESET_ALL}                               {Fore.WHITE + ("Ser um sábio só melhora, sua sabedoria em ")}
@@ -1239,9 +1239,9 @@ def arqueiro_magico():
 {Fore.CYAN + "⢀⣠⡿⠟⣩⣵⣶⣾⣶⣿⣿⣿⣟⣛⣋⣍⣴⣿⣯⣾⠟⣡⣿⣿⡻⢡⣾⠇⣾⣧⡀⠀⠀⠉⣻⣿⣿⡇⣠⠞⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠘⣷⣝⣿⣽⣿⡇⠐⠋⠀⠀⠓⠲⣦⣤⣀⠀⠈⠁⠀⢀⣴⠟ ⣿⠀⠀⠀⠀⣠⠾⠋⠁⠀⠀⠀⠀⠀⠀⠀⠀" + Style.RESET_ALL}                 {fn.rgb_text("PODER DO ARQUEIRO")}
 ⠋⠉⢠⣾⣿⣿⡿⣿⣷⣶⣬⣙⠿⣿⣛⣻⠛⠛⣉⣤⣾⣿⣛⣥⣾⡿⢃⣼⡟⠉⣻⣷⣦⣄⣿⣇⣿⡷⠋⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀ ⠀⠀ ⠀⠀⠀⢀⣠⣍⣹⣿⣻⣷⠀⠀⠀⠀⠀⠀⠀⠈⠉⠓⠂⠀⢀⡿⠁     ⣼⠇⣠⠖⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀   ⠀
 {Fore.CYAN + "⠀⣰⠟⠋⠀⠀⡀⠤⢶⣿⣿⣿⣿⣾⣿⣿⣿⣿⣿⣿⣯⡛⢿⣿⣭⣶⢿⣏⠀⢠⣿⣿⣿⣿⣿⡾⢋⣤⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀ ⠀⠀⠀⠀⠀⠀⠀⠾⠿⣵⠾⠉⣿⡞⣼⠀⠠⠤⢶⢶⢶⠶⠶⠦⠄⠀⢸⣖⡏⠀    ⢹⣦⢿⠄⠀⠘⠚⠛⠟⠟⠟⠟⠓⠒⠂⠀⠀⠀" + Style.RESET_ALL}           {Fore.BLACK + "Arqueiros Mágicos tem:" + Style.RESET_ALL}
-{Fore.CYAN + "⠀⣠⣴⣾⠿⠿⠿⢿⣷⣦⣌⠛⢿⣯⣏⢿⣿⣯⣝⠿⣿⣿⣶⣌⠻⣿⣮⡹⣷⣿⢛⣴⡿⣹⠟⣰⣿⡿⢋⣥⣦⣄⠀⠀⠀⠀⠀⠀⠀⠀ ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣸⣯⡾⣿⠀⠀⠀⠀⠀⠀⠀⠀⣀⡀⢀⣾⠹⢁       ⢸⠇⠀⠤⣄⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀" + Style.RESET_ALL}                 {Fore.MAGENTA + ("Sáude") + Fore.WHITE + (" menor")}
-{Fore.CYAN + "⣾⣿⣿⣿⢿⠿⠲⣂⣀⣙⠻⣿⣦⣌⠻⣷⣮⣻⣿⣷⣮⣻⣿⣿⣿⣮⣿⢿⣾⣵⣿⣿⠟⣡⣾⠿⣩⣶⡿⢟⣻⣷⣦⣄⣀⡀⠀⠀ ⠀⠀⠀⠀⠀⠀⠀ ⠀⠀⠀⠀⠀⢐⣿⣇⣾⡇⠀⠀⠀⠀⠀⠠⠒⠋⠁⠀⢾⡁⣴⣟⣴⠞⢁⡿⠁⠠⡀⠀⠙⠳⢦⣀⠀⠀⠀⠀⠀⠀⠀" + Style.RESET_ALL}                     {Fore.RED + ("Dano") + Fore.WHITE + (" normal")}
-{Fore.CYAN + "⣿⣿⡿⢉⣴⣾⣿⡿⣛⣿⠿⠛⠋⣛⠷⠿⠿⠿⠿⠽⠿⢿⣿⠿⠙⠉⢀⠠⢬⣉⠻⣯⣴⣿⣿⣿⣿⣯⣶⣿⣿⣵⣿⣿⣿⣿⣿⣶⣦⣴⣤⣄⣀⣄⣠⣀⣀⣀⣄⣠⣀⣴⡟⠉⡈⢹⠶⣄⣀⣀⣀⣀⣀⣀⣀⣀⣠⣼⣿⣿⣧⣤⣘⣉⠁⠀⠀⠙⢦⡄⠀⠀  ⠀⠀⠀" + Style.RESET_ALL}⠀⠀⠀                     {Fore.GREEN + ("Sorte") + Fore.WHITE + (" maior")}
+{Fore.CYAN + "⠀⣠⣴⣾⠿⠿⠿⢿⣷⣦⣌⠛⢿⣯⣏⢿⣿⣯⣝⠿⣿⣿⣶⣌⠻⣿⣮⡹⣷⣿⢛⣴⡿⣹⠟⣰⣿⡿⢋⣥⣦⣄⠀⠀⠀⠀⠀⠀⠀⠀ ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣸⣯⡾⣿⠀⠀⠀⠀⠀⠀⠀⠀⣀⡀⢀⣾⠹⢁       ⢸⠇⠀⠤⣄⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀" + Style.RESET_ALL}                 {Fore.MAGENTA + ("Sáude") + Fore.RED + (" ★")}
+{Fore.CYAN + "⣾⣿⣿⣿⢿⠿⠲⣂⣀⣙⠻⣿⣦⣌⠻⣷⣮⣻⣿⣷⣮⣻⣿⣿⣿⣮⣿⢿⣾⣵⣿⣿⠟⣡⣾⠿⣩⣶⡿⢟⣻⣷⣦⣄⣀⡀⠀⠀ ⠀⠀⠀⠀⠀⠀⠀ ⠀⠀⠀⠀⠀⢐⣿⣇⣾⡇⠀⠀⠀⠀⠀⠠⠒⠋⠁⠀⢾⡁⣴⣟⣴⠞⢁⡿⠁⠠⡀⠀⠙⠳⢦⣀⠀⠀⠀⠀⠀⠀⠀" + Style.RESET_ALL}                     {Fore.RED + ("Dano") + Fore.YELLOW + ("  ★★")}
+{Fore.CYAN + "⣿⣿⡿⢉⣴⣾⣿⡿⣛⣿⠿⠛⠋⣛⠷⠿⠿⠿⠿⠽⠿⢿⣿⠿⠙⠉⢀⠠⢬⣉⠻⣯⣴⣿⣿⣿⣿⣯⣶⣿⣿⣵⣿⣿⣿⣿⣿⣶⣦⣴⣤⣄⣀⣄⣠⣀⣀⣀⣄⣠⣀⣴⡟⠉⡈⢹⠶⣄⣀⣀⣀⣀⣀⣀⣀⣀⣠⣼⣿⣿⣧⣤⣘⣉⠁⠀⠀⠙⢦⡄⠀⠀  ⠀⠀⠀" + Style.RESET_ALL}⠀⠀⠀                     {Fore.GREEN + ("Sorte") + Fore.GREEN + (" ★★★")}
 ⣿⣿⣰⣿⣿⡿⢃⣾⠟⣡⠞⣡⣾⣿⣼⣱⣎⣴⣶⡆⣶⠋⠀⠀⠀⠀⢄⠙⣦⠙⣶⣘⣷⣶⣴⣴⣴⣴⣴⣴⣴⣶⣴⣶⣶⣶⣶⣶⣶⣶⡿⢋⡛⣛⣙⣛⣛⢛⣛⢛⡿⠁⠀⣼⢷⣸⠶⡿⠋⠋⠋⠋⠋⢛⠛⠛⠻⠷⢶⣶⡶⠾⠟⠛⠛⠑⠀⠀⠈⠻⢦⡀⠀⠀⠀⠀⠀⠀⠀⠀
 {Fore.CYAN + "⣿⣿⣿⣿⡿⣱⣿⣫⣾⠏⣰⣿⣿⣿⢿⣿⣿⣿⣿⣗⣿⣀⠀⣀⣠⣦⠈⡇⣸⣰⣿⡙⢿⣿⣿⢏⣿⣿⢟⣿⣿⣿⣿⢿⢏⣾⡿⣹⣿⢽⡏⣼⣸⣿⣿⣿⣿⣿⣿⣸⡇⠰⢺⣿⠚⠳⢲⡏⠀⠀⢀⣴⠟⠁⠀⡤⠀⠀⠀⠀⠠⡄⠀⢰⡀⠀⢳⣄⠀⠀⠀⠙⠄⠀⠀⠀⠀⠀⠀⠀" + Style.RESET_ALL}       {Fore.WHITE + ("Orelhas pontudas... Arco mágico... quer algo mais?")}
 {Fore.CYAN + "⣿⡿⣱⣿⣿⣿⣿⣿⠋⣼⡿⠟⢛⢛⣋⣩⣥⣥⣶⣾⣿⣿⣿⣿⣯⣍⣴⣷⣿⡿⣿⣿⣆⠻⣏⣼⣿⣷⡿⠟⣓⣵⣿⣏⣾⡿⢣⣿⣟⢼⣷⣿⣿⣿⣿⣿⡷⡿⠿⠿⠿⣦⣤⣿⣏⣙⣿⠁⠀⠀⠋⠀⠀⢠⡾⠃⠀⣰⠇⠀⢘⡧⠀⠀⣷⡀⠀⠙⢆⠀⠀⠀⠀⠀⠀⠀⠀⠀ ⠀" + Style.RESET_ALL}       {Fore.WHITE + ("Arqueiros mágicos são criaturas extremamente tranquilas ")}
@@ -1275,9 +1275,9 @@ def pricesa_medusa():
 {Fore.GREEN + "⠀⠀⠀⢻⡿⢱⣾⣿⣷⣷⣷⣶⣬⣭⣥⣿⠃⡠⠤⣤⣀⠈⠀⠈⠀⠢⡀⠆⢀⠀⠁⠈⠈⢿⣿⣾⠟⠁⠀⠀⠀⠀⠙⢿⣾⣿⣿⣦⠀⢀⣀⣠⣴⣾⣿⣿⣯⠟⠀⠀⠀⠀⠀⣠⣴⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣟⣿⣆⣝⣽⣿⣯⡽⠄" + Style.RESET_ALL}                           {fn.rgb_text("PODER DO OLHAR DA MORTE")}
 ⠀⢀⣴⢏⣴⣿⡿⢋⣥⣥⣭⣩⣋⣯⣾⠇⠀⠠⢦⢤⣽⣿⣦⡀⠀⠀⣱⠈⢸⠀⣀⡶⠛⣺⣿⣅⠀⠀⠀⠀⠀⠀⢀⡀⠹⣿⣾⣿⣧⢘⣿⣿⡿⣟⡿⠞⠁⠀⠀⠀⠀⣤⣿⣿⣿⣟⣯⠷⠿⠿⠽⠿⠷⠿⠿⠽⠛⠺⣿⣿⣏⣋⡁⠁⠸⠁⠀⢀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
 {Fore.GREEN + "⣶⣿⣷⣿⣻⣿⢰⣿⣿⡟⢹⢿⡛⠻⡟⢀⠔⠀⠘⣧⠀⠸⠿⢻⣷⣶⣗⠼⣼⡾⣿⡟⣿⣿⣿⣿⣷⣴⣤⣤⣶⣾⣿⣿⠄⣻⣿⣽⣿⠐⠟⠛⠋⠉⠀⠀⠀⠀⠀⢠⣾⣿⣿⣯⠟⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠙⠷⣄⡉⠙⠒⠛⠛⠫⡉⠁" + Style.RESET_ALL}                       {Fore.BLACK + "as Princesas Medusas tem:" + Style.RESET_ALL}
-{Fore.GREEN + "⣿⠿⠋⣡⣿⣿⣿⡿⣿⣷⠀⢻⣏⡀⠁⠸⣠⠂⠀⢌⣛⣺⡾⠟⢡⠤⢄⠀⠘⣷⣬⠴⠋⣿⣷⡹⢿⣟⣿⣿⣻⣿⡽⠟⢁⣿⣿⢸⣿⠀⠀⠀⠀⠀⠀⠀⠀⠀⣰⣿⣿⣯⡷⠃⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠛⠉" + Style.RESET_ALL}                                  {Fore.MAGENTA + ("Sáude") + Fore.WHITE + (" maior")}
-{Fore.GREEN + "⣡⣶⣿⣿⣿⢻⣾⣿⣿⣿⣷⡄⠈⠃⡀⠀⡉⠦⡔⠀⡀⢀⠀⢀⣴⡂⢤⡀⠀⠸⣎⠉⢀⣿⣿⣿⣦⣌⣉⡉⡉⣁⣠⣴⣿⣿⣣⣿⠇⠀⠀⠀⠀⠀⣀⣠⣴⣿⣿⣿⣻⠝⠀⠀⠀⠀⠀⢀⣠⣤⣴⣶⣶⣶⣶⣤⣀⠀" + Style.RESET_ALL}                                        {Fore.RED + ("Dano") + Fore.WHITE + (" normal")}
-{Fore.GREEN + "⣿⠟⣫⣿⡏⣼⣿⡿⡿⣸⣿⣿⣷⣾⣇⢀⠁⢄⠙⢮⠀⠀⡔⢃⠀⢓⡂⠙⠦⠾⠹⢨⣿⣿⡟⣿⣟⣿⣿⣿⣿⣿⣿⣿⣿⣷⠿⢋⣴⣷⣷⣷⣿⣿⡿⣿⣟⣿⣽⡿⠉⠀⠀⠀⠀⣠⣴⣿⡿⣟⣿⣟⣿⣽⣿⢿⣿⣷⣤⣀⣀⣀⣤⣤⣦⣄" + Style.RESET_ALL}                                {Fore.GREEN + ("Sorte") + Fore.WHITE + (" menor")}
+{Fore.GREEN + "⣿⠿⠋⣡⣿⣿⣿⡿⣿⣷⠀⢻⣏⡀⠁⠸⣠⠂⠀⢌⣛⣺⡾⠟⢡⠤⢄⠀⠘⣷⣬⠴⠋⣿⣷⡹⢿⣟⣿⣿⣻⣿⡽⠟⢁⣿⣿⢸⣿⠀⠀⠀⠀⠀⠀⠀⠀⠀⣰⣿⣿⣯⡷⠃⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠛⠉" + Style.RESET_ALL}                                  {Fore.MAGENTA + ("Sáude") + Fore.GREEN + (" ★★★")}
+{Fore.GREEN + "⣡⣶⣿⣿⣿⢻⣾⣿⣿⣿⣷⡄⠈⠃⡀⠀⡉⠦⡔⠀⡀⢀⠀⢀⣴⡂⢤⡀⠀⠸⣎⠉⢀⣿⣿⣿⣦⣌⣉⡉⡉⣁⣠⣴⣿⣿⣣⣿⠇⠀⠀⠀⠀⠀⣀⣠⣴⣿⣿⣿⣻⠝⠀⠀⠀⠀⠀⢀⣠⣤⣴⣶⣶⣶⣶⣤⣀⠀" + Style.RESET_ALL}                                        {Fore.RED + ("Dano") + Fore.YELLOW + ("  ★★")}
+{Fore.GREEN + "⣿⠟⣫⣿⡏⣼⣿⡿⡿⣸⣿⣿⣷⣾⣇⢀⠁⢄⠙⢮⠀⠀⡔⢃⠀⢓⡂⠙⠦⠾⠹⢨⣿⣿⡟⣿⣟⣿⣿⣿⣿⣿⣿⣿⣿⣷⠿⢋⣴⣷⣷⣷⣿⣿⡿⣿⣟⣿⣽⡿⠉⠀⠀⠀⠀⣠⣴⣿⡿⣟⣿⣟⣿⣽⣿⢿⣿⣷⣤⣀⣀⣀⣤⣤⣦⣄" + Style.RESET_ALL}                                {Fore.GREEN + ("Sorte") + Fore.RED + (" ★")}
 ⢃⣾⣿⠟⣰⣿⡿⡿⢡⣿⣿⢮⣿⡇⢻⡄⠂⠸⠀⠘⠀⡰⠁⣡⣾⠉⣟⢻⢲⠲⡆⣼⣿⣟⣿⣦⡉⠛⠻⠽⠿⠽⠿⠝⠚⢉⢴⢿⣿⡿⣟⣿⣽⣿⡿⡿⠟⠏⠁⠀⠀⠀⠀⣠⣾⣿⣿⢿⡟⠏⠉⠀⠀⠀⠈⠙⠿⣯⣿⣿⣿⢿⣿⡿⣯⢹⢟⣷⡶⢦⡄⠀⠀⠀⠀⠀⠀⠀⠀⠀
 {Fore.GREEN + "⣿⠿⣩⣼⣿⣟⣿⡏⣼⣿⣿⢸⣿⡃⠈⢿⣄⠢⠀⠡⠀⡇⣰⣿⣿⣲⣿⣿⣿⣸⣿⣿⣧⠻⣿⣿⣿⣷⣦⣤⣤⣠⣤⣤⣤⣤⣦⣤⣤⣌⡀⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⣾⣿⣿⣻⠞⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠉⠙⠊⠻⣿⣿⣿⠟⠟⠛⢛⠟⠁" + Style.RESET_ALL}               {Fore.WHITE + ("Reza a lenda que antes de virarem medusas")}
 {Fore.GREEN + "⣿⣿⣿⣿⠟⣰⣿⣇⢺⣿⣿⢸⣿⠂⠀⡀⠻⣶⣀⠐⡀⠃⢿⡻⠃⢿⠿⡯⢻⢹⣿⣿⣿⣷⣌⠙⠿⣟⣿⣿⢿⣿⢿⣿⢿⣿⢿⣿⢿⣿⣿⣷⣦⣀⠀⠀⠀⣀⣠⣴⣾⣿⣿⣯⠿⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠻⣾⡓⠲⢄⣈⣀⣀⣄⣀" + Style.RESET_ALL}             {Fore.WHITE + ("eram mulheres lindas que seduziam a todos  ")}
@@ -1311,9 +1311,9 @@ def morte_mormurante():
 {Fore.MAGENTA + "⠀⠈⠀⠀⠀⠐⢨⣿⣿⠟⠛⠻⣾⣿⣿⡌⣿⢐⣿⣿⣿⣶⣴⣳⡈⠪⡛⢟⢏⡟⡡⣠⡨⡿⠿⢹⡆⠀⠄⠀⠀⡀⠄⠀⠀⢸⣿⠀⠀⢽⡧⠀⠈⣿⡀⠀⠀⠀⠙⢷⣤⡈⠛⠟⠟⢁⣠⡾⠋⢀⠀⠀⠀⢹⡟⠁⠀⣺⠇⠀⠀⣿⠇⠀⡴⠋⠉⠀⠀⠀⠀⠉⠉⢀⣴⡿⠀⠀⠀⠀" + Style.RESET_ALL}                      {fn.rgb_text("PODER DO ILUSIONISTA")}                            
 ⠈⠀⠀⡀⠂⠀⢹⣿⠃⠀⠀⠀⠈⢿⣿⣷⢹⡆⢿⣿⣿⣷⢹⣷⣭⣳⣲⠖⠫⡎⣴⢟⡇⣽⣭⡾⠃⠀⢀⢠⡷⠛⠛⠚⠀⠨⣿⡀⠀⠘⣿⡀⠀⠹⣧⠀⠀⣡⡖⠀⡈⠛⠿⠾⠾⠛⠉⡀⠀⠉⠶⣌⡀⠜⠀⠄⠀⡟⠀⠀⢨⡿⠁⠀⠀⣀⣴⣶⢷⣶⣧⣶⡷⠟⠋⠀⠀⠀⠈⠀
 {Fore.MAGENTA + "⠀⠂⠀⠀⠀⢀⠈⠻⢧⡀⠀⠁⠀⢼⣟⢿⣿⣷⢘⣿⣷⣿⢸⢻⢜⣿⡝⣧⢀⠃⡘⠘⠂⣹⠏⠀⡀⡦⠞⠏⠁⠀⠠⢀⡠⠀⢻⣇⠀⠀⢹⣷⠀⠀⠙⢁⣴⠟⠀⡴⠃⠀⠀⢤⠀⢀⠀⠘⣆⠀⠀⠈⠙⠦⠄⠀⠘⠀⠀⡀⢼⠃⠀⢀⡼⠋⠁⠀⠀⢀⠀⠀⠀⠀⠀⠄⠀⠁⠀⠂" + Style.RESET_ALL}                     {Fore.BLACK + "Mortes Mormurantes tem:"}
-{Fore.MAGENTA + "⠀⠄⠀⠂⠁⠀⠀⠀⠀⠀⠀⠐⣰⣿⣿⣎⢻⣿⣇⢹⣿⣿⡈⢸⡀⣿⠇⠊⣼⣰⣼⣼⡰⣼⠅⠀⠀⠀⠀⡀⠠⠰⠞⣻⠇⠀⠀⢿⣆⠈⠀⠹⣷⠀⣰⡾⠁⡀⠀⠁⢠⡏⠀⣽⠀⠸⣆⠀⠈⠀⠁⠀⢢⡀⠀⠈⠀⠀⣤⠀⠀⠀⠀⠘⠁⢀⡶⠟⠛⠛⠛⢷⣦⡀⠁⠀⢀⡇⠀⠠" + Style.RESET_ALL}                          {Fore.MAGENTA + ("Sáude") + Fore.WHITE + (" normal")}
-{Fore.MAGENTA + "⠀⠀⠀⡀⠀⠠⠐⢈⣠⣶⣿⣿⠿⢿⣿⣿⣎⢿⣿⡄⢿⣿⣿⣦⡂⢽⢰⢸⣿⣿⣿⣿⣿⡟⠀⠀⠈⠀⣠⣤⣦⡶⡾⠏⠀⠐⣀⠀⠻⣦⠀⠀⠀⡰⠋⢀⡼⠁⠀⣰⣿⣄⡀⣿⠀⠀⢻⣦⠀⠁⠀⠂⣸⢷⠀⠁⠀⣡⢻⡄⠀⣬⡆⠀⠄⠊⠀⣠⣤⣤⣄⡀⠙⢿⣦⣶⠾⠁⠀⠀" + Style.RESET_ALL}                          {Fore.RED + ("Dano") + Fore.WHITE + (" maior")}
-{Fore.MAGENTA + "⠂⠈⠀⠀⠀⣤⣶⣿⡻⡛⠿⢻⣿⣦⣕⠻⣿⣷⣻⣷⡈⢿⣿⣻⣿⣄⠸⡌⠇⠣⢋⢎⡾⠂⠀⢀⣈⣴⠟⠁⠀⠀⠀⠀⢠⡽⢹⡆⠀⠈⠁⠄⠂⠀⣰⡟⠁⠀⢰⠋⠀⠈⠛⣿⠀⠀⠀⠈⠁⠀⠄⠀⢿⡈⢷⣄⠀⢹⡌⢷⣸⡫⣇⠀⠀⠀⠊⠀⠀⠀⠙⣷⡄⠀⠀⠠⠀⠀⠄⠂" + Style.RESET_ALL}                          {Fore.GREEN + ("Sorte") + Fore.WHITE + (" menor")}
+{Fore.MAGENTA + "⠀⠄⠀⠂⠁⠀⠀⠀⠀⠀⠀⠐⣰⣿⣿⣎⢻⣿⣇⢹⣿⣿⡈⢸⡀⣿⠇⠊⣼⣰⣼⣼⡰⣼⠅⠀⠀⠀⠀⡀⠠⠰⠞⣻⠇⠀⠀⢿⣆⠈⠀⠹⣷⠀⣰⡾⠁⡀⠀⠁⢠⡏⠀⣽⠀⠸⣆⠀⠈⠀⠁⠀⢢⡀⠀⠈⠀⠀⣤⠀⠀⠀⠀⠘⠁⢀⡶⠟⠛⠛⠛⢷⣦⡀⠁⠀⢀⡇⠀⠠" + Style.RESET_ALL}                          {Fore.MAGENTA + ("Sáude") + Fore.YELLOW + (" ★★")}
+{Fore.MAGENTA + "⠀⠀⠀⡀⠀⠠⠐⢈⣠⣶⣿⣿⠿⢿⣿⣿⣎⢿⣿⡄⢿⣿⣿⣦⡂⢽⢰⢸⣿⣿⣿⣿⣿⡟⠀⠀⠈⠀⣠⣤⣦⡶⡾⠏⠀⠐⣀⠀⠻⣦⠀⠀⠀⡰⠋⢀⡼⠁⠀⣰⣿⣄⡀⣿⠀⠀⢻⣦⠀⠁⠀⠂⣸⢷⠀⠁⠀⣡⢻⡄⠀⣬⡆⠀⠄⠊⠀⣠⣤⣤⣄⡀⠙⢿⣦⣶⠾⠁⠀⠀" + Style.RESET_ALL}                          {Fore.RED + ("Dano") + Fore.GREEN + ("  ★★★")}
+{Fore.MAGENTA + "⠂⠈⠀⠀⠀⣤⣶⣿⡻⡛⠿⢻⣿⣦⣕⠻⣿⣷⣻⣷⡈⢿⣿⣻⣿⣄⠸⡌⠇⠣⢋⢎⡾⠂⠀⢀⣈⣴⠟⠁⠀⠀⠀⠀⢠⡽⢹⡆⠀⠈⠁⠄⠂⠀⣰⡟⠁⠀⢰⠋⠀⠈⠛⣿⠀⠀⠀⠈⠁⠀⠄⠀⢿⡈⢷⣄⠀⢹⡌⢷⣸⡫⣇⠀⠀⠀⠊⠀⠀⠀⠙⣷⡄⠀⠀⠠⠀⠀⠄⠂" + Style.RESET_ALL}                          {Fore.GREEN + ("Sorte") + Fore.RED + (" ★")}
 ⠀⠀⠀⢐⣾⣿⡿⡿⣿⣿⣷⣦⡉⠻⣿⣷⣌⢻⣿⣿⣷⡈⢿⣿⣿⣿⣦⣉⠁⠊⣠⣾⣷⣀⠀⠉⠁⠀⠀⠐⠀⠐⠀⣡⡞⣡⡟⠀⠀⢀⣂⣤⠀⠀⠋⠀⠀⠠⠀⡀⠀⠄⠀⡿⠀⠀⠀⡀⣶⡀⠀⡀⠈⢻⡆⢹⡄⠀⣿⠀⣿⡆⢿⡀⠀⠂⣴⡿⠛⢻⡆⠘⢿⣤⣄⣄⡀⠄⠀⠀
 {Fore.MAGENTA + "⠂⠈⢠⣿⣿⣿⣾⣾⣶⣬⡙⠿⣿⣧⡘⢿⣿⣦⡘⢿⣿⣿⣌⠻⣷⣿⡿⣿⣿⣿⣿⡿⣿⣿⣿⣦⡀⠂⠁⠀⠂⠀⣾⡋⣴⠏⣀⣤⠶⢛⣽⠇⠀⠂⠀⠠⠐⠀⣰⠁⠀⢀⠀⢏⠀⢀⠀⣼⢋⡷⠀⠀⠀⢘⣷⢌⡷⠀⣯⠀⣿⠃⣼⠃⠀⠀⢿⡆⠀⠞⠁⠀⠀⠉⠉⠙⠛⣦⠀⠀" + Style.RESET_ALL}           {Fore.WHITE + ("As Mortes Mormurantes são seres mitícos vindos")}
 {Fore.MAGENTA + "⠄⠀⣺⣿⣿⣾⣿⣟⣿⣿⡻⣦⡉⢿⣿⣄⠻⣿⣿⣤⠙⣿⣿⣷⣌⠛⠿⠟⣫⣾⡿⣸⣿⡇⣿⡿⣿⡄⠀⠀⠂⢸⡇⢰⡏⣴⠛⣤⠶⠛⢁⣠⡶⢾⡿⠁⠀⣰⡏⠀⠀⡆⠀⠀⡀⠀⣼⢋⣴⠏⠀⠀⠁⣼⠅⣰⣯⡞⢉⣤⢿⠠⡯⠀⠀⡀⠈⠻⢷⣶⣶⣶⣶⣤⡀⠄⠀⠘⠀⠀" + Style.RESET_ALL}           {Fore.WHITE + ("em sua maior parte das profundezas do submundo")}

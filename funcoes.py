@@ -701,10 +701,17 @@ def escolha_seta_inimigo_fase1(player) -> str:
             return escolha
         
         elif ch in (b"p", b"P"):
-            atacar_monstro_habilidade(player)
+            atacar_monstro_habilidade(player, idx)
             print("\n" * 3)
             centra_h(rgb_text("Aperte ENTER para continuar"))
             input()
+
+        if not escolhas_inimigo:
+            return ""
+
+        if idx >= len(escolhas_inimigo):
+            idx = len(escolhas_inimigo) - 1
+
 
         elif ch in (b"1", b"2", b"3", b"4"):
             n = int(ch.decode()) - 1
@@ -720,8 +727,7 @@ def escolha_seta_inimigo_fase1(player) -> str:
 
 
 #EXIBE A IMAGEM DO INIMIGO QUE ESTA SENDO SELECIONADO (FASE 1)
-def imagem_seta_escolhida_inimigo_fase1(idx: int) -> None:
-
+def imagem_seta_escolhida_inimigo_fase1(idx: int) -> str:
     from icons import dominus_img, draconis_img, carceres_img, mytus_img, wetiza_img, akari_img, ogroid_img, tarik_img
     imgs = {
         "DOMINUS": dominus_img,
@@ -734,6 +740,12 @@ def imagem_seta_escolhida_inimigo_fase1(idx: int) -> None:
         "TARIK": tarik_img,
     }
 
+    if not escolhas_inimigo:
+        return ""
+
+    if idx < 0 or idx >= len(escolhas_inimigo):
+        return ""
+
     nome = escolhas_inimigo[idx].split()[0]
 
     img = imgs.get(nome)
@@ -741,6 +753,7 @@ def imagem_seta_escolhida_inimigo_fase1(idx: int) -> None:
         return ""
     img_str = img()
     return img_str
+
 
 
 
@@ -811,18 +824,20 @@ def caixa_poder_heroi(player: dict) -> str:
 
 
 #USA A HABILIDADE DO PLAYER PARA ATACAR MONSTROS
-def atacar_monstro_habilidade(player: dict) -> None:
-    from icons import esqueleto_flamejante_especial
+def atacar_monstro_habilidade(player: dict, idx: int) -> None:
+    from icons import esqueleto_flamejante_especial, anjo_caido_especial
 
     habilidade = player['habilidade']
 
-    if habilidade == "CHAMAS INFERNAIS" and lista_npcs:
+
+    #HABILIDADE ESQUELETO FLAMEJANTE ---------------------------------------------------
+    if habilidade == "CHAMAS INFERNAIS" and len(lista_npcs) > 0:
 
         player['dano por fogo'] = player['dano'] // len(lista_npcs)
         for npc in lista_npcs:
             npc['hp'] -= player['dano por fogo']
 
-        img = esqueleto_flamejante_especial(player)
+        img = esqueleto_flamejante_especial()
         linhas_img = img.splitlines()
 
         for i, linha in enumerate(linhas_img):
@@ -838,22 +853,9 @@ def atacar_monstro_habilidade(player: dict) -> None:
         )
         linhas_texto.append(" ")
         linhas_texto.append(
-            f"{rgb_text("Monstros afetados em área:")}"
+            rgb_text("Monstros afetados em área:")
         )
         linhas_texto.append(" ")
-        for npc in lista_npcs:
-            if npc['hp'] <= 0:
-                npc['hp'] = 0
-                linhas_texto.append(Fore.RED + npc['nome'] + Style.RESET_ALL + " " + Fore.BLACK + "vida atual: " + f"{npc['hp']}" + Style.RESET_ALL)
-                nome_npc = npc['nome']
-                for i, esc in enumerate(escolhas_inimigo):
-                    if esc == nome_npc:
-                        idx = i
-                del escolhas_inimigo[i]
-                del npc
-            else:
-                linhas_texto.append(Fore.RED + npc['nome'] + Style.RESET_ALL + " " + Fore.BLACK + "vida atual: " + f"{npc['hp']}" + Style.RESET_ALL)
-
 
         largura_bloco = max(len(strip_ansi(l)) for l in linhas_texto)
 
@@ -868,7 +870,75 @@ def atacar_monstro_habilidade(player: dict) -> None:
         img_final = "\n".join(linhas_img)
         centra_h_v(img_final)
 
-            
+        indices_mortos = []
+
+        for i, npc in enumerate(lista_npcs):
+            if npc['hp'] <= 0:
+                npc['hp'] = 0
+                linhas_texto.append(
+                    Fore.RED + npc['nome'] + Style.RESET_ALL
+                    + " " + Fore.BLACK + "vida atual: " + f"{npc['hp']}" + Style.RESET_ALL
+                )
+                indices_mortos.append(i)  
+            else:
+                linhas_texto.append(
+                    Fore.RED + npc['nome'] + Style.RESET_ALL
+                    + " " + Fore.BLACK + "vida atual: " + f"{npc['hp']}" + Style.RESET_ALL
+                )
+
+        for i in reversed(indices_mortos):
+            del lista_npcs[i]
+            del escolhas_inimigo[i]
+
+
+    #HABILIDADE ANJO CAÍDO --------------------------------------------------------------------
+    elif habilidade == "CEIFEIRO" and len(lista_npcs) > 0:
+
+        lista_npcs[idx]['hp'] -= player['dano']
+        player['vida ceifada'] = player['dano']
+        player['hp'] += player['vida ceifada']        
+
+        img = anjo_caido_especial()
+        linhas_img = img.splitlines()
+
+        for i, linha in enumerate(linhas_img):
+            linhas_img[i] = Fore.RED + linha + Style.RESET_ALL
+
+        linhas_texto = []
+        linhas_texto.append(
+            rgb_text(f"{player['nome']} ATIVOU A HABILIDADE {player['habilidade']}")
+        )
+        linhas_texto.append(" ")
+        linhas_texto.append(
+            f"Ceifando {Fore.RED}{player['vida ceifada']}{Style.RESET_ALL} de vida do monstro {Fore.RED + f"{lista_npcs[idx]['nome']}" + Style.RESET_ALL}"
+        )
+        linhas_texto.append(
+            f"Dando {Fore.RED}{player['vida ceifada']}{Style.RESET_ALL} de dano pela foice"
+        )
+
+        largura_bloco = max(len(strip_ansi(l)) for l in linhas_texto)
+
+        for i, linha in enumerate(linhas_texto, start= 17):
+
+            visivel = strip_ansi(linha)
+            espaco_esq = (largura_bloco - len(visivel)) // 2
+            linha_centro = " " * espaco_esq + linha
+
+            linhas_img[i] = linhas_img[i] + " " * 8 + linha_centro
+
+        img_final = "\n".join(linhas_img)
+        centra_h_v(img_final)
+
+        indices_mortos = []
+
+        for i, npc in enumerate(lista_npcs):
+            if npc['hp'] <= 0:      
+                indices_mortos.append(i)
+
+        for i in reversed(indices_mortos):
+            del lista_npcs[i]
+            del escolhas_inimigo[i] 
+
 
             
 

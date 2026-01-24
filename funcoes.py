@@ -3,7 +3,7 @@ import shutil
 import re
 import time
 import msvcrt
-from random import randint
+from random import randint, choice
 from colorama import Fore, Style, init
 
 
@@ -1000,24 +1000,22 @@ def descri_monstro_mais_img(imagem: str, extra: str) -> None:
 
 
 #FAZ COM QUE AS IMAGENS DOS M0NSTROS FIQUEM COM CORES ALEATORIAS DEIXANDO MAIS INDIVIDUAL CADA MONSTRO
-def cor_aleatoria_monstro(imagem: str) -> None:
+def cor_aleatoria_monstro(imagem):
 
     cores = [
-        "\033[31m",  # vermelho
-        "\033[91m",  # vermelho claro
-        "\033[33m",  # amarelo
-        "\033[32m",  # verde
-        "\033[92m",  # verde claro
-        "\033[34m",  # azul
-        "\033[94m",  # azul claro
-        "\033[36m",  # ciano
-        "\033[35m",  # magenta
-        "\033[95m",  # rosa
+        "\033[31m", "\033[32m", "\033[33m",
+        "\033[34m", "\033[35m", "\033[36m",
+        "\033[91m", "\033[92m", "\033[94m"
     ]
 
-    cor = cores[randint(0, len(cores) - 1)]
+    cor = choice(cores)
+    reset = "\033[0m"
 
-    print( cor + imagem + Style.RESET_ALL)
+    linhas = imagem.splitlines()
+    linhas_coloridas = [cor + l + reset for l in linhas]
+
+    return "\n".join(linhas_coloridas)
+
             
 
 

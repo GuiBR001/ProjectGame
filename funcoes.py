@@ -999,6 +999,26 @@ def descri_monstro_mais_img(imagem: str, extra: str) -> None:
 
 
 
+#FAZ COM QUE AS IMAGENS DOS M0NSTROS FIQUEM COM CORES ALEATORIAS DEIXANDO MAIS INDIVIDUAL CADA MONSTRO
+def cor_aleatoria_monstro(imagem: str) -> None:
+
+    cores = [
+        "\033[31m",  # vermelho
+        "\033[91m",  # vermelho claro
+        "\033[33m",  # amarelo
+        "\033[32m",  # verde
+        "\033[92m",  # verde claro
+        "\033[34m",  # azul
+        "\033[94m",  # azul claro
+        "\033[36m",  # ciano
+        "\033[35m",  # magenta
+        "\033[95m",  # rosa
+    ]
+
+    cor = cores[randint(0, len(cores) - 1)]
+
+    print( cor + imagem + Style.RESET_ALL)
+            
 
 
 

@@ -13,5 +13,8 @@ def fase_1(fase: int, orda: int, player: dict) -> None:
 
         fn.limpar_tela()
         escolha = fn.escolha_seta_inimigo_fase1(player)
-        fn.atacar_monstro(escolha, player)
+
+        if escolha is not None:
+            fn.atacar_monstro(escolha, player)
+
         

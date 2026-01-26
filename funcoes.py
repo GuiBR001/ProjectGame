@@ -458,6 +458,11 @@ def criar_npc(level, fase) -> dict:
         "dano": 5 * level,
         "hp": 100 * level,
         "exp": 7 * level,
+        "cor": choice([
+            "\033[31m", "\033[32m", "\033[33m",
+            "\033[34m", "\033[35m", "\033[36m",
+            "\033[91m", "\033[92m", "\033[94m"
+        ])
     }
 
     return novo_npc
@@ -643,14 +648,20 @@ def escolha_seta_menu() -> str:
 
 
 #RETORNA A ESCOLHA DO INIMIGO SELECIONADO
-def escolha_seta_inimigo_fase1(player) -> str:
+def escolha_seta_inimigo_fase1(player) -> int | None:
     def strip_ansi(s: str) -> str:
         return _ANSI.sub("", s or "")
-    
+
     idx = 0
+    mostrar_poder = (randint(1, 5) == 1)  # chance 1/5
+
     while True:
+        if not escolhas_inimigo:
+            return None
+
         img = imagem_seta_escolhida_inimigo_fase1(idx)
         extra = exibe_status_monstro(idx)
+
         limpar_tela()
         descri_monstro_mais_img(img, "\n".join(extra))
         print("\n")
@@ -664,15 +675,18 @@ def escolha_seta_inimigo_fase1(player) -> str:
             selecionado = (i == idx)
             seta = "➤" if selecionado else " "
             cor = Fore.RED + Style.BRIGHT if selecionado else Fore.WHITE
+
             nome = esc.split()[0]
             sexo = esc.split()[-1]
-            if sexo == "Macho": 
-                coresc = Fore.BLUE + sexo + Style.RESET_ALL
-            else:
-                coresc = Fore.MAGENTA + sexo + Style.RESET_ALL
+            coresc = (
+                Fore.BLUE + sexo if sexo == "Macho"
+                else Fore.MAGENTA + sexo
+            ) + Style.RESET_ALL
+
             conteudo = f"{seta} {nome} {coresc}"
             largura_visivel = len(strip_ansi(conteudo))
             espaco = max(largura_interna - largura_visivel, 0)
+
             linha_final = (
                 Fore.CYAN + "║ "
                 + cor + conteudo + Style.RESET_ALL
@@ -681,45 +695,36 @@ def escolha_seta_inimigo_fase1(player) -> str:
             )
             centra_h(linha_final)
 
-        centra_h(Fore.CYAN + "╚" + "═" * largura_interna + "╝") 
-        caixa_cor = rgb_text(caixa_poder_heroi(player))
-        centra_h(caixa_cor)
+        centra_h(Fore.CYAN + "╚" + "═" * largura_interna + "╝")
+
+        if mostrar_poder:
+            centra_h(rgb_text(caixa_poder_heroi(player)))
 
         ch = msvcrt.getch()
 
         if ch in (b"\x00", b"\xe0"):
             ch2 = msvcrt.getch()
-
             if ch2 == b"H":
                 idx = (idx - 1) % len(escolhas_inimigo)
-                
             elif ch2 == b"P":
                 idx = (idx + 1) % len(escolhas_inimigo)
 
         elif ch in (b"\r", b"\n"):
-            escolha = escolhas_inimigo[idx]
-            return escolha
-        
-        elif ch in (b"p", b"P"):
+            return idx  # 🔥 ÍNDICE REAL
+
+        elif mostrar_poder and ch in (b"p", b"P"):
             atacar_monstro_habilidade(player, idx)
-            print("\n" * 3)
-            centra_h(rgb_text("Aperte ENTER para continuar"))
+            centra_h("\nAperte ENTER para continuar")
             input()
+            return None
 
-        if not escolhas_inimigo:
-            return ""
-
-        if idx >= len(escolhas_inimigo):
-            idx = len(escolhas_inimigo) - 1
-
-
-        elif ch in (b"1", b"2", b"3", b"4"):
+        elif ch in (b"1", b"2", b"3", b"4", b"5"):
             n = int(ch.decode()) - 1
             if 0 <= n < len(escolhas_inimigo):
-                escolha = escolhas_inimigo[n]
-                return escolha
-        else:
-            time.sleep(0.00000000000000000000000000001)
+                return n
+
+
+
 
 
 
@@ -751,8 +756,12 @@ def imagem_seta_escolhida_inimigo_fase1(idx: int) -> str:
     img = imgs.get(nome)
     if not img:
         return ""
+
     img_str = img()
+    npc = lista_npcs[idx]
+    img_str = aplicar_cor_monstro(img_str, npc["cor"])
     return img_str
+
 
 
 
@@ -1471,32 +1480,10 @@ def atacar_monstro_habilidade(player: dict, idx: int) -> None:
                 
 
 
-        
-
-
-
-
-
-
-
-            
-
-
-
-
-
-
 
 
 #FUNCAO DE ATACAR OS MONSTROS APENAS (DANO) NORMAL DO JOGADOR
-def atacar_monstro(escolha: str, player: dict) -> None:  
-
-    idx = None
-    for i, npc in enumerate(lista_npcs):
-        if npc["nome"] == escolha.split()[0]:
-            idx = i
-            break
-    
+def atacar_monstro(idx: int, player: dict) -> None:
     limpar_tela()
     img = imagem_seta_escolhida_inimigo_fase1(idx)
     centra_h_v(img)
@@ -1504,18 +1491,19 @@ def atacar_monstro(escolha: str, player: dict) -> None:
     lista_npcs[idx]['hp'] -= player['dano']
 
     if lista_npcs[idx]['hp'] <= 0:
-
         del escolhas_inimigo[idx]
         del lista_npcs[idx]
-        print("\n" * 2)
-        centra_h(f"\n{rgb_text(escolha)} Derrotado! {len(lista_npcs)} Restantes...\n")
-        centra_h(rgb_text("\nAperte ENTER para continuar"))
-        input()
 
+        print("\n" * 2)
+        centra_h("Inimigo derrotado!")
+        centra_h("Aperte ENTER para continuar")
+        input()
     else:
         centra_h(f"Dano dado: {player['dano']}")
         centra_h(f"HP restante: {lista_npcs[idx]['hp']}")
         input("Aperte ENTER para continuar")
+
+
 
 
 
@@ -1539,21 +1527,9 @@ def descri_monstro_mais_img(imagem: str, extra: str) -> None:
 
 
 #FAZ COM QUE AS IMAGENS DOS M0NSTROS FIQUEM COM CORES ALEATORIAS DEIXANDO MAIS INDIVIDUAL CADA MONSTRO
-def cor_aleatoria_monstro(imagem):
-
-    cores = [
-        "\033[31m", "\033[32m", "\033[33m",
-        "\033[34m", "\033[35m", "\033[36m",
-        "\033[91m", "\033[92m", "\033[94m"
-    ]
-
-    cor = choice(cores)
+def aplicar_cor_monstro(imagem: str, cor: str) -> str:
     reset = "\033[0m"
-
-    linhas = imagem.splitlines()
-    linhas_coloridas = [cor + l + reset for l in linhas]
-
-    return "\n".join(linhas_coloridas)
+    return "\n".join(cor + linha + reset for linha in imagem.splitlines())
 
             
 

@@ -1563,8 +1563,7 @@ def draconis_img() -> str:
 ⠀⠀⠀⠀⠀⠀⠠⠤⠠⠤⠴⠠⠠⠠⠤⠤⠀⠠⠲⠀⠆⠤⠦⠴⠰⠀⠀⠀⠀
 """
 
-    cor  = fn.cor_aleatoria_monstro(mensagem)
-    return cor
+    return mensagem
 
 
 
@@ -1602,8 +1601,8 @@ def dominus_img() -> str:
 _^^__--_^^__~~^^^~^^^^^^^^~^^^~~^^^~^^^^^^^-___----_^^^ 
 """
     
-    cor  = fn.cor_aleatoria_monstro(mensagem)
-    return cor
+    
+    return mensagem
 
 
 

@@ -2,7 +2,7 @@ import os
 import sys
 import shutil
 import funcoes as fn
-import fase1 as fs
+import fase as fs
 import icons as ic
 from colorama import Fore, Style, init
 

@@ -3,7 +3,7 @@ import shutil
 import re
 import time
 import msvcrt
-from random import randint, choice
+from random import randint, choice, sample
 from colorama import Fore, Style, init
 
 
@@ -825,7 +825,7 @@ def caixa_poder_heroi(player: dict) -> str:
 
 #USA A HABILIDADE DO PLAYER PARA ATACAR MONSTROS
 def atacar_monstro_habilidade(player: dict, idx: int) -> None:
-    from icons import esqueleto_flamejante_especial, anjo_caido_especial
+    from icons import esqueleto_flamejante_especial, anjo_caido_especial, sabio_feiticeiro_especial
 
     habilidade = player['habilidade']
 
@@ -902,7 +902,7 @@ def atacar_monstro_habilidade(player: dict, idx: int) -> None:
         linhas_img = img.splitlines()
 
         for i, linha in enumerate(linhas_img):
-            linhas_img[i] = Fore.RED + linha + Style.RESET_ALL
+            linhas_img[i] = Fore.BLACK + linha + Style.RESET_ALL
 
         linhas_texto = []
         linhas_texto.append(
@@ -938,6 +938,92 @@ def atacar_monstro_habilidade(player: dict, idx: int) -> None:
         for i in reversed(indices_mortos):
             del lista_npcs[i]
             del escolhas_inimigo[i] 
+
+    #HABILIDADE SABIO FEITICEIRO------------------------------------------------------------------
+    elif habilidade == "FEITIÇOS ELEMENTAIS" and len(lista_npcs) > 0:
+        poderes = [
+            "Tsunami",
+            "Terremoto",
+            "Tornado",
+            "Vinhas"
+        ]
+
+        poder_escolhido = choice(poderes)
+
+        if poder_escolhido == "Tsunami":
+            player['dano por tsunami'] = player["dano"] * 2
+            lista_npcs[idx]['hp'] -= player['dano por tsunami']
+            lista_npcs[idx]['dano'] = (lista_npcs[idx]['dano'] // 2) + (lista_npcs[idx]['dano'] // 4)
+
+            img = sabio_feiticeiro_especial()
+            linhas_img = img.splitlines()
+
+            for i, linha in enumerate(linhas_img):
+                linhas_img[i] = Fore.BLUE + linha + Style.RESET_ALL
+
+            linhas_texto = []
+            linhas_texto.append(
+                rgb_text(f"{player['nome']} ATIVOU A HABILIDADE {player['habilidade']}")
+            )
+            linhas_texto.append(" ")
+            linhas_texto.append(
+                f"Uma onda imensa foi invocada causando {player['dano por tsunami']} de dano na criatura {lista_npcs[idx]['nome']}"
+            )
+            linhas_texto.append(
+                f"Fazendo com que a criatura tenha seu ataque reduzido em 25%..."
+            )
+
+            largura_bloco = max(len(strip_ansi(l)) for l in linhas_texto)
+
+            for i, linha in enumerate(linhas_texto, start= 17):
+
+                visivel = strip_ansi(linha)
+                espaco_esq = (largura_bloco - len(visivel)) // 2
+                linha_centro = " " * espaco_esq + linha
+
+                linhas_img[i] = linhas_img[i] + " " * 8 + linha_centro
+
+            img_final = "\n".join(linhas_img)
+            centra_h_v(img_final)
+
+            indices_mortos = []
+
+            for i, npc in enumerate(lista_npcs):
+                if npc['hp'] <= 0:      
+                    indices_mortos.append(i)
+
+            for i in reversed(indices_mortos):
+                del lista_npcs[i]
+                del escolhas_inimigo[i] 
+
+        elif poder_escolhido == "Terremoto":
+            sorte = randint(1,4)
+            if sorte == 2:
+                lista_npcs[idx]['hp'] - lista_npcs[idx]['hp']
+            else:
+                lista_npcs[idx]['hp'] - 0
+
+        elif poder_escolhido == "Tornado":
+            lista_npcs[idx]['hp'] - player['dano'] * 4
+
+        elif poder_escolhido == "Vinhas":
+            sorte = randint(1,3)
+            if sorte == 2:
+                player['dano por vinhas'] = player['dano'] * len(lista_npcs)
+                lista_npcs[idx]['hp'] -= player['dano por vinhas']
+            else:
+                lista_npcs['hp'] -= player['dano']
+
+        
+                
+
+
+        
+
+
+
+
+
 
 
             

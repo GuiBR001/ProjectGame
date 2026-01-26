@@ -1044,7 +1044,7 @@ def atacar_monstro_habilidade(player: dict, idx: int) -> None:
                     del escolhas_inimigo[i]
 
             else:
-                lista_npcs[idx]['hp'] - 0
+                lista_npcs[idx]['hp'] -= 0
 
                 img = sabio_feiticeiro_especial()
                 linhas_img = img.splitlines()
@@ -1088,15 +1088,138 @@ def atacar_monstro_habilidade(player: dict, idx: int) -> None:
                     del escolhas_inimigo[i] 
 
         elif poder_escolhido == "Tornado":
-            lista_npcs[idx]['hp'] - player['dano'] * 4
+            player['dano por tornado'] = player['dano'] * 4
+            lista_npcs[idx]['hp'] -= player['dano por tornado']
+            img = sabio_feiticeiro_especial()
+            linhas_img = img.splitlines()
+
+            for i, linha in enumerate(linhas_img):
+                linhas_img[i] = Fore.BLUE + linha + Style.RESET_ALL
+
+            linhas_texto = []
+            linhas_texto.append(
+                rgb_text(f"{player['nome']} ATIVOU A HABILIDADE {player['habilidade']}")
+            )
+            linhas_texto.append(" ")
+            linhas_texto.append(
+                f"Um Tornado enorme foi invocado causando {player['dano por tornado']} de dano na criatura {lista_npcs[idx]['nome']}"
+            )
+            linhas_texto.append(
+                f"A criatura acabou sendo arremessada e tomando um dano absurdamente grande..."
+            )
+
+            largura_bloco = max(len(strip_ansi(l)) for l in linhas_texto)
+
+            for i, linha in enumerate(linhas_texto, start= 17):
+
+                visivel = strip_ansi(linha)
+                espaco_esq = (largura_bloco - len(visivel)) // 2
+                linha_centro = " " * espaco_esq + linha
+
+                linhas_img[i] = linhas_img[i] + " " * 8 + linha_centro
+
+            img_final = "\n".join(linhas_img)
+            centra_h_v(img_final)
+
+            indices_mortos = []
+
+            for i, npc in enumerate(lista_npcs):
+                if npc['hp'] <= 0:      
+                    indices_mortos.append(i)
+
+            for i in reversed(indices_mortos):
+                del lista_npcs[i]
+                del escolhas_inimigo[i] 
 
         elif poder_escolhido == "Vinhas":
             sorte = randint(1,3)
             if sorte == 2:
-                player['dano por vinhas'] = player['dano'] * len(lista_npcs)
+                player['dano por vinhas'] = (player['dano'] * len(lista_npcs)) * 3
                 lista_npcs[idx]['hp'] -= player['dano por vinhas']
+
+                img = sabio_feiticeiro_especial()
+                linhas_img = img.splitlines()
+
+                for i, linha in enumerate(linhas_img):
+                    linhas_img[i] = Fore.BLUE + linha + Style.RESET_ALL
+
+                linhas_texto = []
+                linhas_texto.append(
+                    rgb_text(f"{player['nome']} ATIVOU A HABILIDADE {player['habilidade']}")
+                )
+                linhas_texto.append(" ")
+                linhas_texto.append(
+                    f"Parece que vinhas enormes foram invocadas causando {player['dano por vinhas']} de dano na criatura {lista_npcs[idx]['nome']}"
+                )
+                linhas_texto.append(
+                    f"As vinhas ficam cada vez mais espinhosas dependendo da quantidade de inimigos na arena..."
+                )
+
+                largura_bloco = max(len(strip_ansi(l)) for l in linhas_texto)
+
+                for i, linha in enumerate(linhas_texto, start= 17):
+
+                    visivel = strip_ansi(linha)
+                    espaco_esq = (largura_bloco - len(visivel)) // 2
+                    linha_centro = " " * espaco_esq + linha
+
+                    linhas_img[i] = linhas_img[i] + " " * 8 + linha_centro
+
+                img_final = "\n".join(linhas_img)
+                centra_h_v(img_final)
+
+                indices_mortos = []
+
+                for i, npc in enumerate(lista_npcs):
+                    if npc['hp'] <= 0:      
+                        indices_mortos.append(i)
+
+                for i in reversed(indices_mortos):
+                    del lista_npcs[i]
+                    del escolhas_inimigo[i] 
             else:
-                lista_npcs['hp'] -= player['dano']
+                lista_npcs[idx]['hp'] -= player['dano']
+
+                img = sabio_feiticeiro_especial()
+                linhas_img = img.splitlines()
+
+                for i, linha in enumerate(linhas_img):
+                    linhas_img[i] = Fore.BLUE + linha + Style.RESET_ALL
+
+                linhas_texto = []
+                linhas_texto.append(
+                    rgb_text(f"{player['nome']} ATIVOU A HABILIDADE {player['habilidade']}")
+                )
+                linhas_texto.append(" ")
+                linhas_texto.append(
+                    f"Parece que vinhas enormes foram invocadas causando {player['dano']} de dano na criatura {lista_npcs[idx]['nome']}"
+                )
+                linhas_texto.append(
+                    f"Parece que por algum motivo você errou a conjuração do feitiço, causando menos dano..."
+                )
+
+                largura_bloco = max(len(strip_ansi(l)) for l in linhas_texto)
+
+                for i, linha in enumerate(linhas_texto, start= 17):
+
+                    visivel = strip_ansi(linha)
+                    espaco_esq = (largura_bloco - len(visivel)) // 2
+                    linha_centro = " " * espaco_esq + linha
+
+                    linhas_img[i] = linhas_img[i] + " " * 8 + linha_centro
+
+                img_final = "\n".join(linhas_img)
+                centra_h_v(img_final)
+
+                indices_mortos = []
+
+                for i, npc in enumerate(lista_npcs):
+                    if npc['hp'] <= 0:      
+                        indices_mortos.append(i)
+
+                for i in reversed(indices_mortos):
+                    del lista_npcs[i]
+                    del escolhas_inimigo[i] 
 
         
                 

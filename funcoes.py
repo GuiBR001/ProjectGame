@@ -997,11 +997,95 @@ def atacar_monstro_habilidade(player: dict, idx: int) -> None:
                 del escolhas_inimigo[i] 
 
         elif poder_escolhido == "Terremoto":
-            sorte = randint(1,4)
+            sorte = randint(1,3)
             if sorte == 2:
-                lista_npcs[idx]['hp'] - lista_npcs[idx]['hp']
+                player['dano por terremoto'] = lista_npcs[idx]['hp']
+                lista_npcs[idx]['hp'] -= player['dano por terremoto']
+
+                img = sabio_feiticeiro_especial()
+                linhas_img = img.splitlines()
+
+                for i, linha in enumerate(linhas_img):
+                    linhas_img[i] = Fore.BLUE + linha + Style.RESET_ALL
+
+                linhas_texto = []
+                linhas_texto.append(
+                    rgb_text(f"{player['nome']} ATIVOU A HABILIDADE {player['habilidade']}")
+                )
+                linhas_texto.append(" ")
+                linhas_texto.append(
+                    f"Um Terremoto avassalador foi invocado jogando a criatura {lista_npcs[idx]['nome']} no abismo e á eliminando"
+                )
+                linhas_texto.append(
+                    f"Parece que a criatura não conseguiu escapar do destino..."
+                )
+
+                largura_bloco = max(len(strip_ansi(l)) for l in linhas_texto)
+
+                for i, linha in enumerate(linhas_texto, start= 17):
+
+                    visivel = strip_ansi(linha)
+                    espaco_esq = (largura_bloco - len(visivel)) // 2
+                    linha_centro = " " * espaco_esq + linha
+
+                    linhas_img[i] = linhas_img[i] + " " * 8 + linha_centro
+
+                img_final = "\n".join(linhas_img)
+                centra_h_v(img_final)
+
+                indices_mortos = []
+
+                for i, npc in enumerate(lista_npcs):
+                    if npc['hp'] <= 0:      
+                        indices_mortos.append(i)
+
+                for i in reversed(indices_mortos):
+                    del lista_npcs[i]
+                    del escolhas_inimigo[i]
+
             else:
                 lista_npcs[idx]['hp'] - 0
+
+                img = sabio_feiticeiro_especial()
+                linhas_img = img.splitlines()
+
+                for i, linha in enumerate(linhas_img):
+                    linhas_img[i] = Fore.BLUE + linha + Style.RESET_ALL
+
+                linhas_texto = []
+                linhas_texto.append(
+                    rgb_text(f"{player['nome']} ATIVOU A HABILIDADE {player['habilidade']}")
+                )
+                linhas_texto.append(" ")
+                linhas_texto.append(
+                    f"Um Terremoto foi invocado causando 0 de dano na criatura {lista_npcs[idx]['nome']}"
+                )
+                linhas_texto.append(
+                    f"Parece que a criatura conseguiu se esquivar do buraco..."
+                )
+
+                largura_bloco = max(len(strip_ansi(l)) for l in linhas_texto)
+
+                for i, linha in enumerate(linhas_texto, start= 17):
+
+                    visivel = strip_ansi(linha)
+                    espaco_esq = (largura_bloco - len(visivel)) // 2
+                    linha_centro = " " * espaco_esq + linha
+
+                    linhas_img[i] = linhas_img[i] + " " * 8 + linha_centro
+
+                img_final = "\n".join(linhas_img)
+                centra_h_v(img_final)
+
+                indices_mortos = []
+
+                for i, npc in enumerate(lista_npcs):
+                    if npc['hp'] <= 0:      
+                        indices_mortos.append(i)
+
+                for i in reversed(indices_mortos):
+                    del lista_npcs[i]
+                    del escolhas_inimigo[i] 
 
         elif poder_escolhido == "Tornado":
             lista_npcs[idx]['hp'] - player['dano'] * 4

@@ -825,7 +825,7 @@ def caixa_poder_heroi(player: dict) -> str:
 
 #USA A HABILIDADE DO PLAYER PARA ATACAR MONSTROS
 def atacar_monstro_habilidade(player: dict, idx: int) -> None:
-    from icons import esqueleto_flamejante_especial, anjo_caido_especial, sabio_feiticeiro_especial, pricesa_medusa_especial, arqueiro_magico_especial
+    from icons import esqueleto_flamejante_especial, anjo_caido_especial, sabio_feiticeiro_especial, pricesa_medusa_especial, arqueiro_magico_especial, morte_mormurante_especial
 
     habilidade = player['habilidade']
 
@@ -1423,7 +1423,7 @@ def atacar_monstro_habilidade(player: dict, idx: int) -> None:
         for npc in lista_npcs:
             npc['hp'] -= npc['dano'] * 4
 
-        img = arqueiro_magico_especial()
+        img = morte_mormurante_especial()
         linhas_img = img.splitlines()
 
         for i, linha in enumerate(linhas_img):
@@ -1434,12 +1434,11 @@ def atacar_monstro_habilidade(player: dict, idx: int) -> None:
             rgb_text(f"{player['nome']} ATIVOU A HABILIDADE {player['habilidade']}")
         )
         linhas_texto.append(" ")
-        nomes = ", ".join(npc['nome'] for npc in alvos)
         linhas_texto.append(
-            f"Uma flecha mágica foi lançada causando {player['dano por flecha magica']} de dano nas criaturas {nomes}"
+            f"As criaturas ficaram confusas e acabaram atacando a si mesmas causando muito dano"
         )
         linhas_texto.append(
-            f"A flecha mágica é poderosa, atravessa seus inimigos, e causa muito mais dano..."
+            f"Mortes mormurantes são traiçoeiras e costumam usar os inimigos contra eles mesmos..."
         )
 
         largura_bloco = max(len(strip_ansi(l)) for l in linhas_texto)

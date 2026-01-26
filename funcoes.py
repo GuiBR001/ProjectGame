@@ -825,7 +825,7 @@ def caixa_poder_heroi(player: dict) -> str:
 
 #USA A HABILIDADE DO PLAYER PARA ATACAR MONSTROS
 def atacar_monstro_habilidade(player: dict, idx: int) -> None:
-    from icons import esqueleto_flamejante_especial, anjo_caido_especial, sabio_feiticeiro_especial, pricesa_medusa_especial
+    from icons import esqueleto_flamejante_especial, anjo_caido_especial, sabio_feiticeiro_especial, pricesa_medusa_especial, arqueiro_magico_especial
 
     habilidade = player['habilidade']
 
@@ -1222,7 +1222,7 @@ def atacar_monstro_habilidade(player: dict, idx: int) -> None:
                     del escolhas_inimigo[i] 
     
 
-    #HABILIDADE PRINCESA MEDUSA
+    #HABILIDADE PRINCESA MEDUSA---------------------------------------------------------------------
 
     elif habilidade == "ENCANTO DE PEDRA" and len(lista_npcs) > 0:
         sorte = randint(1,2)
@@ -1314,6 +1314,157 @@ def atacar_monstro_habilidade(player: dict, idx: int) -> None:
             for i in reversed(indices_mortos):
                 del lista_npcs[i]
                 del escolhas_inimigo[i] 
+
+
+    #HABILIDADE ARQUEIRO MAGICO-----------------------------------------------------------
+
+    elif habilidade == "FLECHA MÁGICA" and len(lista_npcs) > 0:
+
+        if len(lista_npcs) >= 3:
+            player['dano por flecha magica'] = player['dano'] * len(lista_npcs)
+            alvos = sample(lista_npcs, 3)
+            for npc in alvos:
+                npc['hp'] -= player['dano'] * len(lista_npcs)
+
+            img = arqueiro_magico_especial()
+            linhas_img = img.splitlines()
+
+            for i, linha in enumerate(linhas_img):
+                linhas_img[i] = Fore.CYAN + linha + Style.RESET_ALL
+
+            linhas_texto = []
+            linhas_texto.append(
+                rgb_text(f"{player['nome']} ATIVOU A HABILIDADE {player['habilidade']}")
+            )
+            linhas_texto.append(" ")
+            nomes = ", ".join(npc['nome'] for npc in alvos)
+            linhas_texto.append(
+                f"Uma flecha mágica foi lançada causando {player['dano por flecha magica']} de dano nas criaturas {nomes}"
+            )
+            linhas_texto.append(
+                f"A flecha mágica é poderosa, atravessa seus inimigos, e causa muito mais dano..."
+            )
+
+            largura_bloco = max(len(strip_ansi(l)) for l in linhas_texto)
+
+            for i, linha in enumerate(linhas_texto, start= 17):
+
+                visivel = strip_ansi(linha)
+                espaco_esq = (largura_bloco - len(visivel)) // 2
+                linha_centro = " " * espaco_esq + linha
+
+                linhas_img[i] = linhas_img[i] + " " * 8 + linha_centro
+
+            img_final = "\n".join(linhas_img)
+            centra_h_v(img_final)
+
+            indices_mortos = []
+
+            for i, npc in enumerate(lista_npcs):
+                if npc['hp'] <= 0:      
+                    indices_mortos.append(i)
+
+            for i in reversed(indices_mortos):
+                del lista_npcs[i]
+                del escolhas_inimigo[i] 
+
+        else:
+            alvos = sample(lista_npcs, len(lista_npcs))
+
+            for npc in alvos:
+                npc['hp'] -= player['dano'] * 2
+
+            img = arqueiro_magico_especial()
+            linhas_img = img.splitlines()
+
+            for i, linha in enumerate(linhas_img):
+                linhas_img[i] = Fore.CYAN + linha + Style.RESET_ALL
+
+            linhas_texto = []
+            linhas_texto.append(
+                rgb_text(f"{player['nome']} ATIVOU A HABILIDADE {player['habilidade']}")
+            )
+            linhas_texto.append(" ")
+            nomes = ", ".join(npc['nome'] for npc in alvos)
+            linhas_texto.append(
+                f"Uma flecha mágica foi lançada causando {player['dano'] * 2} de dano nas criaturas {nomes}"
+            )
+            linhas_texto.append(
+                f"A flecha mágica é poderosa, atravessa seus inimigos, e causa muito mais dano..."
+            )
+
+            largura_bloco = max(len(strip_ansi(l)) for l in linhas_texto)
+
+            for i, linha in enumerate(linhas_texto, start= 17):
+
+                visivel = strip_ansi(linha)
+                espaco_esq = (largura_bloco - len(visivel)) // 2
+                linha_centro = " " * espaco_esq + linha
+
+                linhas_img[i] = linhas_img[i] + " " * 8 + linha_centro
+
+            img_final = "\n".join(linhas_img)
+            centra_h_v(img_final)
+
+            indices_mortos = []
+
+            for i, npc in enumerate(lista_npcs):
+                if npc['hp'] <= 0:      
+                    indices_mortos.append(i)
+
+            for i in reversed(indices_mortos):
+                del lista_npcs[i]
+                del escolhas_inimigo[i]
+
+
+    #HABILIDADE MORTE MORMURANTE----------------------------------------------------------------------
+
+    elif habilidade == "ILUSÃO" and len(lista_npcs) > 0:
+        for npc in lista_npcs:
+            npc['hp'] -= npc['dano'] * 4
+
+        img = arqueiro_magico_especial()
+        linhas_img = img.splitlines()
+
+        for i, linha in enumerate(linhas_img):
+            linhas_img[i] = Fore.CYAN + linha + Style.RESET_ALL
+
+        linhas_texto = []
+        linhas_texto.append(
+            rgb_text(f"{player['nome']} ATIVOU A HABILIDADE {player['habilidade']}")
+        )
+        linhas_texto.append(" ")
+        nomes = ", ".join(npc['nome'] for npc in alvos)
+        linhas_texto.append(
+            f"Uma flecha mágica foi lançada causando {player['dano por flecha magica']} de dano nas criaturas {nomes}"
+        )
+        linhas_texto.append(
+            f"A flecha mágica é poderosa, atravessa seus inimigos, e causa muito mais dano..."
+        )
+
+        largura_bloco = max(len(strip_ansi(l)) for l in linhas_texto)
+
+        for i, linha in enumerate(linhas_texto, start= 17):
+
+            visivel = strip_ansi(linha)
+            espaco_esq = (largura_bloco - len(visivel)) // 2
+            linha_centro = " " * espaco_esq + linha
+
+            linhas_img[i] = linhas_img[i] + " " * 8 + linha_centro
+
+        img_final = "\n".join(linhas_img)
+        centra_h_v(img_final)
+
+        indices_mortos = []
+
+        for i, npc in enumerate(lista_npcs):
+            if npc['hp'] <= 0:      
+                indices_mortos.append(i)
+
+        for i in reversed(indices_mortos):
+            del lista_npcs[i]
+            del escolhas_inimigo[i] 
+
 
 
 

@@ -825,7 +825,7 @@ def caixa_poder_heroi(player: dict) -> str:
 
 #USA A HABILIDADE DO PLAYER PARA ATACAR MONSTROS
 def atacar_monstro_habilidade(player: dict, idx: int) -> None:
-    from icons import esqueleto_flamejante_especial, anjo_caido_especial, sabio_feiticeiro_especial
+    from icons import esqueleto_flamejante_especial, anjo_caido_especial, sabio_feiticeiro_especial, pricesa_medusa_especial
 
     habilidade = player['habilidade']
 
@@ -1220,6 +1220,102 @@ def atacar_monstro_habilidade(player: dict, idx: int) -> None:
                 for i in reversed(indices_mortos):
                     del lista_npcs[i]
                     del escolhas_inimigo[i] 
+    
+
+    #HABILIDADE PRINCESA MEDUSA
+
+    elif habilidade == "ENCANTO DE PEDRA" and len(lista_npcs) > 0:
+        sorte = randint(1,2)
+        if sorte == 1:
+            player['dano por medusa'] = lista_npcs[idx]['hp']
+            lista_npcs[idx]['hp'] -= player["dano por medusa"]
+
+            img = pricesa_medusa_especial()
+            linhas_img = img.splitlines()
+
+            for i, linha in enumerate(linhas_img):
+                linhas_img[i] = Fore.GREEN + linha + Style.RESET_ALL
+
+            linhas_texto = []
+            linhas_texto.append(
+                rgb_text(f"{player['nome']} ATIVOU A HABILIDADE {player['habilidade']}")
+            )
+            linhas_texto.append(" ")
+            linhas_texto.append(
+                f"A criatura {lista_npcs[idx]['nome']} olhou para seus olhos causando uma morte instantânea por petrificação"
+            )
+            linhas_texto.append(
+                f"Quando a princesa medusa fica brava, quem á olha... nunca mais olha outra coisa..."
+            )
+
+            largura_bloco = max(len(strip_ansi(l)) for l in linhas_texto)
+
+            for i, linha in enumerate(linhas_texto, start= 17):
+
+                visivel = strip_ansi(linha)
+                espaco_esq = (largura_bloco - len(visivel)) // 2
+                linha_centro = " " * espaco_esq + linha
+
+                linhas_img[i] = linhas_img[i] + " " * 8 + linha_centro
+
+            img_final = "\n".join(linhas_img)
+            centra_h_v(img_final)
+
+            indices_mortos = []
+
+            for i, npc in enumerate(lista_npcs):
+                if npc['hp'] <= 0:      
+                    indices_mortos.append(i)
+
+            for i in reversed(indices_mortos):
+                del lista_npcs[i]
+                del escolhas_inimigo[i] 
+
+        elif sorte == 2:
+            lista_npcs[idx]['hp'] -= player['dano']
+
+            img = pricesa_medusa_especial()
+            linhas_img = img.splitlines()
+
+            for i, linha in enumerate(linhas_img):
+                linhas_img[i] = Fore.GREEN + linha + Style.RESET_ALL
+
+            linhas_texto = []
+            linhas_texto.append(
+                rgb_text(f"{player['nome']} ATIVOU A HABILIDADE {player['habilidade']}")
+            )
+            linhas_texto.append(" ")
+            linhas_texto.append(
+                f"Um ataque de furia da medusa foi liberado causando {player['dano']} na criatura {lista_npcs[idx]['nome']}"
+            )
+            linhas_texto.append(
+                f"Parece que a criatura foi esperta e não olhou em seus olhos..."
+            )
+
+            largura_bloco = max(len(strip_ansi(l)) for l in linhas_texto)
+
+            for i, linha in enumerate(linhas_texto, start= 17):
+
+                visivel = strip_ansi(linha)
+                espaco_esq = (largura_bloco - len(visivel)) // 2
+                linha_centro = " " * espaco_esq + linha
+
+                linhas_img[i] = linhas_img[i] + " " * 8 + linha_centro
+
+            img_final = "\n".join(linhas_img)
+            centra_h_v(img_final)
+
+            indices_mortos = []
+
+            for i, npc in enumerate(lista_npcs):
+                if npc['hp'] <= 0:      
+                    indices_mortos.append(i)
+
+            for i in reversed(indices_mortos):
+                del lista_npcs[i]
+                del escolhas_inimigo[i] 
+
+
 
         
                 

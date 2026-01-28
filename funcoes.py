@@ -158,21 +158,48 @@ def criar_inimigos(fase: int, orda: int, player: dict) -> None:
             #ORDA DE MONSTROS 1
             if orda == 1:
                 while True:
-                    for x in range(3):
-                        nivel = randint(1, 5)
+                    for x in range(1):
+                        nivel = randint(1, 1)
+                        novo_npc = criar_npc(nivel, fase)
+                        lista_npcs.append(novo_npc)
+                        escolhas_inimigo.append(novo_npc['nome'] + " " + novo_npc['sexo'])
+                    break
+
+            #ORDA DE MONSTROS 2
+            if orda == 2:
+                while True:
+                    for x in range(2):
+                        nivel = randint(1, 3)
+                        novo_npc = criar_npc(nivel, fase)
+                        lista_npcs.append(novo_npc)
+                        escolhas_inimigo.append(novo_npc['nome'] + " " + novo_npc['sexo'])
+                    break
+
+            #ORDA DE MONSTROS 3
+            if orda == 3:
+                while True:
+                    for x in range(4):
+                        nivel = randint(2, 5)
                         novo_npc = criar_npc(nivel, fase)
                         lista_npcs.append(novo_npc)
                         escolhas_inimigo.append(novo_npc['nome'] + " " + novo_npc['sexo'])
 
-                    if lista_npcs[0]['nome'] == lista_npcs[1]['nome']:
+                    if lista_npcs[0]['nome'] == lista_npcs[2]['nome'] or lista_npcs[1]['nome'] == lista_npcs[3]['nome']:
                         lista_npcs.clear()
                         escolhas_inimigo.clear()
                         continue
                     else:
                         break
 
+        case 2:
+            for x in range(7):
+                level = randint(21, 40)
+                novo_npc = criar_npc(level,fase)
+                lista_npcs.append(novo_npc)
+            exibir_player(player)
+            print(Fore.GREEN + "CAMPOS DE BATALHA DE DRAKMOR\n")
 
-                        
+
             #ORDA DE INIMIGOS 2
             if orda == 2:
                 while True:
@@ -205,15 +232,6 @@ def criar_inimigos(fase: int, orda: int, player: dict) -> None:
                         continue
                     else: 
                         break
-
-    
-        case 2:
-            for x in range(7):
-                level = randint(21, 40)
-                novo_npc = criar_npc(level,fase)
-                lista_npcs.append(novo_npc)
-            exibir_player(player)
-            print(Fore.GREEN + "CAMPOS DE BATALHA DE DRAKMOR\n")
     
         case 3:
             for x in range(7):
@@ -248,61 +266,61 @@ def criar_inimigos(fase: int, orda: int, player: dict) -> None:
 #GERA OS STATUS DO PLAYER (NOME, RAÇA, ETC...)
 def criar_personagem(nome: str,raca: int) -> dict: 
 
-    hp_normal = 150
-    dano_normal = 30
-    sorte_normal = 2
+    level = 1
+    hp_normal = 90 + level * 18
+    dano_normal = 6 + level * 2.1
     habilidade = None
 
     match raca:
         case 1:
             raca = "Esqueleto Flamejante"
-            hp = hp_normal // 2
-            dano = dano_normal * 2
-            sorte = sorte_normal
+            hp = hp_normal * 0.8
+            dano = dano_normal * 1.3
+            sorte = 0.2
             habilidade = "CHAMAS INFERNAIS"
         
         case 2:
             raca = "Anjo caído"
             hp = hp_normal
-            dano = dano_normal * 2
-            sorte = sorte_normal - 1
+            dano = dano_normal * 1.3
+            sorte = 0.1
             habilidade = "CEIFEIRO"
         
         case 3:
             raca = "Sábio Feiticeiro"
-            hp = hp_normal 
-            dano = dano_normal // 2
-            sorte = sorte_normal + 1
+            hp = hp_normal
+            dano = dano_normal * 0.75
+            sorte = 0.35
             habilidade = "FEITIÇOS ELEMENTAIS"
         
         case 4: 
             raca = "Pricesa Medusa"
-            hp = hp_normal * 2
+            hp = hp_normal * 1.4
             dano = dano_normal 
-            sorte = sorte_normal - 1
+            sorte = 0.10
             habilidade = "ENCANTO DE PEDRA"
         
         case 5:
             raca = "Morte Mormurante"
             hp = hp_normal 
-            dano = dano_normal * 2
-            sorte = sorte_normal - 1
+            dano = dano_normal * 1.3
+            sorte = 0.10
             habilidade = "ILUSÃO"
         
         case 6:
             raca = "Arqueiro Mágico"
-            hp = hp_normal // 2
+            hp = hp_normal * 0.8
             dano = dano_normal 
-            sorte = sorte_normal + 1
+            sorte = 0.35
             habilidade = "FLECHA MÁGICA"
 
     return  {
         "nome": nome,
         "raca": raca,
-        "level": 1,
+        "level": level,
         "exp": 0,
-        "hp": hp,
-        "dano": dano,
+        "hp": round(hp),
+        "dano": round(dano),
         "sorte": sorte,
         "habilidade": habilidade
     }
@@ -456,8 +474,8 @@ def criar_npc(level, fase) -> dict:
         "nome": nome,
         "sexo": sexo,
         "level": level,
-        "dano": 5 * level,
-        "hp": 100 * level,
+        "dano": 3 * level,
+        "hp": 40 * level,
         "exp": 7 * level,
         "cor": choice([
             "\033[31m", "\033[32m", "\033[33m",
@@ -843,7 +861,7 @@ def atacar_monstro_habilidade(player: dict, idx: int) -> None:
     #HABILIDADE ESQUELETO FLAMEJANTE ---------------------------------------------------
     if habilidade == "CHAMAS INFERNAIS" and len(lista_npcs) > 0:
 
-        player['dano por fogo'] = player['dano'] // len(lista_npcs)
+        player['dano por fogo'] = int(player['dano'] * 0.6)
         for npc in lista_npcs:
             npc['hp'] -= player['dano por fogo']
 
@@ -905,8 +923,8 @@ def atacar_monstro_habilidade(player: dict, idx: int) -> None:
     elif habilidade == "CEIFEIRO" and len(lista_npcs) > 0:
 
         lista_npcs[idx]['hp'] -= player['dano']
-        player['vida ceifada'] = player['dano']
-        player['hp'] += player['vida ceifada']        
+        player['vida ceifada'] = int(player['dano'] * 0.6)
+        player['hp'] += player['vida ceifada']
 
         img = anjo_caido_especial()
         linhas_img = img.splitlines()
@@ -961,9 +979,10 @@ def atacar_monstro_habilidade(player: dict, idx: int) -> None:
         poder_escolhido = choice(poderes)
 
         if poder_escolhido == "Tsunami":
-            player['dano por tsunami'] = player["dano"] * 2
+            player['dano por tsunami'] = int(player["dano"] * 1.5)
             lista_npcs[idx]['hp'] -= player['dano por tsunami']
-            lista_npcs[idx]['dano'] = (lista_npcs[idx]['dano'] // 2) + (lista_npcs[idx]['dano'] // 4)
+            lista_npcs[idx]['dano'] = int(lista_npcs[idx]['dano'] * 0.85)
+
 
             img = sabio_feiticeiro_especial()
             linhas_img = img.splitlines()
@@ -1007,9 +1026,10 @@ def atacar_monstro_habilidade(player: dict, idx: int) -> None:
                 del escolhas_inimigo[i] 
 
         elif poder_escolhido == "Terremoto":
-            sorte = randint(1,3)
+            sorte = randint(1, 3)
+
             if sorte == 2:
-                player['dano por terremoto'] = lista_npcs[idx]['hp']
+                player['dano por terremoto'] = int(lista_npcs[idx]['hp'] * 0.7)
                 lista_npcs[idx]['hp'] -= player['dano por terremoto']
 
                 img = sabio_feiticeiro_especial()
@@ -1054,7 +1074,7 @@ def atacar_monstro_habilidade(player: dict, idx: int) -> None:
                     del escolhas_inimigo[i]
 
             else:
-                lista_npcs[idx]['hp'] -= 0
+                lista_npcs[idx]['hp'] -= int(player['dano'] * 0.5)
 
                 img = sabio_feiticeiro_especial()
                 linhas_img = img.splitlines()
@@ -1098,8 +1118,11 @@ def atacar_monstro_habilidade(player: dict, idx: int) -> None:
                     del escolhas_inimigo[i] 
 
         elif poder_escolhido == "Tornado":
-            player['dano por tornado'] = player['dano'] * 4
+
+            multiplicador = randint(2, 3)
+            player['dano por tornado'] = player['dano'] * multiplicador
             lista_npcs[idx]['hp'] -= player['dano por tornado']
+
             img = sabio_feiticeiro_especial()
             linhas_img = img.splitlines()
 
@@ -1142,9 +1165,11 @@ def atacar_monstro_habilidade(player: dict, idx: int) -> None:
                 del escolhas_inimigo[i] 
 
         elif poder_escolhido == "Vinhas":
-            sorte = randint(1,3)
+
+            sorte = randint(1, 3)
             if sorte == 2:
-                player['dano por vinhas'] = (player['dano'] * len(lista_npcs)) * 3
+                multiplicador = min(len(lista_npcs), 3)
+                player['dano por vinhas'] = player['dano'] * multiplicador * 2
                 lista_npcs[idx]['hp'] -= player['dano por vinhas']
 
                 img = sabio_feiticeiro_especial()
@@ -1187,6 +1212,7 @@ def atacar_monstro_habilidade(player: dict, idx: int) -> None:
                 for i in reversed(indices_mortos):
                     del lista_npcs[i]
                     del escolhas_inimigo[i] 
+
             else:
                 lista_npcs[idx]['hp'] -= player['dano']
 
@@ -1235,7 +1261,7 @@ def atacar_monstro_habilidade(player: dict, idx: int) -> None:
     #HABILIDADE PRINCESA MEDUSA---------------------------------------------------------------------
 
     elif habilidade == "ENCANTO DE PEDRA" and len(lista_npcs) > 0:
-        sorte = randint(1,2)
+        sorte = randint(1,3)
         if sorte == 1:
             player['dano por medusa'] = lista_npcs[idx]['hp']
             lista_npcs[idx]['hp'] -= player["dano por medusa"]
@@ -1281,7 +1307,7 @@ def atacar_monstro_habilidade(player: dict, idx: int) -> None:
                 del lista_npcs[i]
                 del escolhas_inimigo[i] 
 
-        elif sorte == 2:
+        else:
             lista_npcs[idx]['hp'] -= player['dano']
 
             img = pricesa_medusa_especial()
@@ -1331,10 +1357,10 @@ def atacar_monstro_habilidade(player: dict, idx: int) -> None:
     elif habilidade == "FLECHA MÁGICA" and len(lista_npcs) > 0:
 
         if len(lista_npcs) >= 3:
-            player['dano por flecha magica'] = player['dano'] * len(lista_npcs)
+            player['dano por flecha magica'] = int(player['dano'] * 1.8)
             alvos = sample(lista_npcs, 3)
             for npc in alvos:
-                npc['hp'] -= player['dano'] * len(lista_npcs)
+                npc['hp'] -= player['dano por flecha magica']
 
             img = arqueiro_magico_especial()
             linhas_img = img.splitlines()
@@ -1431,7 +1457,7 @@ def atacar_monstro_habilidade(player: dict, idx: int) -> None:
 
     elif habilidade == "ILUSÃO" and len(lista_npcs) > 0:
         for npc in lista_npcs:
-            npc['hp'] -= npc['dano'] * 4
+            npc['hp'] -= npc['dano'] * 2
 
         img = morte_mormurante_especial()
         linhas_img = img.splitlines()

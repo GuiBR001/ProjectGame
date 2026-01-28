@@ -70,8 +70,8 @@ while True:
 
     elif escolha_menu == "Sair":
         fn.limpar_tela()
-        print("\n" * 14)
-        fn.centra_h_v(Fore.BLACK + ic.jogo_encerrado())
+        print("\n" * 5)
+        fn.centra_h_v(ic.jogo_encerrado(), Fore.RED)
         print("\n" * 2)
         fn.centra_h(fn.rgb_text("Jogo encerrado, volte quando quiser se aventurar mais!"))
         fn.centra_h(fn.rgb_text("   Os aldeões clamam pela volta do herói deles"))

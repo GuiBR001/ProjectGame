@@ -3,6 +3,7 @@ import shutil
 import re
 import time
 import msvcrt
+import icons as ic
 from random import randint, choice, sample
 from colorama import Fore, Style, init
 
@@ -710,7 +711,7 @@ def escolha_seta_inimigo_fase1(player) -> int | None:
                 idx = (idx + 1) % len(escolhas_inimigo)
 
         elif ch in (b"\r", b"\n"):
-            return idx  # 🔥 ÍNDICE REAL
+            return idx  
 
         elif mostrar_poder and ch in (b"p", b"P"):
             atacar_monstro_habilidade(player, idx)
@@ -1506,6 +1507,59 @@ def atacar_monstro(idx: int, player: dict) -> None:
 
 
 
+
+
+
+#ATAQUE PROFERIDO INDIVIDUALMENTE DE UM DOS MONSTROS ALEATORIAMENTE
+def ataque_dos_monstros(player: dict, lista_npcs: list) -> None:
+    idx = randint(0, len(lista_npcs) - 1)
+    monstro = lista_npcs[idx]
+
+    player['hp'] -= monstro['dano']
+    if player['hp'] <= 0:
+        player['hp'] = 0
+
+    limpar_tela()
+    centra_h_v(rgb_text("Agora é a vez dos monstros atacarem, esteja preparado!"))
+    centra_h(rgb_text("Monstros tem chance de ataque critico!"))
+    print("\n" * 2)
+    centra_h(rgb_text("Aperte ENTER para continuar"))
+    input(" ")
+
+    img = imagem_seta_escolhida_inimigo_fase1(idx)
+    extra = exibe_status_monstro(idx)
+
+    limpar_tela()
+    descri_monstro_mais_img(img, "\n".join(extra))
+
+    print("\n" * 3)
+    centra_h(rgb_text(f"A criatura {monstro['nome']} Proferiu um golpe que causou {monstro['dano']}"))
+    print("\n")
+    centra_h(rgb_text(f"Sua vida atual agora é {player['hp']}"))
+    print("\n" * 2)
+    centra_h(rgb_text("Aperte ENTER para continuar!"))
+    input(" ")
+
+    if player['hp'] <= 0:
+        limpar_tela()
+        img_morte = ic.morte_player_img() 
+
+        extra_morte = Fore.WHITE + f"""
+O silêncio toma conta do campo de batalha.
+Seu corpo já não responde, e suas forças se esgotaram por completo.
+Os inimigos ainda estão de pé, enquanto sua jornada chega ao fim.
+Cada escolha feita ecoa como uma última lembrança do combate.
+Não foi o fim que você esperava, mas foi o fim que encontrou.
+A história para aqui, mas poderia ter sido diferente.
+
+                    {Fore.RED}VOCÊ MORREU{Style.RESET_ALL}
+                    
+        {rgb_text("Aperte ENTER para voltar para o inicio!")}
+"""
+
+        descri_monstro_mais_img(img_morte, extra_morte)
+        input(" ")
+        
 
 
 

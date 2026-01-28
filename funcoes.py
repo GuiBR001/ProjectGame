@@ -1499,12 +1499,10 @@ def atacar_monstro_habilidade(player: dict, idx: int) -> None:
         for i in reversed(indices_mortos):
             del lista_npcs[i]
             del escolhas_inimigo[i] 
-
-
-
-
-        
                 
+
+
+
 
 
 

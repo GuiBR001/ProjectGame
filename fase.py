@@ -45,6 +45,10 @@ def fase_1(fase: int, orda: int, player: dict) -> None:
         if escolha is not None:
             fn.atacar_monstro(escolha, player)
             fn.ataque_dos_monstros(player, fn.lista_npcs)
+            if player['hp'] <= 0:
+                break
+            else: 
+                continue
 
     fn.criar_inimigos(fase, orda, player)
 
@@ -60,6 +64,10 @@ def fase_1(fase: int, orda: int, player: dict) -> None:
         if escolha is not None:
             fn.atacar_monstro(escolha, player)
             fn.ataque_dos_monstros(player, fn.lista_npcs)
+            if player['hp'] <= 0:
+                break
+            else: 
+                continue
 
 
         

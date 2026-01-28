@@ -59,9 +59,7 @@ while True:
         print("\n" * 2)
         fn.centra_h(fn.rgb_text("Aperte ENTER para continuar"))
         input()
-        fn.criar_inimigos(fase, orda, player)
-        while True:
-            fs.fase_1(fase, orda, player)
+        fs.fase_1(fase, orda, player)
 
 
     elif escolha_menu == "Ultimos Recordes":

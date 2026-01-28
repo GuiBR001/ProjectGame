@@ -176,12 +176,12 @@ def criar_inimigos(fase: int, orda: int, player: dict) -> None:
             if orda == 2:
                 while True:
                     for x in range(5):
-                        nivel = randint(6, 10)
+                        nivel = randint(4, 10)
                         novo_npc = criar_npc(nivel, fase)
                         lista_npcs.append(novo_npc)
-                        escolhas_inimigo.append(novo_npc['nome'])
+                        escolhas_inimigo.append(novo_npc['nome'] + " " + novo_npc['sexo'])
 
-                    if lista_npcs[0]['nome'] == lista_npcs[1 or 2]['nome'] or lista_npcs[3]['nome'] == lista_npcs[4 or 5]['nome']:
+                    if lista_npcs[0]['nome'] == lista_npcs[1 or 2]['nome'] or lista_npcs[3]['nome'] == lista_npcs[4]['nome']:
                         lista_npcs.clear()
                         escolhas_inimigo.clear()
                         continue
@@ -192,13 +192,13 @@ def criar_inimigos(fase: int, orda: int, player: dict) -> None:
             #ORDA DE INIMIGOS 3
             if orda == 3:
                 while True:
-                    for x in range(7):
+                    for x in range(5):
                         nivel = randint(8, 15)
                         novo_npc = criar_npc(nivel, fase)
                         lista_npcs.append(novo_npc)
-                        escolhas_inimigo.append(novo_npc['nome'])
+                        escolhas_inimigo.append(novo_npc['nome'] + " " + novo_npc['sexo'])
 
-                    if lista_npcs[0]['nome'] == lista_npcs[1 or 2]['nome'] or lista_npcs[3]['nome'] == lista_npcs[4 or 5]['nome'] or lista_npcs[5]['nome'] == lista_npcs[6 or 7]['nome']:
+                    if lista_npcs[0]['nome'] == lista_npcs[2]['nome'] or lista_npcs[1]['nome'] == lista_npcs[3]['nome']:
                         lista_npcs.clear()
                         escolhas_inimigo.clear()
                         continue

@@ -1512,6 +1512,10 @@ def atacar_monstro(idx: int, player: dict) -> None:
 
 #ATAQUE PROFERIDO INDIVIDUALMENTE DE UM DOS MONSTROS ALEATORIAMENTE
 def ataque_dos_monstros(player: dict, lista_npcs: list) -> None:
+
+    if not lista_npcs:
+        return 
+    
     idx = randint(0, len(lista_npcs) - 1)
     monstro = lista_npcs[idx]
 
@@ -1559,7 +1563,7 @@ A história para aqui, mas poderia ter sido diferente.
 
         descri_monstro_mais_img(img_morte, extra_morte)
         input(" ")
-        
+
 
 
 

@@ -96,11 +96,13 @@ def centra_h(mensagem: str, cor_padrao: str = None) -> None:
 def mostrar_creditos() -> None:
     from icons import creditos_img
     limpar_tela()
-    centra_h_v(creditos_img())
+    centra_h_v(creditos_img(), Fore.RED)
+    print("\n")
     centra_h("\nJOGO SINGLE DEVELOPER", Fore.MAGENTA + Style.BRIGHT)
     centra_h("Dev by Guilherme Barreto Ramos", Fore.WHITE + Style.BRIGHT)
     centra_h("email: guilhermebramos.dev@gmail.com",  Fore.WHITE + Style.BRIGHT)
-    centra_h(Style.DIM + "\npressione qualquer tecla para voltar")
+    print("\n")
+    centra_h(Style.DIM + "\nPressione qualquer tecla para voltar")
     msvcrt.getch()        
 
 
@@ -876,14 +878,16 @@ def atacar_monstro_habilidade(player: dict, idx: int) -> None:
             rgb_text(f"{player['nome']} ATIVOU A HABILIDADE {player['habilidade']}")
         )
         linhas_texto.append(" ")
-        linhas_texto.append(
-            f"Causando {Fore.RED}{player['dano por fogo']}{Style.RESET_ALL} de dano por fogo em {Fore.RED + 'AREA' + Style.RESET_ALL}"
+        linhas_texto.append( Style.BRIGHT + 
+            f"Causando {Fore.RED}{player['dano por fogo']}{Style.RESET_ALL}{Style.BRIGHT + " de dano por fogo em"} {Fore.RED + 'AREA' + Style.RESET_ALL}"
         )
         linhas_texto.append(" ")
         linhas_texto.append(
             rgb_text("Monstros afetados em área:")
         )
-        linhas_texto.append(" ")
+        for npc in lista_npcs:
+            linhas_texto.append(Style.BRIGHT + npc['nome'] + Style.RESET_ALL)
+
 
         largura_bloco = max(len(strip_ansi(l)) for l in linhas_texto)
 
@@ -938,10 +942,12 @@ def atacar_monstro_habilidade(player: dict, idx: int) -> None:
         )
         linhas_texto.append(" ")
         linhas_texto.append(
-            f"Ceifando {Fore.RED}{player['vida ceifada']}{Style.RESET_ALL} de vida do monstro {Fore.RED + f"{lista_npcs[idx]['nome']}" + Style.RESET_ALL}"
-        )
-        linhas_texto.append(
-            f"Dando {Fore.RED}{player['vida ceifada']}{Style.RESET_ALL} de dano pela foice"
+            Style.BRIGHT +
+            f"Ceifando {Fore.RED}{player['vida ceifada']}{Style.BRIGHT} de vida do monstro {Fore.RED}{lista_npcs[idx]['nome']}{Style.RESET_ALL}"
+            )
+
+        linhas_texto.append( Style.BRIGHT +
+            f"Dando {Fore.RED}{player['vida ceifada']}{Style.BRIGHT} de dano pela foice{Style.RESET_ALL}"
         )
 
         largura_bloco = max(len(strip_ansi(l)) for l in linhas_texto)
@@ -995,12 +1001,18 @@ def atacar_monstro_habilidade(player: dict, idx: int) -> None:
                 rgb_text(f"{player['nome']} ATIVOU A HABILIDADE {player['habilidade']}")
             )
             linhas_texto.append(" ")
+
             linhas_texto.append(
-                f"Uma onda imensa foi invocada causando {player['dano por tsunami']} de dano na criatura {lista_npcs[idx]['nome']}"
+                f"{Style.BRIGHT}Uma onda imensa foi invocada causando "
+                f"{Fore.RED}{player['dano por tsunami']}{Style.BRIGHT} de dano na criatura "
+                f"{Fore.RED}{lista_npcs[idx]['nome']}{Style.RESET_ALL}"
             )
+
             linhas_texto.append(
-                f"Fazendo com que a criatura tenha seu ataque reduzido em 25%..."
+                f"{Style.BRIGHT}Fazendo com que a criatura tenha seu ataque reduzido em "
+                f"{Fore.YELLOW}25%{Style.RESET_ALL}"
             )
+
 
             largura_bloco = max(len(strip_ansi(l)) for l in linhas_texto)
 
@@ -1044,11 +1056,16 @@ def atacar_monstro_habilidade(player: dict, idx: int) -> None:
                 )
                 linhas_texto.append(" ")
                 linhas_texto.append(
-                    f"Um Terremoto avassalador foi invocado jogando a criatura {lista_npcs[idx]['nome']} no abismo e á eliminando"
+                    f"{Style.BRIGHT}Um Terremoto avassalador foi invocado jogando a criatura "
+                    f"{Fore.RED}{lista_npcs[idx]['nome']}{Style.BRIGHT} no abismo e a eliminando"
+                    f"{Style.RESET_ALL}"
                 )
+
                 linhas_texto.append(
-                    f"Parece que a criatura não conseguiu escapar do destino..."
+                    f"{Style.BRIGHT}Parece que a criatura não conseguiu escapar do destino..."
+                    f"{Style.RESET_ALL}"
                 )
+
 
                 largura_bloco = max(len(strip_ansi(l)) for l in linhas_texto)
 
@@ -1088,10 +1105,14 @@ def atacar_monstro_habilidade(player: dict, idx: int) -> None:
                 )
                 linhas_texto.append(" ")
                 linhas_texto.append(
-                    f"Um Terremoto foi invocado causando 0 de dano na criatura {lista_npcs[idx]['nome']}"
+                    f"{Style.BRIGHT}Um Terremoto foi invocado causando "
+                    f"{Fore.RED}0{Style.BRIGHT} de dano na criatura "
+                    f"{Fore.RED}{lista_npcs[idx]['nome']}{Style.RESET_ALL}"
                 )
+
                 linhas_texto.append(
-                    f"Parece que a criatura conseguiu se esquivar do buraco..."
+                    f"{Style.BRIGHT}Parece que a criatura conseguiu se esquivar do buraco..."
+                    f"{Style.RESET_ALL}"
                 )
 
                 largura_bloco = max(len(strip_ansi(l)) for l in linhas_texto)
@@ -1135,10 +1156,13 @@ def atacar_monstro_habilidade(player: dict, idx: int) -> None:
             )
             linhas_texto.append(" ")
             linhas_texto.append(
-                f"Um Tornado enorme foi invocado causando {player['dano por tornado']} de dano na criatura {lista_npcs[idx]['nome']}"
+                f"{Style.BRIGHT}Um Tornado enorme foi invocado causando "
+                f"{Fore.RED}{player['dano por tornado']}{Style.BRIGHT} de dano na criatura "
+                f"{Fore.RED}{lista_npcs[idx]['nome']}{Style.RESET_ALL}"
             )
             linhas_texto.append(
-                f"A criatura acabou sendo arremessada e tomando um dano absurdamente grande..."
+                f"{Style.BRIGHT}A criatura acabou sendo arremessada e tomando um dano absurdamente grande..."
+                f"{Style.RESET_ALL}"
             )
 
             largura_bloco = max(len(strip_ansi(l)) for l in linhas_texto)
@@ -1184,10 +1208,13 @@ def atacar_monstro_habilidade(player: dict, idx: int) -> None:
                 )
                 linhas_texto.append(" ")
                 linhas_texto.append(
-                    f"Parece que vinhas enormes foram invocadas causando {player['dano por vinhas']} de dano na criatura {lista_npcs[idx]['nome']}"
+                    f"{Style.BRIGHT}Parece que vinhas enormes foram invocadas causando "
+                    f"{Fore.RED}{player['dano por vinhas']}{Style.BRIGHT} de dano na criatura "
+                    f"{Fore.RED}{lista_npcs[idx]['nome']}{Style.RESET_ALL}"
                 )
                 linhas_texto.append(
-                    f"As vinhas ficam cada vez mais espinhosas dependendo da quantidade de inimigos na arena..."
+                    f"{Style.BRIGHT}As vinhas ficam cada vez mais espinhosas dependendo da quantidade de inimigos na arena..."
+                    f"{Style.RESET_ALL}"
                 )
 
                 largura_bloco = max(len(strip_ansi(l)) for l in linhas_texto)
@@ -1228,10 +1255,13 @@ def atacar_monstro_habilidade(player: dict, idx: int) -> None:
                 )
                 linhas_texto.append(" ")
                 linhas_texto.append(
-                    f"Parece que vinhas enormes foram invocadas causando {player['dano']} de dano na criatura {lista_npcs[idx]['nome']}"
+                    f"{Style.BRIGHT}Parece que vinhas enormes foram invocadas causando "
+                    f"{Fore.RED}{player['dano']}{Style.BRIGHT} de dano na criatura "
+                    f"{Fore.RED}{lista_npcs[idx]['nome']}{Style.RESET_ALL}"
                 )
                 linhas_texto.append(
-                    f"Parece que por algum motivo você errou a conjuração do feitiço, causando menos dano..."
+                    f"{Style.BRIGHT}Parece que por algum motivo você errou a conjuração do feitiço, causando menos dano..."
+                    f"{Style.RESET_ALL}"
                 )
 
                 largura_bloco = max(len(strip_ansi(l)) for l in linhas_texto)
@@ -1278,10 +1308,13 @@ def atacar_monstro_habilidade(player: dict, idx: int) -> None:
             )
             linhas_texto.append(" ")
             linhas_texto.append(
-                f"A criatura {lista_npcs[idx]['nome']} olhou para seus olhos causando uma morte instantânea por petrificação"
+                f"{Style.BRIGHT}A criatura "
+                f"{Fore.RED}{lista_npcs[idx]['nome']}{Style.BRIGHT} olhou para seus olhos causando uma morte instantânea por petrificação"
+                f"{Style.RESET_ALL}"
             )
             linhas_texto.append(
-                f"Quando a princesa medusa fica brava, quem á olha... nunca mais olha outra coisa..."
+                f"{Style.BRIGHT}Quando a princesa medusa fica brava, quem a olha... nunca mais olha outra coisa..."
+                f"{Style.RESET_ALL}"
             )
 
             largura_bloco = max(len(strip_ansi(l)) for l in linhas_texto)
@@ -1322,10 +1355,13 @@ def atacar_monstro_habilidade(player: dict, idx: int) -> None:
             )
             linhas_texto.append(" ")
             linhas_texto.append(
-                f"Um ataque de furia da medusa foi liberado causando {player['dano']} na criatura {lista_npcs[idx]['nome']}"
+                f"{Style.BRIGHT}Um ataque de fúria da medusa foi liberado causando "
+                f"{Fore.RED}{player['dano']}{Style.BRIGHT} na criatura "
+                f"{Fore.RED}{lista_npcs[idx]['nome']}{Style.RESET_ALL}"
             )
             linhas_texto.append(
-                f"Parece que a criatura foi esperta e não olhou em seus olhos..."
+                f"{Style.BRIGHT}Parece que a criatura foi esperta e não olhou em seus olhos..."
+                f"{Style.RESET_ALL}"
             )
 
             largura_bloco = max(len(strip_ansi(l)) for l in linhas_texto)
@@ -1375,10 +1411,10 @@ def atacar_monstro_habilidade(player: dict, idx: int) -> None:
             linhas_texto.append(" ")
             nomes = ", ".join(npc['nome'] for npc in alvos)
             linhas_texto.append(
-                f"Uma flecha mágica foi lançada causando {player['dano por flecha magica']} de dano nas criaturas {nomes}"
+                f"{Style.BRIGHT}Uma flecha mágica foi lançada causando {Fore.RED + player['dano por flecha magica'] + Style.BRIGHT} de dano nas criaturas {Fore.RED + nomes}{Style.RESET_ALL}"
             )
             linhas_texto.append(
-                f"A flecha mágica é poderosa, atravessa seus inimigos, e causa muito mais dano..."
+                f"{Style.BRIGHT}A flecha mágica é poderosa, atravessa seus inimigos, e causa muito mais dano...{Style.RESET_ALL}"
             )
 
             largura_bloco = max(len(strip_ansi(l)) for l in linhas_texto)
@@ -1423,10 +1459,13 @@ def atacar_monstro_habilidade(player: dict, idx: int) -> None:
             linhas_texto.append(" ")
             nomes = ", ".join(npc['nome'] for npc in alvos)
             linhas_texto.append(
-                f"Uma flecha mágica foi lançada causando {player['dano'] * 2} de dano nas criaturas {nomes}"
+                f"{Style.BRIGHT}Uma flecha mágica foi lançada causando "
+                f"{Fore.RED}{player['dano'] * 2}{Style.BRIGHT} de dano nas criaturas "
+                f"{Fore.RED}{nomes}{Style.RESET_ALL}"
             )
             linhas_texto.append(
-                f"A flecha mágica é poderosa, atravessa seus inimigos, e causa muito mais dano..."
+                f"{Style.BRIGHT}A flecha mágica é poderosa, atravessa seus inimigos, e causa muito mais dano..."
+                f"{Style.RESET_ALL}"
             )
 
             largura_bloco = max(len(strip_ansi(l)) for l in linhas_texto)
@@ -1471,11 +1510,14 @@ def atacar_monstro_habilidade(player: dict, idx: int) -> None:
         )
         linhas_texto.append(" ")
         linhas_texto.append(
-            f"As criaturas ficaram confusas e acabaram atacando a si mesmas causando muito dano"
+            f"{Style.BRIGHT}As criaturas ficaram confusas e acabaram atacando a si mesmas causando muito dano"
+            f"{Style.RESET_ALL}"
         )
         linhas_texto.append(
-            f"Mortes mormurantes são traiçoeiras e costumam usar os inimigos contra eles mesmos..."
+            f"{Style.BRIGHT}Mortes murmurantes são traiçoeiras e costumam usar os inimigos contra eles mesmos..."
+            f"{Style.RESET_ALL}"
         )
+
 
         largura_bloco = max(len(strip_ansi(l)) for l in linhas_texto)
 
@@ -1508,10 +1550,10 @@ def atacar_monstro_habilidade(player: dict, idx: int) -> None:
 
 
 #FUNCAO DE ATACAR OS MONSTROS APENAS (DANO) NORMAL DO JOGADOR
-def atacar_monstro(idx: int, player: dict) -> None:
-    limpar_tela()
+def atacar_monstro(idx: int, player: dict, orda: int) -> None:
+
     img = imagem_seta_escolhida_inimigo_fase1(idx)
-    centra_h_v(img)
+    inimigo = lista_npcs[idx]['nome']
 
     lista_npcs[idx]['hp'] -= player['dano']
 
@@ -1519,14 +1561,75 @@ def atacar_monstro(idx: int, player: dict) -> None:
         del escolhas_inimigo[idx]
         del lista_npcs[idx]
 
+        mensagem_menos_um = (
+            f"\n"
+            f"\n"
+            f"\n"
+            f"\n"
+            f"\n"
+            f"\n"
+            f"{Fore.RED}✦━━━━━━━━━━━━━━━ ✧ MENOS UM! ✧ ━━━━━━━━━━━━━━━✦{Style.RESET_ALL}\n"
+            f"\n"
+            f"{Style.BRIGHT}O inimigo {Fore.RED + inimigo + Style.RESET_ALL}{Style.BRIGHT} morreu!{Style.RESET_ALL}\n"
+            f"{Style.BRIGHT}Parece que você derrotou um inimigo. Muito bem!{Style.RESET_ALL}\n"
+            f"\n"
+            f"{Style.BRIGHT}Pressione ENTER para continuar{Style.RESET_ALL}"
+        )
+
+        limpar_tela()
         print("\n" * 2)
-        centra_h("Inimigo derrotado!")
-        centra_h("Aperte ENTER para continuar")
+        descri_monstro_mais_img(img, mensagem_menos_um)
         input()
+
+    if len(lista_npcs) == 0:
+        
+        mensagem_horda_derrotada = (
+            f"\n"
+            f"\n"
+            f"\n"
+            f"\n"
+            f"\n"
+            f"\n"
+            f"{Fore.BLUE}✦━━━━━━━━━━━━━━━ ✧ HORDA DERROTADA ✧ ━━━━━━━━━━━━━━━✦{Style.RESET_ALL}\n"
+            f"\n"
+            f"{Style.BRIGHT}A horda inimiga foi esmagada diante de sua determinação.{Style.RESET_ALL}\n"
+            f"{Style.BRIGHT}Você permanece de pé entre os corpos dos derrotados.{Style.RESET_ALL}\n"
+        )
+
+        if orda <= 2:
+            mensagem_horda_derrotada += f"{Style.BRIGHT}Essa não, parece que mais uma horda está se aproximando...{Style.RESET_ALL}\n"
+        else:
+            mensagem_horda_derrotada += f"{Style.BRIGHT}Você derrotou todas as hordas de monstros, pronto para a proxima fase?{Style.RESET_ALL}\n"
+
+        mensagem_horda_derrotada += f"\n{Style.BRIGHT}Pressione ENTER para continuar{Style.RESET_ALL}"
+
+        limpar_tela()
+        print("\n" * 2)
+        descri_monstro_mais_img(ic.fase1_cidade_salva(), mensagem_horda_derrotada)
+        input()
+
     else:
-        centra_h(f"Dano dado: {player['dano']}")
-        centra_h(f"HP restante: {lista_npcs[idx]['hp']}")
-        input("Aperte ENTER para continuar")
+        mensagem_dano_oponente = (
+            f"\n"
+            f"\n"
+            f"\n"
+            f"\n"
+            f"\n"
+            f"\n"
+            f"{Fore.RED}✦━━━━━━━━━━━━━━ ✧ DANO CAUSADO ✧ ━━━━━━━━━━━━━━✦{Style.RESET_ALL}\n"
+            f"\n"
+            f"{Style.BRIGHT}você atacou o inimigo {Fore.RED + inimigo + Style.RESET_ALL}!"
+            f"\n"
+            f"{Style.BRIGHT}Dano dado: {Fore.RED + str(player['dano'])}{Style.BRIGHT}{Style.RESET_ALL}\n"
+            f"{Style.BRIGHT}HP restante do inimigo: {Fore.MAGENTA + str(lista_npcs[idx]['hp'])}{Style.BRIGHT}{Style.RESET_ALL}\n"
+            f"\n"
+            f"{Style.BRIGHT}Aperte ENTER para continuar{Style.RESET_ALL}"
+        )
+
+        limpar_tela()
+        print("\n" * 2)
+        descri_monstro_mais_img(img, mensagem_dano_oponente)
+        input()
 
 
 

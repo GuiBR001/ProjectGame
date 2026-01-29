@@ -316,16 +316,22 @@ def criar_personagem(nome: str,raca: int) -> dict:
             sorte = 0.35
             habilidade = "FLECHA MÁGICA"
 
-    return  {
+    return {
         "nome": nome,
         "raca": raca,
-        "level": level,
+        "level": int(level),
         "exp": 0,
-        "hp": round(hp),
-        "dano": round(dano),
+        "xp_next": xp_para_upar(int(level)),
+        "hp": int(hp),
+        "hp_max": int(hp),
+        "dano": int(dano),
+        "hp_base": int(hp),
+        "dano_base": int(dano),
         "sorte": sorte,
         "habilidade": habilidade
-    }
+    }   
+
+
 
 
 
@@ -476,9 +482,9 @@ def criar_npc(level, fase) -> dict:
         "nome": nome,
         "sexo": sexo,
         "level": level,
-        "dano": 3 * level,
-        "hp": 40 * level,
-        "exp": 7 * level,
+        "dano": int(3 * level),
+        "hp": int(40 * level),
+        "exp": int(12 * (level ** 1.35)),
         "cor": choice([
             "\033[31m", "\033[32m", "\033[33m",
             "\033[34m", "\033[35m", "\033[36m",
@@ -499,17 +505,18 @@ def exibir_player(player: dict) -> None:
     raca = player['raca']
     level = player['level']
     exp = player['exp']
+    xp_next = player.get('xp_next', 0)
     vida = player['hp']
     dano = player['dano']
     sorte = player['sorte']
     habilidade = player['habilidade'] 
 
-    if sorte == 1:
+    if sorte <= 0.15 and sorte >= 0:
         sorte = "Baixa"
-    elif sorte == 2:
+    elif sorte >= 0.2 and sorte <= 0.29:
         sorte = "Normal"
-    else:
-        sorte = "Alta"
+    elif sorte >= 0.3:
+        sorte = "Acima"
 
     largura = 21 
 
@@ -521,6 +528,8 @@ def exibir_player(player: dict) -> None:
         f"  ║    Raça   : {str(raca).ljust(largura)}║\n"
         f"  ║    Level  : {str(level).ljust(largura)}║\n"
         f"  ║     EXP   : {str(exp).ljust(largura)}║\n"
+        f"  ║  PróxLvl  : {str(xp_next).ljust(largura)}║\n"
+        f"  ║ XP Barra  : {barra_xp(exp, xp_next).ljust(largura)}║\n"
         "  ╠" + "═" * 34 + "╣\n"
         f"  ║      HP   : {str(vida).ljust(largura)}║\n"
         f"  ║     Dano  : {str(dano).ljust(largura)}║\n"
@@ -528,6 +537,7 @@ def exibir_player(player: dict) -> None:
         f"  ║ Habilidade: {str(habilidade).ljust(largura)}║\n"
         "  ╚" + "═" * 34 + "╝\n"
     )
+
 
     centra_h(rgb_text(status))
 
@@ -858,12 +868,14 @@ def atacar_monstro_habilidade(player: dict, idx: int) -> None:
     from icons import esqueleto_flamejante_especial, anjo_caido_especial, sabio_feiticeiro_especial, pricesa_medusa_especial, arqueiro_magico_especial, morte_mormurante_especial
 
     habilidade = player['habilidade']
+    hp = lista_npcs[idx]['hp']
+    nome = lista_npcs[idx]['nome']
 
 
     #HABILIDADE ESQUELETO FLAMEJANTE ---------------------------------------------------
     if habilidade == "CHAMAS INFERNAIS" and len(lista_npcs) > 0:
 
-        player['dano por fogo'] = int(player['dano'] * 0.6)
+        player['dano por fogo'] = int(player['dano'] * 0.8)
         for npc in lista_npcs:
             npc['hp'] -= player['dano por fogo']
 
@@ -879,7 +891,7 @@ def atacar_monstro_habilidade(player: dict, idx: int) -> None:
         )
         linhas_texto.append(" ")
         linhas_texto.append( Style.BRIGHT + 
-            f"Causando {Fore.RED}{player['dano por fogo']}{Style.RESET_ALL}{Style.BRIGHT + " de dano por fogo em"} {Fore.RED + 'AREA' + Style.RESET_ALL}"
+            f"Causando {Fore.RED}{int(player['dano por fogo'])}{Style.RESET_ALL}{Style.BRIGHT + " de dano por fogo em"} {Fore.RED + 'AREA' + Style.RESET_ALL}"
         )
         linhas_texto.append(" ")
         linhas_texto.append(
@@ -904,31 +916,40 @@ def atacar_monstro_habilidade(player: dict, idx: int) -> None:
 
         indices_mortos = []
 
+        mortes = []
+
         for i, npc in enumerate(lista_npcs):
-            if npc['hp'] <= 0:
-                npc['hp'] = 0
-                linhas_texto.append(
-                    Fore.RED + npc['nome'] + Style.RESET_ALL
-                    + " " + Fore.BLACK + "vida atual: " + f"{npc['hp']}" + Style.RESET_ALL
-                )
-                indices_mortos.append(i)  
-            else:
-                linhas_texto.append(
-                    Fore.RED + npc['nome'] + Style.RESET_ALL
-                    + " " + Fore.BLACK + "vida atual: " + f"{npc['hp']}" + Style.RESET_ALL
-                )
+            if int(npc["hp"]) <= 0:
+                npc["hp"] = 0
+                indices_mortos.append(i)
+
+        for i in indices_mortos:
+            npc = lista_npcs[i]
+            xp_ganho = int(calcular_xp(npc, player, len(lista_npcs)))
+            player['exp'] = int(player.get('exp', 0)) + xp_ganho
+            verificar_level_up(player)
+            normalizar_stats(player)
+
+            img_monstro = imagem_seta_escolhida_inimigo_fase1(i)
+            mortes.append((img_monstro, npc['nome'], xp_ganho))
 
         for i in reversed(indices_mortos):
             del lista_npcs[i]
             del escolhas_inimigo[i]
+
+        for img_monstro, nome_monstro, xp_ganho in mortes:
+            mostrar_monstro_derrotado(img_monstro, nome_monstro, player, xp_ganho)
 
 
     #HABILIDADE ANJO CAÍDO --------------------------------------------------------------------
     elif habilidade == "CEIFEIRO" and len(lista_npcs) > 0:
 
         lista_npcs[idx]['hp'] -= player['dano']
-        player['vida ceifada'] = int(player['dano'] * 0.6)
-        player['hp'] += player['vida ceifada']
+        player['vida ceifada'] = int(int(player['dano']) * 0.6)
+        player['hp'] = int(player['hp']) + int(player['vida ceifada'])
+        if 'hp_max' in player:
+            player['hp'] = min(int(player['hp']), int(player['hp_max']))
+
 
         img = anjo_caido_especial()
         linhas_img = img.splitlines()
@@ -943,11 +964,11 @@ def atacar_monstro_habilidade(player: dict, idx: int) -> None:
         linhas_texto.append(" ")
         linhas_texto.append(
             Style.BRIGHT +
-            f"Ceifando {Fore.RED}{player['vida ceifada']}{Style.BRIGHT} de vida do monstro {Fore.RED}{lista_npcs[idx]['nome']}{Style.RESET_ALL}"
+            f"Ceifando {Fore.RED}{int(player['vida ceifada'])}{Style.BRIGHT} de vida do monstro {Fore.RED}{lista_npcs[idx]['nome']}{Style.RESET_ALL}"
             )
 
         linhas_texto.append( Style.BRIGHT +
-            f"Dando {Fore.RED}{player['vida ceifada']}{Style.BRIGHT} de dano pela foice{Style.RESET_ALL}"
+            f"Dando {Fore.RED}{int(player['dano'])}{Style.BRIGHT} de dano pela foice{Style.RESET_ALL}"
         )
 
         largura_bloco = max(len(strip_ansi(l)) for l in linhas_texto)
@@ -965,13 +986,29 @@ def atacar_monstro_habilidade(player: dict, idx: int) -> None:
 
         indices_mortos = []
 
+        mortes = []
+
         for i, npc in enumerate(lista_npcs):
-            if npc['hp'] <= 0:      
+            if int(npc["hp"]) <= 0:
+                npc["hp"] = 0
                 indices_mortos.append(i)
+
+        for i in indices_mortos:
+            npc = lista_npcs[i]
+            xp_ganho = int(calcular_xp(npc, player, len(lista_npcs)))
+            player['exp'] = int(player.get('exp', 0)) + xp_ganho
+            verificar_level_up(player)
+            normalizar_stats(player)
+
+            img_monstro = imagem_seta_escolhida_inimigo_fase1(i)
+            mortes.append((img_monstro, npc['nome'], xp_ganho))
 
         for i in reversed(indices_mortos):
             del lista_npcs[i]
-            del escolhas_inimigo[i] 
+            del escolhas_inimigo[i]
+
+        for img_monstro, nome_monstro, xp_ganho in mortes:
+            mostrar_monstro_derrotado(img_monstro, nome_monstro, player, xp_ganho)
 
     #HABILIDADE SABIO FEITICEIRO------------------------------------------------------------------
     elif habilidade == "FEITIÇOS ELEMENTAIS" and len(lista_npcs) > 0:
@@ -1004,13 +1041,13 @@ def atacar_monstro_habilidade(player: dict, idx: int) -> None:
 
             linhas_texto.append(
                 f"{Style.BRIGHT}Uma onda imensa foi invocada causando "
-                f"{Fore.RED}{player['dano por tsunami']}{Style.BRIGHT} de dano na criatura "
+                f"{Fore.RED}{int(player['dano por tsunami'])}{Style.BRIGHT} de dano na criatura "
                 f"{Fore.RED}{lista_npcs[idx]['nome']}{Style.RESET_ALL}"
             )
 
             linhas_texto.append(
                 f"{Style.BRIGHT}Fazendo com que a criatura tenha seu ataque reduzido em "
-                f"{Fore.YELLOW}25%{Style.RESET_ALL}"
+                f"{Fore.YELLOW}15%{Style.RESET_ALL}"
             )
 
 
@@ -1029,13 +1066,29 @@ def atacar_monstro_habilidade(player: dict, idx: int) -> None:
 
             indices_mortos = []
 
+            mortes = []
+
             for i, npc in enumerate(lista_npcs):
-                if npc['hp'] <= 0:      
+                if int(npc["hp"]) <= 0:
+                    npc["hp"] = 0
                     indices_mortos.append(i)
+
+            for i in indices_mortos:
+                npc = lista_npcs[i]
+                xp_ganho = int(calcular_xp(npc, player, len(lista_npcs)))
+                player['exp'] = int(player.get('exp', 0)) + xp_ganho
+                verificar_level_up(player)
+                normalizar_stats(player)
+
+                img_monstro = imagem_seta_escolhida_inimigo_fase1(i)
+                mortes.append((img_monstro, npc['nome'], xp_ganho))
 
             for i in reversed(indices_mortos):
                 del lista_npcs[i]
-                del escolhas_inimigo[i] 
+                del escolhas_inimigo[i]
+
+            for img_monstro, nome_monstro, xp_ganho in mortes:
+                mostrar_monstro_derrotado(img_monstro, nome_monstro, player, xp_ganho)
 
         elif poder_escolhido == "Terremoto":
             sorte = randint(1, 3)
@@ -1057,12 +1110,12 @@ def atacar_monstro_habilidade(player: dict, idx: int) -> None:
                 linhas_texto.append(" ")
                 linhas_texto.append(
                     f"{Style.BRIGHT}Um Terremoto avassalador foi invocado jogando a criatura "
-                    f"{Fore.RED}{lista_npcs[idx]['nome']}{Style.BRIGHT} no abismo e a eliminando"
+                    f"{Fore.RED}{lista_npcs[idx]['nome']}{Style.BRIGHT} no abismo e tirando 70% de sua vida"
                     f"{Style.RESET_ALL}"
                 )
 
                 linhas_texto.append(
-                    f"{Style.BRIGHT}Parece que a criatura não conseguiu escapar do destino..."
+                    f"{Style.BRIGHT}Parece que a criatura se machucou bastante..."
                     f"{Style.RESET_ALL}"
                 )
 
@@ -1082,13 +1135,28 @@ def atacar_monstro_habilidade(player: dict, idx: int) -> None:
 
                 indices_mortos = []
 
+                mortes = []
                 for i, npc in enumerate(lista_npcs):
-                    if npc['hp'] <= 0:      
+                    if int(npc["hp"]) <= 0:
+                        npc["hp"] = 0
                         indices_mortos.append(i)
+
+                for i in indices_mortos:
+                    npc = lista_npcs[i]
+                    xp_ganho = int(calcular_xp(npc, player, len(lista_npcs)))
+                    player['exp'] = int(player.get('exp', 0)) + xp_ganho
+                    verificar_level_up(player)
+                    normalizar_stats(player)
+
+                    img_monstro = imagem_seta_escolhida_inimigo_fase1(i)
+                    mortes.append((img_monstro, npc['nome'], xp_ganho))
 
                 for i in reversed(indices_mortos):
                     del lista_npcs[i]
                     del escolhas_inimigo[i]
+
+                for img_monstro, nome_monstro, xp_ganho in mortes:
+                    mostrar_monstro_derrotado(img_monstro, nome_monstro, player, xp_ganho)
 
             else:
                 lista_npcs[idx]['hp'] -= int(player['dano'] * 0.5)
@@ -1106,7 +1174,7 @@ def atacar_monstro_habilidade(player: dict, idx: int) -> None:
                 linhas_texto.append(" ")
                 linhas_texto.append(
                     f"{Style.BRIGHT}Um Terremoto foi invocado causando "
-                    f"{Fore.RED}0{Style.BRIGHT} de dano na criatura "
+                    f"{Fore.RED + int(player['dano'] * 0.5)}{Style.BRIGHT} de dano na criatura "
                     f"{Fore.RED}{lista_npcs[idx]['nome']}{Style.RESET_ALL}"
                 )
 
@@ -1130,13 +1198,29 @@ def atacar_monstro_habilidade(player: dict, idx: int) -> None:
 
                 indices_mortos = []
 
+                mortes = []
+
                 for i, npc in enumerate(lista_npcs):
-                    if npc['hp'] <= 0:      
+                    if int(npc["hp"]) <= 0:
+                        npc["hp"] = 0
                         indices_mortos.append(i)
+
+                for i in indices_mortos:
+                    npc = lista_npcs[i]
+                    xp_ganho = int(calcular_xp(npc, player, len(lista_npcs)))
+                    player['exp'] = int(player.get('exp', 0)) + xp_ganho
+                    verificar_level_up(player)
+                    normalizar_stats(player)
+
+                    img_monstro = imagem_seta_escolhida_inimigo_fase1(i)
+                    mortes.append((img_monstro, npc['nome'], xp_ganho))
 
                 for i in reversed(indices_mortos):
                     del lista_npcs[i]
-                    del escolhas_inimigo[i] 
+                    del escolhas_inimigo[i]
+
+                for img_monstro, nome_monstro, xp_ganho in mortes:
+                    mostrar_monstro_derrotado(img_monstro, nome_monstro, player, xp_ganho)
 
         elif poder_escolhido == "Tornado":
 
@@ -1157,7 +1241,7 @@ def atacar_monstro_habilidade(player: dict, idx: int) -> None:
             linhas_texto.append(" ")
             linhas_texto.append(
                 f"{Style.BRIGHT}Um Tornado enorme foi invocado causando "
-                f"{Fore.RED}{player['dano por tornado']}{Style.BRIGHT} de dano na criatura "
+                f"{Fore.RED}{int(player['dano por tornado'])}{Style.BRIGHT} de dano na criatura "
                 f"{Fore.RED}{lista_npcs[idx]['nome']}{Style.RESET_ALL}"
             )
             linhas_texto.append(
@@ -1180,13 +1264,29 @@ def atacar_monstro_habilidade(player: dict, idx: int) -> None:
 
             indices_mortos = []
 
+            mortes = []
+
             for i, npc in enumerate(lista_npcs):
-                if npc['hp'] <= 0:      
+                if int(npc["hp"]) <= 0:
+                    npc["hp"] = 0
                     indices_mortos.append(i)
+
+            for i in indices_mortos:
+                npc = lista_npcs[i]
+                xp_ganho = int(calcular_xp(npc, player, len(lista_npcs)))
+                player['exp'] = int(player.get('exp', 0)) + xp_ganho
+                verificar_level_up(player)
+                normalizar_stats(player)
+
+                img_monstro = imagem_seta_escolhida_inimigo_fase1(i)
+                mortes.append((img_monstro, npc['nome'], xp_ganho))
 
             for i in reversed(indices_mortos):
                 del lista_npcs[i]
-                del escolhas_inimigo[i] 
+                del escolhas_inimigo[i]
+
+            for img_monstro, nome_monstro, xp_ganho in mortes:
+                mostrar_monstro_derrotado(img_monstro, nome_monstro, player, xp_ganho)
 
         elif poder_escolhido == "Vinhas":
 
@@ -1209,7 +1309,7 @@ def atacar_monstro_habilidade(player: dict, idx: int) -> None:
                 linhas_texto.append(" ")
                 linhas_texto.append(
                     f"{Style.BRIGHT}Parece que vinhas enormes foram invocadas causando "
-                    f"{Fore.RED}{player['dano por vinhas']}{Style.BRIGHT} de dano na criatura "
+                    f"{Fore.RED}{int(player['dano por vinhas']) + Style.RESET_ALL}{Style.BRIGHT} de dano na criatura "
                     f"{Fore.RED}{lista_npcs[idx]['nome']}{Style.RESET_ALL}"
                 )
                 linhas_texto.append(
@@ -1232,13 +1332,29 @@ def atacar_monstro_habilidade(player: dict, idx: int) -> None:
 
                 indices_mortos = []
 
+                mortes = []
+
                 for i, npc in enumerate(lista_npcs):
-                    if npc['hp'] <= 0:      
+                    if int(npc["hp"]) <= 0:
+                        npc["hp"] = 0
                         indices_mortos.append(i)
+
+                for i in indices_mortos:
+                    npc = lista_npcs[i]
+                    xp_ganho = int(calcular_xp(npc, player, len(lista_npcs)))
+                    player['exp'] = int(player.get('exp', 0)) + xp_ganho
+                    verificar_level_up(player)
+                    normalizar_stats(player)
+
+                    img_monstro = imagem_seta_escolhida_inimigo_fase1(i)
+                    mortes.append((img_monstro, npc['nome'], xp_ganho))
 
                 for i in reversed(indices_mortos):
                     del lista_npcs[i]
-                    del escolhas_inimigo[i] 
+                    del escolhas_inimigo[i]
+
+                for img_monstro, nome_monstro, xp_ganho in mortes:
+                    mostrar_monstro_derrotado(img_monstro, nome_monstro, player, xp_ganho)
 
             else:
                 lista_npcs[idx]['hp'] -= player['dano']
@@ -1255,8 +1371,8 @@ def atacar_monstro_habilidade(player: dict, idx: int) -> None:
                 )
                 linhas_texto.append(" ")
                 linhas_texto.append(
-                    f"{Style.BRIGHT}Parece que vinhas enormes foram invocadas causando "
-                    f"{Fore.RED}{player['dano']}{Style.BRIGHT} de dano na criatura "
+                    f"{Style.BRIGHT}Parece que vinhas foram invocadas causando "
+                    f"{Fore.RED}{int(player['dano']) + Style.RESET_ALL}{Style.BRIGHT} de dano na criatura "
                     f"{Fore.RED}{lista_npcs[idx]['nome']}{Style.RESET_ALL}"
                 )
                 linhas_texto.append(
@@ -1279,13 +1395,29 @@ def atacar_monstro_habilidade(player: dict, idx: int) -> None:
 
                 indices_mortos = []
 
+                mortes = []
+
                 for i, npc in enumerate(lista_npcs):
-                    if npc['hp'] <= 0:      
+                    if int(npc["hp"]) <= 0:
+                        npc["hp"] = 0
                         indices_mortos.append(i)
+
+                for i in indices_mortos:
+                    npc = lista_npcs[i]
+                    xp_ganho = int(calcular_xp(npc, player, len(lista_npcs)))
+                    player['exp'] = int(player.get('exp', 0)) + xp_ganho
+                    verificar_level_up(player)
+                    normalizar_stats(player)
+
+                    img_monstro = imagem_seta_escolhida_inimigo_fase1(i)
+                    mortes.append((img_monstro, npc['nome'], xp_ganho))
 
                 for i in reversed(indices_mortos):
                     del lista_npcs[i]
-                    del escolhas_inimigo[i] 
+                    del escolhas_inimigo[i]
+
+                for img_monstro, nome_monstro, xp_ganho in mortes:
+                    mostrar_monstro_derrotado(img_monstro, nome_monstro, player, xp_ganho)
     
 
     #HABILIDADE PRINCESA MEDUSA---------------------------------------------------------------------
@@ -1332,13 +1464,29 @@ def atacar_monstro_habilidade(player: dict, idx: int) -> None:
 
             indices_mortos = []
 
+            mortes = []
+
             for i, npc in enumerate(lista_npcs):
-                if npc['hp'] <= 0:      
+                if int(npc["hp"]) <= 0:
+                    npc["hp"] = 0
                     indices_mortos.append(i)
+
+            for i in indices_mortos:
+                npc = lista_npcs[i]
+                xp_ganho = int(calcular_xp(npc, player, len(lista_npcs)))
+                player['exp'] = int(player.get('exp', 0)) + xp_ganho
+                verificar_level_up(player)
+                normalizar_stats(player)
+
+                img_monstro = imagem_seta_escolhida_inimigo_fase1(i)
+                mortes.append((img_monstro, npc['nome'], xp_ganho))
 
             for i in reversed(indices_mortos):
                 del lista_npcs[i]
-                del escolhas_inimigo[i] 
+                del escolhas_inimigo[i]
+
+            for img_monstro, nome_monstro, xp_ganho in mortes:
+                mostrar_monstro_derrotado(img_monstro, nome_monstro, player, xp_ganho)
 
         else:
             lista_npcs[idx]['hp'] -= player['dano']
@@ -1356,7 +1504,7 @@ def atacar_monstro_habilidade(player: dict, idx: int) -> None:
             linhas_texto.append(" ")
             linhas_texto.append(
                 f"{Style.BRIGHT}Um ataque de fúria da medusa foi liberado causando "
-                f"{Fore.RED}{player['dano']}{Style.BRIGHT} na criatura "
+                f"{Fore.RED}{int(player['dano'])}{Style.BRIGHT} na criatura "
                 f"{Fore.RED}{lista_npcs[idx]['nome']}{Style.RESET_ALL}"
             )
             linhas_texto.append(
@@ -1379,13 +1527,29 @@ def atacar_monstro_habilidade(player: dict, idx: int) -> None:
 
             indices_mortos = []
 
+            mortes = []
+
             for i, npc in enumerate(lista_npcs):
-                if npc['hp'] <= 0:      
+                if int(npc["hp"]) <= 0:
+                    npc["hp"] = 0
                     indices_mortos.append(i)
+
+            for i in indices_mortos:
+                npc = lista_npcs[i]
+                xp_ganho = int(calcular_xp(npc, player, len(lista_npcs)))
+                player['exp'] = int(player.get('exp', 0)) + xp_ganho
+                verificar_level_up(player)
+                normalizar_stats(player)
+
+                img_monstro = imagem_seta_escolhida_inimigo_fase1(i)
+                mortes.append((img_monstro, npc['nome'], xp_ganho))
 
             for i in reversed(indices_mortos):
                 del lista_npcs[i]
-                del escolhas_inimigo[i] 
+                del escolhas_inimigo[i]
+
+            for img_monstro, nome_monstro, xp_ganho in mortes:
+                mostrar_monstro_derrotado(img_monstro, nome_monstro, player, xp_ganho)
 
 
     #HABILIDADE ARQUEIRO MAGICO-----------------------------------------------------------
@@ -1411,7 +1575,7 @@ def atacar_monstro_habilidade(player: dict, idx: int) -> None:
             linhas_texto.append(" ")
             nomes = ", ".join(npc['nome'] for npc in alvos)
             linhas_texto.append(
-                f"{Style.BRIGHT}Uma flecha mágica foi lançada causando {Fore.RED + player['dano por flecha magica'] + Style.BRIGHT} de dano nas criaturas {Fore.RED + nomes}{Style.RESET_ALL}"
+                f"{Style.BRIGHT}Uma flecha mágica foi lançada causando {Fore.RED + int(player['dano por flecha magica']) + Style.BRIGHT} de dano nas criaturas {Fore.RED + nomes}{Style.RESET_ALL}"
             )
             linhas_texto.append(
                 f"{Style.BRIGHT}A flecha mágica é poderosa, atravessa seus inimigos, e causa muito mais dano...{Style.RESET_ALL}"
@@ -1432,13 +1596,29 @@ def atacar_monstro_habilidade(player: dict, idx: int) -> None:
 
             indices_mortos = []
 
+            mortes = []
+
             for i, npc in enumerate(lista_npcs):
-                if npc['hp'] <= 0:      
+                if int(npc["hp"]) <= 0:
+                    npc["hp"] = 0
                     indices_mortos.append(i)
+
+            for i in indices_mortos:
+                npc = lista_npcs[i]
+                xp_ganho = int(calcular_xp(npc, player, len(lista_npcs)))
+                player['exp'] = int(player.get('exp', 0)) + xp_ganho
+                verificar_level_up(player)
+                normalizar_stats(player)
+
+                img_monstro = imagem_seta_escolhida_inimigo_fase1(i)
+                mortes.append((img_monstro, npc['nome'], xp_ganho))
 
             for i in reversed(indices_mortos):
                 del lista_npcs[i]
-                del escolhas_inimigo[i] 
+                del escolhas_inimigo[i]
+
+            for img_monstro, nome_monstro, xp_ganho in mortes:
+                mostrar_monstro_derrotado(img_monstro, nome_monstro, player, xp_ganho)
 
         else:
             alvos = sample(lista_npcs, len(lista_npcs))
@@ -1460,7 +1640,7 @@ def atacar_monstro_habilidade(player: dict, idx: int) -> None:
             nomes = ", ".join(npc['nome'] for npc in alvos)
             linhas_texto.append(
                 f"{Style.BRIGHT}Uma flecha mágica foi lançada causando "
-                f"{Fore.RED}{player['dano'] * 2}{Style.BRIGHT} de dano nas criaturas "
+                f"{Fore.RED}{int(player['dano'] * 2)}{Style.BRIGHT} de dano nas criaturas "
                 f"{Fore.RED}{nomes}{Style.RESET_ALL}"
             )
             linhas_texto.append(
@@ -1483,20 +1663,36 @@ def atacar_monstro_habilidade(player: dict, idx: int) -> None:
 
             indices_mortos = []
 
+            mortes = []
+
             for i, npc in enumerate(lista_npcs):
-                if npc['hp'] <= 0:      
+                if int(npc["hp"]) <= 0:
+                    npc["hp"] = 0
                     indices_mortos.append(i)
+
+            for i in indices_mortos:
+                npc = lista_npcs[i]
+                xp_ganho = int(calcular_xp(npc, player, len(lista_npcs)))
+                player['exp'] = int(player.get('exp', 0)) + xp_ganho
+                verificar_level_up(player)
+                normalizar_stats(player)
+
+                img_monstro = imagem_seta_escolhida_inimigo_fase1(i)
+                mortes.append((img_monstro, npc['nome'], xp_ganho))
 
             for i in reversed(indices_mortos):
                 del lista_npcs[i]
                 del escolhas_inimigo[i]
+
+            for img_monstro, nome_monstro, xp_ganho in mortes:
+                mostrar_monstro_derrotado(img_monstro, nome_monstro, player, xp_ganho)
 
 
     #HABILIDADE MORTE MORMURANTE----------------------------------------------------------------------
 
     elif habilidade == "ILUSÃO" and len(lista_npcs) > 0:
         for npc in lista_npcs:
-            npc['hp'] -= npc['dano'] * 2
+            npc['hp'] = int(npc['hp']) - int(npc['dano']) * 2
 
         img = morte_mormurante_especial()
         linhas_img = img.splitlines()
@@ -1510,7 +1706,8 @@ def atacar_monstro_habilidade(player: dict, idx: int) -> None:
         )
         linhas_texto.append(" ")
         linhas_texto.append(
-            f"{Style.BRIGHT}As criaturas ficaram confusas e acabaram atacando a si mesmas causando muito dano"
+            f"{Style.BRIGHT}As criaturas ficaram confusas e acabaram atacando a si mesmas causando"
+            f"{Style.BRIGHT}o dobro de seu próprio dano"
             f"{Style.RESET_ALL}"
         )
         linhas_texto.append(
@@ -1534,13 +1731,31 @@ def atacar_monstro_habilidade(player: dict, idx: int) -> None:
 
         indices_mortos = []
 
+        mortes = []
+
         for i, npc in enumerate(lista_npcs):
-            if npc['hp'] <= 0:      
+            if int(npc["hp"]) <= 0:
+                npc["hp"] = 0
                 indices_mortos.append(i)
+
+        for i in indices_mortos:
+            npc = lista_npcs[i]
+            xp_ganho = int(calcular_xp(npc, player, len(lista_npcs)))
+            player['exp'] = int(player.get('exp', 0)) + xp_ganho
+            verificar_level_up(player)
+            normalizar_stats(player)
+
+            img_monstro = imagem_seta_escolhida_inimigo_fase1(i)
+            mortes.append((img_monstro, npc['nome'], xp_ganho))
 
         for i in reversed(indices_mortos):
             del lista_npcs[i]
-            del escolhas_inimigo[i] 
+            del escolhas_inimigo[i]
+
+        for img_monstro, nome_monstro, xp_ganho in mortes:
+            mostrar_monstro_derrotado(img_monstro, nome_monstro, player, xp_ganho)
+
+
                 
 
 
@@ -1552,34 +1767,30 @@ def atacar_monstro_habilidade(player: dict, idx: int) -> None:
 #FUNCAO DE ATACAR OS MONSTROS APENAS (DANO) NORMAL DO JOGADOR
 def atacar_monstro(idx: int, player: dict, orda: int) -> None:
 
+    hp = lista_npcs[idx]['hp']
+
     img = imagem_seta_escolhida_inimigo_fase1(idx)
     inimigo = lista_npcs[idx]['nome']
 
-    lista_npcs[idx]['hp'] -= player['dano']
+    lista_npcs[idx]['hp'] = int(lista_npcs[idx]['hp']) - int(player['dano'])
 
     if lista_npcs[idx]['hp'] <= 0:
+
+        lista_npcs[idx]['hp'] = 0
+
+        npc = lista_npcs[idx]
+        xp_ganho = int(calcular_xp(npc, player, len(lista_npcs)))
+        player['exp'] = int(player.get('exp', 0)) + xp_ganho
+        verificar_level_up(player)
+        normalizar_stats(player)
+
+        inimigo = npc['nome']
+
         del escolhas_inimigo[idx]
         del lista_npcs[idx]
 
-        mensagem_menos_um = (
-            f"\n"
-            f"\n"
-            f"\n"
-            f"\n"
-            f"\n"
-            f"\n"
-            f"{Fore.RED}✦━━━━━━━━━━━━━━━ ✧ MENOS UM! ✧ ━━━━━━━━━━━━━━━✦{Style.RESET_ALL}\n"
-            f"\n"
-            f"{Style.BRIGHT}O inimigo {Fore.RED + inimigo + Style.RESET_ALL}{Style.BRIGHT} morreu!{Style.RESET_ALL}\n"
-            f"{Style.BRIGHT}Parece que você derrotou um inimigo. Muito bem!{Style.RESET_ALL}\n"
-            f"\n"
-            f"{Style.BRIGHT}Pressione ENTER para continuar{Style.RESET_ALL}"
-        )
+        mostrar_monstro_derrotado(img, inimigo, player, xp_ganho)
 
-        limpar_tela()
-        print("\n" * 2)
-        descri_monstro_mais_img(img, mensagem_menos_um)
-        input()
 
     if len(lista_npcs) == 0:
         
@@ -1621,7 +1832,7 @@ def atacar_monstro(idx: int, player: dict, orda: int) -> None:
             f"{Style.BRIGHT}você atacou o inimigo {Fore.RED + inimigo + Style.RESET_ALL}!"
             f"\n"
             f"{Style.BRIGHT}Dano dado: {Fore.RED + str(player['dano'])}{Style.BRIGHT}{Style.RESET_ALL}\n"
-            f"{Style.BRIGHT}HP restante do inimigo: {Fore.MAGENTA + str(lista_npcs[idx]['hp'])}{Style.BRIGHT}{Style.RESET_ALL}\n"
+            f"{Style.BRIGHT}HP restante do inimigo: {Fore.MAGENTA + str(hp)}{Style.BRIGHT}{Style.RESET_ALL}\n"
             f"\n"
             f"{Style.BRIGHT}Aperte ENTER para continuar{Style.RESET_ALL}"
         )
@@ -1694,8 +1905,6 @@ A história para aqui, mas poderia ter sido diferente.
 
 
 
-
-
 #PEGA A IMAGEM DO MONSTRO E ADICIONA A DESCRICAO QUE EU QUERO QUE O MONSTRO TENHA, JUNTANDO OS DOIS
 def descri_monstro_mais_img(imagem: str, extra: str) -> None:
 
@@ -1739,3 +1948,212 @@ def rgb_text(texto: str) -> str:
 
 
 
+#SISTEMA DE LEVEL UP PLAYER / QUANTIDADE DE XP POR MONSTRO ----------------------------------
+
+def multiplicador_qtd(qtd: int) -> float:
+    if qtd == 1: return 1.0
+    if qtd == 2: return 1.15
+    if qtd == 3: return 1.30
+    if qtd == 4: return 1.50
+    return 1.75
+
+
+def multiplicador_level(player_lvl: int, npc_lvl: int) -> float:
+    diff = npc_lvl - player_lvl
+
+    if diff >= 5:
+        return 1.6
+    elif diff >= 2:
+        return 1.3
+    elif diff == 1:
+        return 1.15
+    elif diff == 0:
+        return 1.0
+    elif diff == -1:
+        return 0.9
+    else:
+        return 0.75
+
+
+
+def xp_para_upar(level: int) -> int:
+
+    return int(round(100 * (level ** 1.7) * 0.30))
+
+
+
+def calcular_xp(npc: dict, player: dict, qtd_inimigos: int) -> int:
+
+    xp_base = int(npc.get('exp', 0))
+
+    mult_qtd = multiplicador_qtd(int(qtd_inimigos))
+    mult_lvl = multiplicador_level(int(player.get('level', 1)), int(npc.get('level', 1)))
+
+    xp_final = xp_base * mult_qtd * mult_lvl
+    return int(round(xp_final))
+
+
+def verificar_level_up(player: dict) -> None:
+    player['level'] = int(player.get('level', 1))
+    player['exp'] = int(player.get('exp', 0))
+    player['xp_next'] = int(player.get('xp_next', xp_para_upar(player['level'])))
+
+    while player['exp'] >= player['xp_next']:
+        player['exp'] -= player['xp_next']
+        player['level'] += 1
+        player['xp_next'] = xp_para_upar(player['level'])
+
+        atualizar_stats_por_level(player, curar_total=True)
+        normalizar_stats(player) 
+
+
+
+
+
+
+
+def barra_xp(exp, xp_next, tamanho=20):
+    exp = inteiro(exp)
+    xp_next = inteiro(xp_next)
+
+    if xp_next <= 0:
+        return "█" * tamanho
+
+    proporcao = exp / xp_next
+    if proporcao < 0:
+        proporcao = 0
+    if proporcao > 1:
+        proporcao = 1
+
+    preenchido = int(proporcao * tamanho)
+    vazio = tamanho - preenchido
+    return "█" * preenchido + "░" * vazio
+
+
+
+
+
+def inteiro(n) -> int:
+    try:
+        return int(n)
+    except Exception:
+        return 0
+
+
+def normalizar_stats(player: dict) -> None:
+
+    player['level'] = inteiro(player.get('level', 1))
+    player['exp'] = inteiro(player.get('exp', 0))
+    player['xp_next'] = inteiro(player.get('xp_next', 0))
+
+    player['dano'] = inteiro(player.get('dano', 0))
+
+    player['hp'] = inteiro(player.get('hp', 0))
+    player['hp_max'] = inteiro(player.get('hp_max', player['hp']))
+
+    if player['hp'] < 0:
+        player['hp'] = 0
+    if player['hp'] > player['hp_max']:
+        player['hp'] = player['hp_max']
+
+
+
+
+def mostrar_monstro_derrotado(img: str, inimigo: str, player: dict, xp_ganho: int = 0) -> None:
+    normalizar_stats(player)
+
+    largura = 21
+    exp = player['exp']
+    xp_next = player.get('xp_next', 0)
+
+    status_jogador = (
+        "  ╔" + "═" * 34 + "╗\n"
+        "  ║         STATUS DO JOGADOR        ║\n"
+        "  ╠" + "═" * 34 + "╣\n"
+        f"  ║    Nome   : {str(player['nome']).ljust(largura)}║\n"
+        f"  ║    Level  : {str(player['level']).ljust(largura)}║\n"
+        f"  ║     EXP   : {str(exp).ljust(largura)}║\n"
+        f"  ║  PróxLvl  : {str(xp_next).ljust(largura)}║\n"
+        f"  ║ XP Barra  : {barra_xp(exp, xp_next).ljust(largura)}║\n"
+        "  ╠" + "═" * 34 + "╣\n"
+        f"  ║      HP   : {str(player['hp']).ljust(largura)}║\n"
+        f"  ║     Dano  : {str(player['dano']).ljust(largura)}║\n"
+        f"  ║ Habilidade: {str(player['habilidade']).ljust(largura)}║\n"
+        "  ╚" + "═" * 34 + "╝\n"
+    )
+
+    status_jogador_rgb = "\n".join([rgb_text(linha) for linha in status_jogador.splitlines()])
+
+    linha_xp = ""
+    if xp_ganho > 0:
+        linha_xp = f"{Style.BRIGHT}Você ganhou {Fore.YELLOW}+{inteiro(xp_ganho)} XP{Style.RESET_ALL}\n"
+
+    mensagem = (
+        f"\n"
+        f"{status_jogador_rgb}"
+        f"\n\n"
+        f"{Fore.RED}✦━━━━━━━━━━━━━━━ ✧ MENOS UM! ✧ ━━━━━━━━━━━━━━━✦{Style.RESET_ALL}\n"
+        f"\n"
+        f"{Style.BRIGHT}O inimigo {Fore.RED + inimigo + Style.RESET_ALL}{Style.BRIGHT} morreu!{Style.RESET_ALL}\n"
+        f"{Style.BRIGHT}Parece que você derrotou um inimigo. Muito bem!{Style.RESET_ALL}\n"
+        f"{linha_xp}"
+        f"\n"
+        f"{Style.BRIGHT}Pressione ENTER para continuar{Style.RESET_ALL}\n"
+    )
+
+    limpar_tela()
+    print("\n" * 2)
+    descri_monstro_mais_img(img, mensagem)
+    input()
+
+
+
+
+
+#CALCULO DAS STATS BASEADAS EM LEVEL 
+def hp_normal_por_level(level: int) -> float:
+    return 90 + level * 18
+
+def dano_normal_por_level(level: int) -> float:
+    return 6 + level * 2.1
+
+def atualizar_stats_por_level(player: dict, curar_total: bool = True) -> None:
+
+    player["level"] = inteiro(player.get("level", 1))
+
+    base_level = 1 
+    lvl = player["level"]
+
+    if "hp_base" not in player or "dano_base" not in player:
+
+        hp_max_atual = inteiro(player.get("hp_max", player.get("hp", 1)))
+        dano_atual = inteiro(player.get("dano", 1))
+
+        r_hp = hp_normal_por_level(lvl) / hp_normal_por_level(base_level)
+        r_dano = dano_normal_por_level(lvl) / dano_normal_por_level(base_level)
+
+        player["hp_base"] = max(1, int(round(hp_max_atual / r_hp))) if r_hp > 0 else hp_max_atual
+        player["dano_base"] = max(1, int(round(dano_atual / r_dano))) if r_dano > 0 else dano_atual
+
+    hp_max_antigo = inteiro(player.get("hp_max", player.get("hp", 0)))
+    hp_antigo = inteiro(player.get("hp", 0))
+
+    r_hp = hp_normal_por_level(lvl) / hp_normal_por_level(base_level)
+    r_dano = dano_normal_por_level(lvl) / dano_normal_por_level(base_level)
+
+    player["hp_max"] = max(1, int(round(player["hp_base"] * r_hp)))
+    player["dano"] = max(1, int(round(player["dano_base"] * r_dano)))
+
+    if curar_total:
+        player["hp"] = player["hp_max"]
+    else:
+        if hp_max_antigo > 0:
+            pct = hp_antigo / hp_max_antigo
+            player["hp"] = int(round(player["hp_max"] * pct))
+        else:
+            player["hp"] = player["hp_max"]
+
+    if player["hp"] < 0:
+        player["hp"] = 0
+    if player["hp"] > player["hp_max"]:
+        player["hp"] = player["hp_max"]

@@ -934,6 +934,9 @@ def atacar_monstro_habilidade(player: dict, idx: int) -> None:
         img_final = "\n".join(linhas_img)
         centra_h_v(img_final)
 
+        centra_h(f"{Fore.WHITE}{Style.BRIGHT}Aperte ENTER para continuar...{Style.RESET_ALL}")
+        input(" ")
+
         indices_mortos = []
         mortes = []
 
@@ -1016,6 +1019,9 @@ def atacar_monstro_habilidade(player: dict, idx: int) -> None:
 
         img_final = "\n".join(linhas_img)
         centra_h_v(img_final)
+
+        centra_h(f"{Fore.WHITE}{Style.BRIGHT}Aperte ENTER para continuar...{Style.RESET_ALL}")
+        input(" ")
 
         indices_mortos = []
         mortes = []
@@ -1106,6 +1112,9 @@ def atacar_monstro_habilidade(player: dict, idx: int) -> None:
             img_final = "\n".join(linhas_img)
             centra_h_v(img_final)
 
+            centra_h(f"{Fore.WHITE}{Style.BRIGHT}Aperte ENTER para continuar...{Style.RESET_ALL}")
+            input(" ")
+
             indices_mortos = []
             mortes = []
 
@@ -1182,6 +1191,9 @@ def atacar_monstro_habilidade(player: dict, idx: int) -> None:
                 img_final = "\n".join(linhas_img)
                 centra_h_v(img_final)
 
+                centra_h(f"{Fore.WHITE}{Style.BRIGHT}Aperte ENTER para continuar...{Style.RESET_ALL}")
+                input(" ")
+
                 indices_mortos = []
                 mortes = []
 
@@ -1251,6 +1263,9 @@ def atacar_monstro_habilidade(player: dict, idx: int) -> None:
 
                 img_final = "\n".join(linhas_img)
                 centra_h_v(img_final)
+
+                centra_h(f"{Fore.WHITE}{Style.BRIGHT}Aperte ENTER para continuar...{Style.RESET_ALL}")
+                input(" ")
 
                 indices_mortos = []
                 mortes = []
@@ -1326,6 +1341,9 @@ def atacar_monstro_habilidade(player: dict, idx: int) -> None:
 
             img_final = "\n".join(linhas_img)
             centra_h_v(img_final)
+
+            centra_h(f"{Fore.WHITE}{Style.BRIGHT}Aperte ENTER para continuar...{Style.RESET_ALL}")
+            input(" ")
 
             indices_mortos = []
             mortes = []
@@ -1407,6 +1425,9 @@ def atacar_monstro_habilidade(player: dict, idx: int) -> None:
                 img_final = "\n".join(linhas_img)
                 centra_h_v(img_final)
 
+                centra_h(f"{Fore.WHITE}{Style.BRIGHT}Aperte ENTER para continuar...{Style.RESET_ALL}")
+                input(" ")
+
                 indices_mortos = []
                 mortes = []
 
@@ -1476,6 +1497,9 @@ def atacar_monstro_habilidade(player: dict, idx: int) -> None:
 
                 img_final = "\n".join(linhas_img)
                 centra_h_v(img_final)
+
+                centra_h(f"{Fore.WHITE}{Style.BRIGHT}Aperte ENTER para continuar...{Style.RESET_ALL}")
+                input(" ")
 
                 indices_mortos = []
                 mortes = []
@@ -1551,6 +1575,9 @@ def atacar_monstro_habilidade(player: dict, idx: int) -> None:
             img_final = "\n".join(linhas_img)
             centra_h_v(img_final)
 
+            centra_h(f"{Fore.WHITE}{Style.BRIGHT}Aperte ENTER para continuar...{Style.RESET_ALL}")
+            input(" ")
+
             indices_mortos = []
             mortes = []
 
@@ -1620,6 +1647,9 @@ def atacar_monstro_habilidade(player: dict, idx: int) -> None:
 
             img_final = "\n".join(linhas_img)
             centra_h_v(img_final)
+
+            centra_h(f"{Fore.WHITE}{Style.BRIGHT}Aperte ENTER para continuar...{Style.RESET_ALL}")
+            input(" ")
 
             indices_mortos = []
             mortes = []
@@ -1699,6 +1729,9 @@ def atacar_monstro_habilidade(player: dict, idx: int) -> None:
             img_final = "\n".join(linhas_img)
             centra_h_v(img_final)
 
+            centra_h(f"{Fore.WHITE}{Style.BRIGHT}Aperte ENTER para continuar...{Style.RESET_ALL}")
+            input(" ")
+
             indices_mortos = []
             mortes = []
 
@@ -1775,6 +1808,9 @@ def atacar_monstro_habilidade(player: dict, idx: int) -> None:
             img_final = "\n".join(linhas_img)
             centra_h_v(img_final)
 
+            centra_h(f"{Fore.WHITE}{Style.BRIGHT}Aperte ENTER para continuar...{Style.RESET_ALL}")
+            input(" ")
+
             indices_mortos = []
             mortes = []
 
@@ -1844,6 +1880,9 @@ def atacar_monstro_habilidade(player: dict, idx: int) -> None:
 
         img_final = "\n".join(linhas_img)
         centra_h_v(img_final)
+
+        centra_h(f"{Fore.WHITE}{Style.BRIGHT}Aperte ENTER para continuar...{Style.RESET_ALL}")
+        input(" ")
 
         indices_mortos = []
         mortes = []

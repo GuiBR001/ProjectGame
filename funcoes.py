@@ -19,7 +19,7 @@ escolhas_item = ["saude", "dano", "escudo", "xp", "sair"]
 escolhas_menu = ["Começar Novo Jogo", "Ultimos Recordes", "Créditos", "Sair"]
 escolhas_raca = ["Esqueleto Flamejante", "Anjo Caído", "Sábio Feiticeiro", "Princesa Medusa", "Morte Mormurante", "Arqueiro Mágico"]
 player = {}
-itens = []
+itens = {}
 habilidade = []
 tamanho = shutil.get_terminal_size()
 largura_tela = tamanho.columns
@@ -837,19 +837,20 @@ def comprar_itens():
         escolha_item = escolhas_item[idx]
 
         if escolha_item == "saude":
-            itens.append("Poção de Cura")
+            itens["Poção de Cura"] = itens.get("Poção de Cura", 0) + 1
 
         elif escolha_item == "dano":
-            itens.append("Poção de Dano")
+            itens["Poção de Dano"] = itens.get("Poção de Dano", 0) + 1
 
         elif escolha_item == "xp":
-            itens.append("Poção de XP")
+            itens["Poção de XP"] = itens.get("Poção de XP", 0) + 1
 
         elif escolha_item == "escudo":
-            itens.append("Poção de Escudo")
+            itens["Poção de Escudo"] = itens.get("Poção de Escudo", 0) + 1
 
         elif escolha_item == "sair":
             break
+
 
 
 
@@ -1035,8 +1036,6 @@ def exibe_status_item_loja(idx: int) -> list[str]:
 
 
 
-
-
 #JUNTA DESCRICAO POCAO E IMAGEM DA POCAO
 def descri_item_mais_img(imagem: str | None, extra: str) -> None:
     if not imagem:
@@ -1128,7 +1127,9 @@ def colorir_imagem_item(nome_item: str, img_str: str) -> str:
 #CAIXA QUE FICA AO LADO DA ESCOLHA DE INIMIGOS, LAYOUT
 def cor_item(nome: str) -> str:
     nome = (nome or "").lower()
-    if "cura" in nome or "vida" in nome:
+    nome = nome.split(" x")[0]
+
+    if "cura" in nome:
         return Fore.MAGENTA
     if "dano" in nome:
         return Fore.RED
@@ -1136,15 +1137,15 @@ def cor_item(nome: str) -> str:
         return Fore.GREEN
     if "escudo" in nome:
         return Fore.BLUE
-    return Fore.WHITE
+    return Fore.GREEN
 
 
-def render_inventario(itens: list[str], idx_item: int, foco_itens: bool) -> list[str]:
+
+
+def render_inventario(itens: dict, idx_item: int, foco_itens: bool) -> list[str]:
+
     largura = 28
     titulo = "I T E N S"
-
-    def linha_vazia():
-        return Fore.CYAN + "║" + " " * largura + "║" + Style.RESET_ALL
 
     topo = Fore.CYAN + "╔" + "═" * largura + "╗" + Style.RESET_ALL
     rodape = Fore.CYAN + "╚" + "═" * largura + "╝" + Style.RESET_ALL
@@ -1161,30 +1162,38 @@ def render_inventario(itens: list[str], idx_item: int, foco_itens: bool) -> list
 
     linhas = [topo, titulo_linha, separador]
 
-    if not itens:
+    lista = []
+    for nome, qtd in itens.items():
+        if qtd > 1:
+            lista.append(f"{nome} x{qtd}")
+        else:
+            lista.append(nome)
+
+    if not lista:
         vazio = "(vazio)"
-        pad = (largura - len(vazio)) // 2
+        pad2 = (largura - len(vazio)) // 2
         linhas.append(
             Fore.CYAN + "║"
-            + " " * pad + Style.DIM + vazio + Style.RESET_ALL
-            + " " * (largura - pad - len(vazio))
+            + " " * pad2 + Style.DIM + vazio + Style.RESET_ALL
+            + " " * (largura - pad2 - len(vazio))
             + "║" + Style.RESET_ALL
         )
         linhas.append(rodape)
         return linhas
 
-    idx_item %= len(itens)
+    idx_item %= len(lista)
 
-    for i, item in enumerate(itens):
+    for i, item_txt in enumerate(lista):
         selecionado = (i == idx_item)
         seta = "➤" if selecionado else " "
-        nome = item[:(largura - 4)] 
 
-        cor = cor_item(item)
+        nome_curto = item_txt[: (largura - 4)]
+
+        cor = cor_item(item_txt) 
         destaque = Style.BRIGHT if (foco_itens and selecionado) else ""
 
-        conteudo = f"{seta} {nome}"
-        espaco = largura - len(conteudo)
+        conteudo = f"{seta} {nome_curto}"
+        espaco = max(0, largura - len(conteudo))
 
         linha = (
             Fore.CYAN + "║"
@@ -1196,6 +1205,7 @@ def render_inventario(itens: list[str], idx_item: int, foco_itens: bool) -> list
 
     linhas.append(rodape)
     return linhas
+
 
 
 

@@ -679,12 +679,13 @@ def escolha_seta_menu() -> str:
 
 
 #RETORNA A ESCOLHA DO INIMIGO SELECIONADO
-def escolha_seta_inimigo_fase1(player) -> int | None:
+def escolha_seta_inimigo_fase1(player, orda) -> int | None:
     def strip_ansi(s: str) -> str:
         return _ANSI.sub("", s or "")
 
     idx = 0
-    mostrar_poder = (randint(1, 5) == 1)  # chance 1/5
+    sorte = player['sorte'] * 100
+    mostrar_poder = (randint(1, 100) <= sorte) 
 
     while True:
         if not escolhas_inimigo:
@@ -728,7 +729,7 @@ def escolha_seta_inimigo_fase1(player) -> int | None:
 
         centra_h(Fore.CYAN + "╚" + "═" * largura_interna + "╝")
 
-        if mostrar_poder:
+        if mostrar_poder and orda >= 2:
             centra_h(rgb_text(caixa_poder_heroi(player)))
 
         ch = msvcrt.getch()
@@ -865,6 +866,7 @@ def caixa_poder_heroi(player: dict) -> str:
 
 #USA A HABILIDADE DO PLAYER PARA ATACAR MONSTROS
 def atacar_monstro_habilidade(player: dict, idx: int) -> None:
+    import time
     from icons import (
         esqueleto_flamejante_especial,
         anjo_caido_especial,
@@ -934,9 +936,6 @@ def atacar_monstro_habilidade(player: dict, idx: int) -> None:
         img_final = "\n".join(linhas_img)
         centra_h_v(img_final)
 
-        centra_h(f"{Fore.WHITE}{Style.BRIGHT}Aperte ENTER para continuar...{Style.RESET_ALL}")
-        input(" ")
-
         indices_mortos = []
         mortes = []
 
@@ -944,6 +943,12 @@ def atacar_monstro_habilidade(player: dict, idx: int) -> None:
             if int(npc["hp"]) <= 0:
                 npc["hp"] = 0
                 indices_mortos.append(i)
+
+        if not indices_mortos:
+            centra_h(f"{Fore.WHITE}{Style.BRIGHT}Aperte ENTER para continuar...{Style.RESET_ALL}")
+        else:
+            centra_h(f"{Fore.WHITE}{Style.BRIGHT}Aperte ENTER para continuar...{Style.RESET_ALL}")
+            input(" ")
 
         for i in indices_mortos:
             npc = lista_npcs[i]
@@ -1020,9 +1025,6 @@ def atacar_monstro_habilidade(player: dict, idx: int) -> None:
         img_final = "\n".join(linhas_img)
         centra_h_v(img_final)
 
-        centra_h(f"{Fore.WHITE}{Style.BRIGHT}Aperte ENTER para continuar...{Style.RESET_ALL}")
-        input(" ")
-
         indices_mortos = []
         mortes = []
 
@@ -1030,6 +1032,12 @@ def atacar_monstro_habilidade(player: dict, idx: int) -> None:
             if int(npc["hp"]) <= 0:
                 npc["hp"] = 0
                 indices_mortos.append(i)
+
+        if not indices_mortos:
+            centra_h(f"{Fore.WHITE}{Style.BRIGHT}Aperte ENTER para continuar...{Style.RESET_ALL}")
+        else:
+            centra_h(f"{Fore.WHITE}{Style.BRIGHT}Aperte ENTER para continuar...{Style.RESET_ALL}")
+            input(" ")
 
         for i in indices_mortos:
             npc = lista_npcs[i]
@@ -1112,9 +1120,6 @@ def atacar_monstro_habilidade(player: dict, idx: int) -> None:
             img_final = "\n".join(linhas_img)
             centra_h_v(img_final)
 
-            centra_h(f"{Fore.WHITE}{Style.BRIGHT}Aperte ENTER para continuar...{Style.RESET_ALL}")
-            input(" ")
-
             indices_mortos = []
             mortes = []
 
@@ -1122,6 +1127,12 @@ def atacar_monstro_habilidade(player: dict, idx: int) -> None:
                 if int(npc["hp"]) <= 0:
                     npc["hp"] = 0
                     indices_mortos.append(i)
+
+            if not indices_mortos:
+                centra_h(f"{Fore.WHITE}{Style.BRIGHT}Aperte ENTER para continuar...{Style.RESET_ALL}")
+            else:
+                centra_h(f"{Fore.WHITE}{Style.BRIGHT}Aperte ENTER para continuar...{Style.RESET_ALL}")
+                input(" ")
 
             for i in indices_mortos:
                 npc = lista_npcs[i]
@@ -1191,9 +1202,6 @@ def atacar_monstro_habilidade(player: dict, idx: int) -> None:
                 img_final = "\n".join(linhas_img)
                 centra_h_v(img_final)
 
-                centra_h(f"{Fore.WHITE}{Style.BRIGHT}Aperte ENTER para continuar...{Style.RESET_ALL}")
-                input(" ")
-
                 indices_mortos = []
                 mortes = []
 
@@ -1201,6 +1209,12 @@ def atacar_monstro_habilidade(player: dict, idx: int) -> None:
                     if int(npc["hp"]) <= 0:
                         npc["hp"] = 0
                         indices_mortos.append(i)
+
+                if not indices_mortos:
+                    centra_h(f"{Fore.WHITE}{Style.BRIGHT}Aperte ENTER para continuar...{Style.RESET_ALL}")
+                else:
+                    centra_h(f"{Fore.WHITE}{Style.BRIGHT}Aperte ENTER para continuar...{Style.RESET_ALL}")
+                    input(" ")
 
                 for i in indices_mortos:
                     npc = lista_npcs[i]
@@ -1264,9 +1278,6 @@ def atacar_monstro_habilidade(player: dict, idx: int) -> None:
                 img_final = "\n".join(linhas_img)
                 centra_h_v(img_final)
 
-                centra_h(f"{Fore.WHITE}{Style.BRIGHT}Aperte ENTER para continuar...{Style.RESET_ALL}")
-                input(" ")
-
                 indices_mortos = []
                 mortes = []
 
@@ -1274,6 +1285,12 @@ def atacar_monstro_habilidade(player: dict, idx: int) -> None:
                     if int(npc["hp"]) <= 0:
                         npc["hp"] = 0
                         indices_mortos.append(i)
+
+                if not indices_mortos:
+                    centra_h(f"{Fore.WHITE}{Style.BRIGHT}Aperte ENTER para continuar...{Style.RESET_ALL}")
+                else:
+                    centra_h(f"{Fore.WHITE}{Style.BRIGHT}Aperte ENTER para continuar...{Style.RESET_ALL}")
+                    input(" ")
 
                 for i in indices_mortos:
                     npc = lista_npcs[i]
@@ -1342,9 +1359,6 @@ def atacar_monstro_habilidade(player: dict, idx: int) -> None:
             img_final = "\n".join(linhas_img)
             centra_h_v(img_final)
 
-            centra_h(f"{Fore.WHITE}{Style.BRIGHT}Aperte ENTER para continuar...{Style.RESET_ALL}")
-            input(" ")
-
             indices_mortos = []
             mortes = []
 
@@ -1352,6 +1366,12 @@ def atacar_monstro_habilidade(player: dict, idx: int) -> None:
                 if int(npc["hp"]) <= 0:
                     npc["hp"] = 0
                     indices_mortos.append(i)
+
+            if not indices_mortos:
+                centra_h(f"{Fore.WHITE}{Style.BRIGHT}Aperte ENTER para continuar...{Style.RESET_ALL}")
+            else:
+                centra_h(f"{Fore.WHITE}{Style.BRIGHT}Aperte ENTER para continuar...{Style.RESET_ALL}")
+                input(" ")
 
             for i in indices_mortos:
                 npc = lista_npcs[i]
@@ -1425,9 +1445,6 @@ def atacar_monstro_habilidade(player: dict, idx: int) -> None:
                 img_final = "\n".join(linhas_img)
                 centra_h_v(img_final)
 
-                centra_h(f"{Fore.WHITE}{Style.BRIGHT}Aperte ENTER para continuar...{Style.RESET_ALL}")
-                input(" ")
-
                 indices_mortos = []
                 mortes = []
 
@@ -1435,6 +1452,12 @@ def atacar_monstro_habilidade(player: dict, idx: int) -> None:
                     if int(npc["hp"]) <= 0:
                         npc["hp"] = 0
                         indices_mortos.append(i)
+
+                if not indices_mortos:
+                    centra_h(f"{Fore.WHITE}{Style.BRIGHT}Aperte ENTER para continuar...{Style.RESET_ALL}")
+                else:
+                    centra_h(f"{Fore.WHITE}{Style.BRIGHT}Aperte ENTER para continuar...{Style.RESET_ALL}")
+                    input(" ")
 
                 for i in indices_mortos:
                     npc = lista_npcs[i]
@@ -1498,9 +1521,6 @@ def atacar_monstro_habilidade(player: dict, idx: int) -> None:
                 img_final = "\n".join(linhas_img)
                 centra_h_v(img_final)
 
-                centra_h(f"{Fore.WHITE}{Style.BRIGHT}Aperte ENTER para continuar...{Style.RESET_ALL}")
-                input(" ")
-
                 indices_mortos = []
                 mortes = []
 
@@ -1508,6 +1528,12 @@ def atacar_monstro_habilidade(player: dict, idx: int) -> None:
                     if int(npc["hp"]) <= 0:
                         npc["hp"] = 0
                         indices_mortos.append(i)
+
+                if not indices_mortos:
+                    centra_h(f"{Fore.WHITE}{Style.BRIGHT}Aperte ENTER para continuar...{Style.RESET_ALL}")
+                else:
+                    centra_h(f"{Fore.WHITE}{Style.BRIGHT}Aperte ENTER para continuar...{Style.RESET_ALL}")
+                    input(" ")
 
                 for i in indices_mortos:
                     npc = lista_npcs[i]
@@ -1575,9 +1601,6 @@ def atacar_monstro_habilidade(player: dict, idx: int) -> None:
             img_final = "\n".join(linhas_img)
             centra_h_v(img_final)
 
-            centra_h(f"{Fore.WHITE}{Style.BRIGHT}Aperte ENTER para continuar...{Style.RESET_ALL}")
-            input(" ")
-
             indices_mortos = []
             mortes = []
 
@@ -1585,6 +1608,12 @@ def atacar_monstro_habilidade(player: dict, idx: int) -> None:
                 if int(npc["hp"]) <= 0:
                     npc["hp"] = 0
                     indices_mortos.append(i)
+
+            if not indices_mortos:
+                centra_h(f"{Fore.WHITE}{Style.BRIGHT}Aperte ENTER para continuar...{Style.RESET_ALL}")
+            else:
+                centra_h(f"{Fore.WHITE}{Style.BRIGHT}Aperte ENTER para continuar...{Style.RESET_ALL}")
+                input(" ")
 
             for i in indices_mortos:
                 npc = lista_npcs[i]
@@ -1648,9 +1677,6 @@ def atacar_monstro_habilidade(player: dict, idx: int) -> None:
             img_final = "\n".join(linhas_img)
             centra_h_v(img_final)
 
-            centra_h(f"{Fore.WHITE}{Style.BRIGHT}Aperte ENTER para continuar...{Style.RESET_ALL}")
-            input(" ")
-
             indices_mortos = []
             mortes = []
 
@@ -1658,6 +1684,12 @@ def atacar_monstro_habilidade(player: dict, idx: int) -> None:
                 if int(npc["hp"]) <= 0:
                     npc["hp"] = 0
                     indices_mortos.append(i)
+
+            if not indices_mortos:
+                centra_h(f"{Fore.WHITE}{Style.BRIGHT}Aperte ENTER para continuar...{Style.RESET_ALL}")
+            else:
+                centra_h(f"{Fore.WHITE}{Style.BRIGHT}Aperte ENTER para continuar...{Style.RESET_ALL}")
+                input(" ")
 
             for i in indices_mortos:
                 npc = lista_npcs[i]
@@ -1729,9 +1761,6 @@ def atacar_monstro_habilidade(player: dict, idx: int) -> None:
             img_final = "\n".join(linhas_img)
             centra_h_v(img_final)
 
-            centra_h(f"{Fore.WHITE}{Style.BRIGHT}Aperte ENTER para continuar...{Style.RESET_ALL}")
-            input(" ")
-
             indices_mortos = []
             mortes = []
 
@@ -1739,6 +1768,12 @@ def atacar_monstro_habilidade(player: dict, idx: int) -> None:
                 if int(npc["hp"]) <= 0:
                     npc["hp"] = 0
                     indices_mortos.append(i)
+
+            if not indices_mortos:
+                centra_h(f"{Fore.WHITE}{Style.BRIGHT}Aperte ENTER para continuar...{Style.RESET_ALL}")
+            else:
+                centra_h(f"{Fore.WHITE}{Style.BRIGHT}Aperte ENTER para continuar...{Style.RESET_ALL}")
+                input(" ")
 
             for i in indices_mortos:
                 npc = lista_npcs[i]
@@ -1770,7 +1805,6 @@ def atacar_monstro_habilidade(player: dict, idx: int) -> None:
 
             nomes = ", ".join(npc['nome'] for npc in alvos)
 
-
             linhas_texto = []
             largura_barra = 54
             linhas_texto.append(
@@ -1796,7 +1830,6 @@ def atacar_monstro_habilidade(player: dict, idx: int) -> None:
                 Fore.CYAN + Style.BRIGHT + "✦" + "━" * largura_barra + "✦" + Style.RESET_ALL
             )
 
-
             largura_bloco = max(len(strip_ansi(l)) for l in linhas_texto)
 
             for i, linha in enumerate(linhas_texto, start=17):
@@ -1808,9 +1841,6 @@ def atacar_monstro_habilidade(player: dict, idx: int) -> None:
             img_final = "\n".join(linhas_img)
             centra_h_v(img_final)
 
-            centra_h(f"{Fore.WHITE}{Style.BRIGHT}Aperte ENTER para continuar...{Style.RESET_ALL}")
-            input(" ")
-
             indices_mortos = []
             mortes = []
 
@@ -1818,6 +1848,12 @@ def atacar_monstro_habilidade(player: dict, idx: int) -> None:
                 if int(npc["hp"]) <= 0:
                     npc["hp"] = 0
                     indices_mortos.append(i)
+
+            if not indices_mortos:
+                centra_h(f"{Fore.WHITE}{Style.BRIGHT}Aperte ENTER para continuar...{Style.RESET_ALL}")
+            else:
+                centra_h(f"{Fore.WHITE}{Style.BRIGHT}Aperte ENTER para continuar...{Style.RESET_ALL}")
+                input(" ")
 
             for i in indices_mortos:
                 npc = lista_npcs[i]
@@ -1835,7 +1871,6 @@ def atacar_monstro_habilidade(player: dict, idx: int) -> None:
 
             for img_monstro, nome_monstro, xp_ganho in mortes:
                 mostrar_monstro_derrotado(img_monstro, nome_monstro, player, xp_ganho)
-
 
     # HABILIDADE MORTE MURMURANTE
     elif habilidade == "ILUSÃO" and len(lista_npcs) > 0:
@@ -1869,7 +1904,6 @@ def atacar_monstro_habilidade(player: dict, idx: int) -> None:
             Fore.MAGENTA + Style.BRIGHT + "✦" + "━" * largura_barra + "✦" + Style.RESET_ALL
         )
 
-
         largura_bloco = max(len(strip_ansi(l)) for l in linhas_texto)
 
         for i, linha in enumerate(linhas_texto, start=17):
@@ -1881,9 +1915,6 @@ def atacar_monstro_habilidade(player: dict, idx: int) -> None:
         img_final = "\n".join(linhas_img)
         centra_h_v(img_final)
 
-        centra_h(f"{Fore.WHITE}{Style.BRIGHT}Aperte ENTER para continuar...{Style.RESET_ALL}")
-        input(" ")
-
         indices_mortos = []
         mortes = []
 
@@ -1891,6 +1922,12 @@ def atacar_monstro_habilidade(player: dict, idx: int) -> None:
             if int(npc["hp"]) <= 0:
                 npc["hp"] = 0
                 indices_mortos.append(i)
+
+        if not indices_mortos:
+            centra_h(f"{Fore.WHITE}{Style.BRIGHT}Aperte ENTER para continuar...{Style.RESET_ALL}")
+        else:
+            centra_h(f"{Fore.WHITE}{Style.BRIGHT}Aperte ENTER para continuar...{Style.RESET_ALL}")
+            input(" ")
 
         for i in indices_mortos:
             npc = lista_npcs[i]
@@ -1911,11 +1948,8 @@ def atacar_monstro_habilidade(player: dict, idx: int) -> None:
 
 
 
+
                 
-
-
-
-
 
 
 

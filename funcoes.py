@@ -15,9 +15,11 @@ init(autoreset= True)
 #VARIAVEIS
 lista_npcs = []
 escolhas_inimigo = []
+escolhas_item = ["saude", "dano", "escudo", "xp", "sair"]
 escolhas_menu = ["Começar Novo Jogo", "Ultimos Recordes", "Créditos", "Sair"]
 escolhas_raca = ["Esqueleto Flamejante", "Anjo Caído", "Sábio Feiticeiro", "Princesa Medusa", "Morte Mormurante", "Arqueiro Mágico"]
 player = {}
+itens = []
 habilidade = []
 tamanho = shutil.get_terminal_size()
 largura_tela = tamanho.columns
@@ -684,8 +686,11 @@ def escolha_seta_inimigo_fase1(player, orda) -> int | None:
         return _ANSI.sub("", s or "")
 
     idx = 0
+    idx_item = 0
+    foco_itens = False
+
     sorte = player['sorte'] * 100
-    mostrar_poder = (randint(1, 100) <= sorte) 
+    mostrar_poder = (randint(1, 100) <= sorte)
 
     while True:
         if not escolhas_inimigo:
@@ -697,37 +702,58 @@ def escolha_seta_inimigo_fase1(player, orda) -> int | None:
         limpar_tela()
         descri_monstro_mais_img(img, "\n".join(extra))
         print("\n")
-        centra_h("\nQUE INIMIGO DESEJA ATACAR?", Fore.RED + Style.BRIGHT)
-        centra_h(Style.DIM + "use ↑/↓ para navegar e ENTER para confirmar")
+        centra_h(Style.DIM + "")
+        centra_h(f"{Style.DIM}Use ↑ ↓ para navegar pelas opções{Style.RESET_ALL}")
+        centra_h(Style.DIM + "TAB alterna (INIMIGOS/ITENS) | ENTER confirma")
 
+        #monta caixa inimigos
         largura_interna = 35
-        centra_h(Fore.CYAN + "╔" + "═" * largura_interna + "╗")
+        caixa_inimigos = []
+        caixa_inimigos.append(Fore.CYAN + "╔" + "═" * largura_interna + "╗" + Style.RESET_ALL)
 
         for i, esc in enumerate(escolhas_inimigo):
             selecionado = (i == idx)
             seta = "➤" if selecionado else " "
-            cor = Fore.RED + Style.BRIGHT if selecionado else Fore.WHITE
+
+            if (not foco_itens) and selecionado:
+                cor = Fore.RED + Style.BRIGHT
+            else:
+                cor = Fore.WHITE
 
             nome = esc.split()[0]
             sexo = esc.split()[-1]
-            coresc = (
-                Fore.BLUE + sexo if sexo == "Macho"
-                else Fore.MAGENTA + sexo
-            ) + Style.RESET_ALL
+            coresc = (Fore.BLUE + sexo if sexo == "Macho" else Fore.MAGENTA + sexo) + Style.RESET_ALL
 
             conteudo = f"{seta} {nome} {coresc}"
-            largura_visivel = len(strip_ansi(conteudo))
+            largura_visivel = len(_ANSI.sub("", conteudo))
             espaco = max(largura_interna - largura_visivel, 0)
 
             linha_final = (
-                Fore.CYAN + "║ "
-                + cor + conteudo + Style.RESET_ALL
-                + " " * espaco
-                + Fore.CYAN + " ║"
+                Fore.CYAN + "║ " + Style.RESET_ALL +
+                cor + conteudo + Style.RESET_ALL +
+                " " * espaco +
+                Fore.CYAN + " ║" + Style.RESET_ALL
             )
-            centra_h(linha_final)
+            caixa_inimigos.append(linha_final)
 
-        centra_h(Fore.CYAN + "╚" + "═" * largura_interna + "╝")
+        caixa_inimigos.append(Fore.CYAN + "╚" + "═" * largura_interna + "╝" + Style.RESET_ALL)
+
+        #caixa itens
+        caixa_itens = render_inventario(itens, idx_item, foco_itens)
+        altura = max(len(caixa_inimigos), len(caixa_itens))
+        while len(caixa_inimigos) < altura:
+            caixa_inimigos.append(" " * (largura_interna + 2))
+        while len(caixa_itens) < altura:
+            caixa_itens.append("")
+
+        larg_esq = max(vis_len(l) for l in caixa_inimigos) if caixa_inimigos else 0
+
+        espaco_meio = " " * 6
+        for a, b in zip(caixa_inimigos, caixa_itens):
+            a_fix = pad_vis_right(a, larg_esq)
+            centra_h(a_fix + espaco_meio + b)
+
+
 
         if mostrar_poder and orda >= 2:
             centra_h(rgb_text(caixa_poder_heroi(player)))
@@ -736,13 +762,31 @@ def escolha_seta_inimigo_fase1(player, orda) -> int | None:
 
         if ch in (b"\x00", b"\xe0"):
             ch2 = msvcrt.getch()
-            if ch2 == b"H":
-                idx = (idx - 1) % len(escolhas_inimigo)
-            elif ch2 == b"P":
-                idx = (idx + 1) % len(escolhas_inimigo)
+
+            if not foco_itens:
+                if ch2 == b"H":
+                    idx = (idx - 1) % len(escolhas_inimigo)
+                elif ch2 == b"P":
+                    idx = (idx + 1) % len(escolhas_inimigo)
+
+            else:
+                if itens:
+                    if ch2 == b"H":  
+                        idx_item = (idx_item - 1) % len(itens)
+                    elif ch2 == b"P": 
+                        idx_item = (idx_item + 1) % len(itens)
+
+        elif ch == b"\t":
+            foco_itens = not foco_itens
 
         elif ch in (b"\r", b"\n"):
-            return idx  
+            if foco_itens:
+                msg = usar_item(player, itens, idx_item)
+                limpar_tela()
+                centra_h_v(msg)
+                input(" ")
+            else:
+                return idx
 
         elif mostrar_poder and ch in (b"p", b"P"):
             atacar_monstro_habilidade(player, idx)
@@ -755,10 +799,57 @@ def escolha_seta_inimigo_fase1(player, orda) -> int | None:
             if 0 <= n < len(escolhas_inimigo):
                 return n
 
+            
+def comprar_itens():
 
+    extra = f"""
+{Fore.YELLOW}{Style.BRIGHT}✦━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━✦{Style.RESET_ALL}
+{Fore.YELLOW}{Style.BRIGHT}        M E R C A D O   D O   A V E N T U R E I R O        {Style.RESET_ALL}
+{Fore.YELLOW}{Style.BRIGHT}✦━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━✦{Style.RESET_ALL}
 
+{Fore.WHITE}{Style.BRIGHT}Um local seguro em meio ao caos das batalhas.{Style.RESET_ALL}
+{Fore.WHITE}{Style.BRIGHT}Aqui, viajantes trocam ouro por sobrevivência.{Style.RESET_ALL}
 
+{Fore.MAGENTA}{Style.BRIGHT}✦ Poções de Vida{Style.RESET_ALL}
+{Fore.WHITE}Recupere suas forças antes do próximo confronto.{Style.RESET_ALL}
 
+{Fore.RED}{Style.BRIGHT}✦ Elixires de Dano{Style.RESET_ALL}
+{Fore.WHITE}Aumente o poder dos seus golpes e finalize inimigos.{Style.RESET_ALL}
+
+{Fore.GREEN}{Style.BRIGHT}✦ Essências de Experiência{Style.RESET_ALL}
+{Fore.WHITE}Acelere sua evolução e alcance novos níveis.{Style.RESET_ALL}
+
+{Fore.BLUE}{Style.BRIGHT}✦ Escudos Místicos{Style.RESET_ALL}
+{Fore.WHITE}Proteja-se contra ataques devastadores.{Style.RESET_ALL}
+
+{Fore.YELLOW}{Style.DIM}Use ↑/↓ para navegar • ENTER para comprar • SAIR para voltar{Style.RESET_ALL}
+
+{Fore.YELLOW}{Style.BRIGHT}✦━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━✦{Style.RESET_ALL}
+"""
+    
+    descri_item_mais_img(ic.imagem_loja(), extra)
+    input()
+
+    while True:
+
+        idx = escolha_seta_loja_item(player)
+
+        escolha_item = escolhas_item[idx]
+
+        if escolha_item == "saude":
+            itens.append("Poção de Cura")
+
+        elif escolha_item == "dano":
+            itens.append("Poção de Dano")
+
+        elif escolha_item == "xp":
+            itens.append("Poção de XP")
+
+        elif escolha_item == "escudo":
+            itens.append("Poção de Escudo")
+
+        elif escolha_item == "sair":
+            break
 
 
 
@@ -795,6 +886,325 @@ def imagem_seta_escolhida_inimigo_fase1(idx: int) -> str:
     return img_str
 
 
+
+            
+
+
+#ESCOLHA DE ITEMS PARA COMPRAR DENTRO DA LOJA
+def escolha_seta_loja_item(player: dict) -> int | None:
+
+    def strip_ansi_local(s: str) -> str:
+        return _ANSI.sub("", s or "")
+
+    idx = 0
+
+    while True:
+        if not escolhas_item:
+            return None
+
+        img = imagem_seta_escolhida_item_loja(idx)
+        extra = exibe_status_item_loja(idx)
+
+        limpar_tela()
+        descri_item_mais_img(img, "\n".join(extra))
+        print("\n")
+        centra_h("\nQUAL ITEM DESEJA COMPRAR?", Fore.YELLOW + Style.BRIGHT)
+        centra_h(Style.DIM + "use ↑/↓ para navegar e ENTER para confirmar")
+
+        largura_interna = 35
+        centra_h(Fore.CYAN + "╔" + "═" * largura_interna + "╗")
+
+        for i, esc in enumerate(escolhas_item):
+            selecionado = (i == idx)
+            seta = "➤" if selecionado else " "
+            cor = Fore.YELLOW + Style.BRIGHT if selecionado else Fore.WHITE
+
+            nome = esc.split()[0] 
+            conteudo = f"{seta} {nome}"
+
+            largura_visivel = len(strip_ansi_local(conteudo))
+            espaco = max(largura_interna - largura_visivel, 0)
+
+            linha_final = (
+                Fore.CYAN + "║ "
+                + cor + conteudo + Style.RESET_ALL
+                + " " * espaco
+                + Fore.CYAN + " ║"
+            )
+            centra_h(linha_final)
+
+        centra_h(Fore.CYAN + "╚" + "═" * largura_interna + "╝")
+
+        ch = msvcrt.getch()
+
+        if ch in (b"\x00", b"\xe0"):
+            ch2 = msvcrt.getch()
+            if ch2 == b"H":
+                idx = (idx - 1) % len(escolhas_item)
+            elif ch2 == b"P":
+                idx = (idx + 1) % len(escolhas_item)
+
+        elif ch in (b"\r", b"\n"):
+            return idx
+
+        elif ch in (b"1", b"2", b"3", b"4", b"5"):
+            n = int(ch.decode()) - 1
+            if 0 <= n < len(escolhas_item):
+                return n
+
+
+#DESCRICAO DE CADA POCAO
+def exibe_status_item_loja(idx: int) -> list[str]:
+    if not escolhas_item or idx < 0 or idx >= len(escolhas_item):
+        return []
+
+    nome_item = escolhas_item[idx].split()[0].lower()
+    largura = 46
+
+    def strip_ansi_local(s: str) -> str:
+        return _ANSI.sub("", s or "")
+
+    def barra(cor):
+        return f"{cor}{Style.BRIGHT}✦{'━' * largura}✦{Style.RESET_ALL}"
+
+    def centro(txt: str) -> str:
+        vis = strip_ansi_local(txt)
+        pad = max(0, (largura - len(vis)) // 2)
+        return " " * pad + txt
+
+    if nome_item == "sair":
+        cor = Fore.YELLOW
+        titulo = "L O J A"
+        corpo = [
+            f"{Fore.WHITE}{Style.BRIGHT}Voltar para o jogo sem comprar.{Style.RESET_ALL}",
+            f"{Fore.YELLOW}{Style.BRIGHT}Pressione ENTER para sair.{Style.RESET_ALL}",
+        ]
+
+    elif nome_item == "saude":
+        cor = Fore.MAGENTA
+        titulo = "P O Ç Ã O   D E   V I D A"
+        corpo = [
+            f"{Fore.WHITE}{Style.BRIGHT}Um frasco que pulsa energia vital.{Style.RESET_ALL}",
+            f"{Fore.WHITE}{Style.BRIGHT}Cura {Fore.MAGENTA}{Style.BRIGHT}20%{Fore.WHITE}{Style.BRIGHT} da sua vida atual.{Style.RESET_ALL}",
+            f"{Fore.YELLOW}{Style.BRIGHT}Perfeita para virar o combate.{Style.RESET_ALL}",
+        ]
+
+    elif nome_item == "dano":
+        cor = Fore.RED
+        titulo = "E L I X I R   D E   D A N O"
+        corpo = [
+            f"{Fore.WHITE}{Style.BRIGHT}Uma mistura ardente que desperta sua força.{Style.RESET_ALL}",
+            f"{Fore.WHITE}{Style.BRIGHT}Aumenta seu ataque principal em {Fore.RED}{Style.BRIGHT}10%{Fore.WHITE}{Style.BRIGHT}.{Style.RESET_ALL}",
+            f"{Fore.YELLOW}{Style.BRIGHT}Cada golpe fica mais letal.{Style.RESET_ALL}",
+        ]
+
+    elif nome_item == "xp":
+        cor = Fore.GREEN
+        titulo = "E S S Ê N C I A   D E   X P"
+        corpo = [
+            f"{Fore.WHITE}{Style.BRIGHT}Energia rara condensada em conhecimento.{Style.RESET_ALL}",
+            f"{Fore.WHITE}{Style.BRIGHT}Ganha {Fore.GREEN}{Style.BRIGHT}25%{Fore.WHITE}{Style.BRIGHT} do XP para subir de nível.{Style.RESET_ALL}",
+            f"{Fore.YELLOW}{Style.BRIGHT}Acelera sua evolução.{Style.RESET_ALL}",
+        ]
+
+    elif nome_item == "escudo":
+        cor = Fore.BLUE
+        titulo = "E S C U D O   P R O T E T O R"
+        corpo = [
+            f"{Fore.WHITE}{Style.BRIGHT}Uma barreira mágica envolve seu corpo.{Style.RESET_ALL}",
+            f"{Fore.WHITE}{Style.BRIGHT}Ganha escudo de {Fore.BLUE}{Style.BRIGHT}30%{Fore.WHITE}{Style.BRIGHT} da sua vida atual.{Style.RESET_ALL}",
+            f"{Fore.YELLOW}{Style.BRIGHT}Absorve dano antes de te ferir.{Style.RESET_ALL}",
+        ]
+
+    else:
+        cor = Fore.WHITE
+        titulo = "I T E M"
+        corpo = [f"{Fore.WHITE}{Style.BRIGHT}Descrição indisponível.{Style.RESET_ALL}"]
+
+    linhas = []
+    linhas.append(barra(cor))
+    linhas.append(centro(f"{cor}{Style.BRIGHT}{titulo}{Style.RESET_ALL}"))
+    linhas.append(barra(cor))
+    linhas.append("")
+    for l in corpo:
+        linhas.append(centro(l))
+    linhas.append("")
+    linhas.append(barra(cor))
+
+    return linhas
+
+
+
+
+
+#JUNTA DESCRICAO POCAO E IMAGEM DA POCAO
+def descri_item_mais_img(imagem: str | None, extra: str) -> None:
+    if not imagem:
+        centra_h_v(extra)
+        return
+
+    linhas = imagem.splitlines()
+    extras = extra.splitlines()
+
+    start = (len(linhas) // 2) - (len(extras) // 2)
+    start = max(0, start)
+
+    for i, msg in enumerate(extras, start=start):
+        if i < len(linhas):
+            linhas[i] = linhas[i] + (" " * 13) + msg
+
+    centra_h_v("\n".join(linhas))
+
+
+
+
+
+
+
+#ESCOLHA IMAGEM DE ITEM DA LOJA
+def imagem_seta_escolhida_item_loja(idx: int) -> str:
+    from icons import pocao_dano, pocao_escudo, pocao_vida, pocao_xp
+
+    imgs = {
+        "vida": pocao_vida,
+        "saude": pocao_vida,
+        "dano": pocao_dano,
+        "xp": pocao_xp,
+        "escudo": pocao_escudo
+    }
+
+    if not escolhas_item:
+        return ""
+
+    if idx < 0 or idx >= len(escolhas_item):
+        return ""
+
+    nome_raw = str(escolhas_item[idx]).strip().lower()
+    nome = nome_raw.split()[0]
+
+    if nome == "sair":
+        try:
+            img_loja = ic.imagem_loja() 
+            return colorir_imagem_item("loja", img_loja)
+        except Exception:
+            return ""
+
+    func_img = imgs.get(nome)
+    if not func_img:
+        return ""
+
+    try:
+        img_str = func_img()
+        return colorir_imagem_item(nome, img_str)
+    except Exception:
+        return ""
+
+
+
+
+
+#COR PARA AS IMAGENS
+def colorir_imagem_item(nome_item: str, img_str: str) -> str:
+    nome_item = (nome_item or "").lower()
+
+    cores = {
+        "vida": Fore.MAGENTA,
+        "saude": Fore.MAGENTA,
+        "dano": Fore.RED,
+        "xp": Fore.GREEN,
+        "escudo": Fore.BLUE,
+        "sair": Fore.YELLOW, 
+        "loja": Fore.YELLOW
+    }
+
+    cor = cores.get(nome_item, Fore.WHITE)
+
+    linhas = img_str.splitlines()
+    linhas_color = [(cor + linha + Style.RESET_ALL) for linha in linhas]
+    return "\n".join(linhas_color)
+
+
+
+#CAIXA QUE FICA AO LADO DA ESCOLHA DE INIMIGOS, LAYOUT
+def cor_item(nome: str) -> str:
+    nome = (nome or "").lower()
+    if "cura" in nome or "vida" in nome:
+        return Fore.MAGENTA
+    if "dano" in nome:
+        return Fore.RED
+    if "xp" in nome:
+        return Fore.GREEN
+    if "escudo" in nome:
+        return Fore.BLUE
+    return Fore.WHITE
+
+
+def render_inventario(itens: list[str], idx_item: int, foco_itens: bool) -> list[str]:
+    largura = 28
+    titulo = "I T E N S"
+
+    def linha_vazia():
+        return Fore.CYAN + "║" + " " * largura + "║" + Style.RESET_ALL
+
+    topo = Fore.CYAN + "╔" + "═" * largura + "╗" + Style.RESET_ALL
+    rodape = Fore.CYAN + "╚" + "═" * largura + "╝" + Style.RESET_ALL
+    separador = Fore.CYAN + "╠" + "═" * largura + "╣" + Style.RESET_ALL
+
+    pad = (largura - len(titulo)) // 2
+    titulo_linha = (
+        Fore.CYAN + "║"
+        + " " * pad
+        + Fore.YELLOW + Style.BRIGHT + titulo + Style.RESET_ALL
+        + " " * (largura - pad - len(titulo))
+        + "║" + Style.RESET_ALL
+    )
+
+    linhas = [topo, titulo_linha, separador]
+
+    if not itens:
+        vazio = "(vazio)"
+        pad = (largura - len(vazio)) // 2
+        linhas.append(
+            Fore.CYAN + "║"
+            + " " * pad + Style.DIM + vazio + Style.RESET_ALL
+            + " " * (largura - pad - len(vazio))
+            + "║" + Style.RESET_ALL
+        )
+        linhas.append(rodape)
+        return linhas
+
+    idx_item %= len(itens)
+
+    for i, item in enumerate(itens):
+        selecionado = (i == idx_item)
+        seta = "➤" if selecionado else " "
+        nome = item[:(largura - 4)] 
+
+        cor = cor_item(item)
+        destaque = Style.BRIGHT if (foco_itens and selecionado) else ""
+
+        conteudo = f"{seta} {nome}"
+        espaco = largura - len(conteudo)
+
+        linha = (
+            Fore.CYAN + "║"
+            + destaque + cor + conteudo + Style.RESET_ALL
+            + " " * espaco
+            + Fore.CYAN + "║" + Style.RESET_ALL
+        )
+        linhas.append(linha)
+
+    linhas.append(rodape)
+    return linhas
+
+
+
+def vis_len(s: str) -> int:
+    return len(_ANSI.sub("", s or ""))
+
+def pad_vis_right(s: str, largura: int) -> str:
+    faltam = max(0, largura - vis_len(s))
+    return s + (" " * faltam)
 
 
 

@@ -6,6 +6,8 @@ from colorama import Fore, Style, init
 largura_tela = shutil.get_terminal_size().columns
 altura_tela = shutil.get_terminal_size().lines
 
+itens = []
+
 
 #INICIALIZA A FASE 1 CRIANDO TUDO QUE A DE FUNÇÕES DENTRO DELA
 def fase_1(fase: int, orda: int, player: dict) -> None:
@@ -32,6 +34,7 @@ def fase_1(fase: int, orda: int, player: dict) -> None:
                 continue
 
     fn.criar_inimigos(fase, orda, player)
+    fn.comprar_itens()
 
     while fase == 1 and orda == 2:
         fn.limpar_tela()

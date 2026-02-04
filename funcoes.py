@@ -781,7 +781,7 @@ def escolha_seta_inimigo_fase1(player, orda) -> int | None:
 
         elif ch in (b"\r", b"\n"):
             if foco_itens:
-                msg = usar_item(player, itens, idx_item)
+                msg = usar_item_dict(player, itens, idx_item)
                 limpar_tela()
                 centra_h_v(msg)
                 input(" ")
@@ -798,6 +798,10 @@ def escolha_seta_inimigo_fase1(player, orda) -> int | None:
             n = int(ch.decode()) - 1
             if 0 <= n < len(escolhas_inimigo):
                 return n
+
+
+
+
 
             
 def comprar_itens():
@@ -1215,6 +1219,60 @@ def vis_len(s: str) -> int:
 def pad_vis_right(s: str, largura: int) -> str:
     faltam = max(0, largura - vis_len(s))
     return s + (" " * faltam)
+
+
+
+
+def usar_item_dict(player: dict, itens: dict[str, int], idx_item: int) -> str:
+    if not itens:
+        return f"{Fore.YELLOW}{Style.BRIGHT}Você não tem itens!{Style.RESET_ALL}"
+
+    nomes = list(itens.keys())
+    idx_item %= len(nomes)
+    nome = nomes[idx_item]
+
+    item = nome.lower()
+
+    if "cura" in item or "vida" in item:
+        base = int(player.get("hp_max", player.get("hp", 0)))
+        cura = max(1, int(base * 0.20))
+        player["hp"] = min(int(player.get("hp", 0)) + cura, int(player.get("hp_max", player.get("hp", 0))))
+        itens[nome] -= 1
+
+        if itens[nome] <= 0:
+            del itens[nome]
+
+        return f"{Fore.MAGENTA}{Style.BRIGHT}Você usou {nome}! +{cura} HP{Style.RESET_ALL}"
+
+    if "escudo" in item:
+        vida_atual = int(player.get("hp", 0))
+        esc = max(1, int(vida_atual * 0.30))
+        player["escudo"] = int(player.get("escudo", 0)) + esc
+        itens[nome] -= 1
+        if itens[nome] <= 0:
+            del itens[nome]
+        return f"{Fore.BLUE}{Style.BRIGHT}Você usou {nome}! +{esc} Escudo{Style.RESET_ALL}"
+
+    if "xp" in item:
+        falta = int(player.get("xp_next", 0)) - int(player.get("exp", 0))
+        ganho = max(1, int(max(falta, 0) * 0.25))
+        player["exp"] = int(player.get("exp", 0)) + ganho
+        verificar_level_up(player)
+        itens[nome] -= 1
+        if itens[nome] <= 0:
+            del itens[nome]
+        return f"{Fore.GREEN}{Style.BRIGHT}Você usou {nome}! +{ganho} EXP{Style.RESET_ALL}"
+
+    if "dano" in item:
+        atual = int(player.get("dano", 0))
+        bonus = max(1, int(atual * 0.10))
+        player["dano"] = atual + bonus
+        itens[nome] -= 1
+        if itens[nome] <= 0:
+            del itens[nome]
+        return f"{Fore.RED}{Style.BRIGHT}Você usou {nome}! +{bonus} Dano{Style.RESET_ALL}"
+
+    return f"{Fore.YELLOW}{Style.BRIGHT}Item desconhecido.{Style.RESET_ALL}"
 
 
 

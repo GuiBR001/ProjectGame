@@ -274,6 +274,7 @@ def criar_personagem(nome: str,raca: int) -> dict:
     hp_normal = 90 + level * 18
     dano_normal = 6 + level * 2.1
     habilidade = None
+    moedas = 0
 
     match raca:
         case 1:
@@ -330,7 +331,8 @@ def criar_personagem(nome: str,raca: int) -> dict:
         "hp_base": int(hp),
         "dano_base": int(dano),
         "sorte": sorte,
-        "habilidade": habilidade
+        "habilidade": habilidade,
+        "moedas": moedas
     }   
 
 
@@ -978,7 +980,7 @@ def exibe_status_item_loja(idx: int) -> list[str]:
         return " " * pad + txt
 
     if nome_item == "sair":
-        cor = Fore.YELLOW
+        cor = Fore.BLACK
         titulo = "L O J A"
         corpo = [
             f"{Fore.WHITE}{Style.BRIGHT}Voltar para o jogo sem comprar.{Style.RESET_ALL}",
@@ -1421,6 +1423,7 @@ def atacar_monstro_habilidade(player: dict, idx: int) -> None:
             if int(npc["hp"]) <= 0:
                 npc["hp"] = 0
                 indices_mortos.append(i)
+                player['moedas'] += 1
 
         if not indices_mortos:
             centra_h(f"{Fore.WHITE}{Style.BRIGHT}Aperte ENTER para continuar...{Style.RESET_ALL}")
@@ -1510,6 +1513,7 @@ def atacar_monstro_habilidade(player: dict, idx: int) -> None:
             if int(npc["hp"]) <= 0:
                 npc["hp"] = 0
                 indices_mortos.append(i)
+                player['moedas'] += 1
 
         if not indices_mortos:
             centra_h(f"{Fore.WHITE}{Style.BRIGHT}Aperte ENTER para continuar...{Style.RESET_ALL}")
@@ -1605,6 +1609,7 @@ def atacar_monstro_habilidade(player: dict, idx: int) -> None:
                 if int(npc["hp"]) <= 0:
                     npc["hp"] = 0
                     indices_mortos.append(i)
+                    player['moedas'] += 1
 
             if not indices_mortos:
                 centra_h(f"{Fore.WHITE}{Style.BRIGHT}Aperte ENTER para continuar...{Style.RESET_ALL}")
@@ -1687,6 +1692,7 @@ def atacar_monstro_habilidade(player: dict, idx: int) -> None:
                     if int(npc["hp"]) <= 0:
                         npc["hp"] = 0
                         indices_mortos.append(i)
+                        player['moedas'] += 1
 
                 if not indices_mortos:
                     centra_h(f"{Fore.WHITE}{Style.BRIGHT}Aperte ENTER para continuar...{Style.RESET_ALL}")
@@ -1763,6 +1769,7 @@ def atacar_monstro_habilidade(player: dict, idx: int) -> None:
                     if int(npc["hp"]) <= 0:
                         npc["hp"] = 0
                         indices_mortos.append(i)
+                        player['moedas'] += 1
 
                 if not indices_mortos:
                     centra_h(f"{Fore.WHITE}{Style.BRIGHT}Aperte ENTER para continuar...{Style.RESET_ALL}")
@@ -1844,6 +1851,7 @@ def atacar_monstro_habilidade(player: dict, idx: int) -> None:
                 if int(npc["hp"]) <= 0:
                     npc["hp"] = 0
                     indices_mortos.append(i)
+                    player['moedas'] += 1
 
             if not indices_mortos:
                 centra_h(f"{Fore.WHITE}{Style.BRIGHT}Aperte ENTER para continuar...{Style.RESET_ALL}")
@@ -1930,6 +1938,7 @@ def atacar_monstro_habilidade(player: dict, idx: int) -> None:
                     if int(npc["hp"]) <= 0:
                         npc["hp"] = 0
                         indices_mortos.append(i)
+                        player['moedas'] += 1
 
                 if not indices_mortos:
                     centra_h(f"{Fore.WHITE}{Style.BRIGHT}Aperte ENTER para continuar...{Style.RESET_ALL}")
@@ -2006,6 +2015,7 @@ def atacar_monstro_habilidade(player: dict, idx: int) -> None:
                     if int(npc["hp"]) <= 0:
                         npc["hp"] = 0
                         indices_mortos.append(i)
+                        player['moedas'] += 1
 
                 if not indices_mortos:
                     centra_h(f"{Fore.WHITE}{Style.BRIGHT}Aperte ENTER para continuar...{Style.RESET_ALL}")
@@ -2086,6 +2096,7 @@ def atacar_monstro_habilidade(player: dict, idx: int) -> None:
                 if int(npc["hp"]) <= 0:
                     npc["hp"] = 0
                     indices_mortos.append(i)
+                    player['moedas'] += 1
 
             if not indices_mortos:
                 centra_h(f"{Fore.WHITE}{Style.BRIGHT}Aperte ENTER para continuar...{Style.RESET_ALL}")
@@ -2162,6 +2173,7 @@ def atacar_monstro_habilidade(player: dict, idx: int) -> None:
                 if int(npc["hp"]) <= 0:
                     npc["hp"] = 0
                     indices_mortos.append(i)
+                    player['moedas'] += 1
 
             if not indices_mortos:
                 centra_h(f"{Fore.WHITE}{Style.BRIGHT}Aperte ENTER para continuar...{Style.RESET_ALL}")
@@ -2326,6 +2338,7 @@ def atacar_monstro_habilidade(player: dict, idx: int) -> None:
                 if int(npc["hp"]) <= 0:
                     npc["hp"] = 0
                     indices_mortos.append(i)
+                    player['moedas'] += 1
 
             if not indices_mortos:
                 centra_h(f"{Fore.WHITE}{Style.BRIGHT}Aperte ENTER para continuar...{Style.RESET_ALL}")
@@ -2400,6 +2413,7 @@ def atacar_monstro_habilidade(player: dict, idx: int) -> None:
             if int(npc["hp"]) <= 0:
                 npc["hp"] = 0
                 indices_mortos.append(i)
+                player['moedas'] += 1
 
         if not indices_mortos:
             centra_h(f"{Fore.WHITE}{Style.BRIGHT}Aperte ENTER para continuar...{Style.RESET_ALL}")
@@ -2450,6 +2464,7 @@ def atacar_monstro(idx: int, player: dict, orda: int) -> None:
         player['exp'] = int(player.get('exp', 0)) + xp_ganho
         verificar_level_up(player)
         normalizar_stats(player)
+        player['moedas'] += 1
 
         inimigo = npc['nome']
 

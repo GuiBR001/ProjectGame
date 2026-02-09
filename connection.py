@@ -16,3 +16,6 @@ except Exception as e:
 
 else:
     conexao = True
+
+
+#conexao em criacao

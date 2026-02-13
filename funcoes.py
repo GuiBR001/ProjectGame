@@ -928,7 +928,7 @@ def escolha_seta_loja_item(player: dict) -> int | None:
 
         limpar_tela()
         centra_h(f"""
-{Fore.YELLOW}{Style.BRIGHT}✦━━━━━━━━━━━━━━━━━━━━━━━━━━ MOEDAS ━━━━━━━━━━━━━━━━━━━━━━━━━━✦{Style.RESET_ALL}
+{Fore.YELLOW}{Style.BRIGHT}✦━━━━━━━━━━━━━━━━━━━━━━━━━━ MOEDAS ━━━━━━━━━━━━━━━━━━━━━━━━━━━✦{Style.RESET_ALL}
 {Fore.YELLOW}{Style.BRIGHT}  ✦━━━━━━━━━━━━━━━━━━━━━━━━   {Fore.WHITE + f"{player['moedas']}" + Style.RESET_ALL}   {Fore.YELLOW}━━━━━━━━━━━━━━━━━━━━━━━━━✦{Style.RESET_ALL}
 {Fore.YELLOW}{Style.BRIGHT}✦━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━✦{Style.RESET_ALL}
 """)

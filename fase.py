@@ -34,7 +34,7 @@ def fase_1(fase: int, orda: int, player: dict) -> None:
                 continue
 
     fn.criar_inimigos(fase, orda, player)
-    fn.comprar_itens()
+    fn.comprar_itens(player)
 
     while fase == 1 and orda == 2:
         fn.limpar_tela()

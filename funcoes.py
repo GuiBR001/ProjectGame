@@ -332,7 +332,7 @@ def criar_personagem(nome: str,raca: int) -> dict:
         "dano_base": int(dano),
         "sorte": sorte,
         "habilidade": habilidade,
-        "moedas": moedas
+        "moedas": int(moedas)
     }   
 
 
@@ -684,8 +684,6 @@ def escolha_seta_menu() -> str:
 
 #RETORNA A ESCOLHA DO INIMIGO SELECIONADO
 def escolha_seta_inimigo_fase1(player, orda) -> int | None:
-    def strip_ansi(s: str) -> str:
-        return _ANSI.sub("", s or "")
 
     idx = 0
     idx_item = 0
@@ -806,7 +804,7 @@ def escolha_seta_inimigo_fase1(player, orda) -> int | None:
 
 
             
-def comprar_itens():
+def comprar_itens(player):
 
     extra = f"""
 {Fore.YELLOW}{Style.BRIGHT}✦━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━✦{Style.RESET_ALL}
@@ -843,16 +841,32 @@ def comprar_itens():
         escolha_item = escolhas_item[idx]
 
         if escolha_item == "saude":
-            itens["Poção de Cura"] = itens.get("Poção de Cura", 0) + 1
+            if player['moedas'] >= 1:
+                itens["Poção de Cura"] = itens.get("Poção de Cura", 0) + 1
+                player['moedas'] -= 1
+            else:
+                itens["Poção de Cura"] = itens.get("Poção de Cura", 0) + 0
 
         elif escolha_item == "dano":
-            itens["Poção de Dano"] = itens.get("Poção de Dano", 0) + 1
+            if player['moedas'] >= 1:
+                itens["Poção de Dano"] = itens.get("Poção de Dano", 0) + 1
+                player['moedas'] -= 1
+            else:
+                itens["Poção de Dano"] = itens.get("Poção de Dano", 0) + 0
 
         elif escolha_item == "xp":
-            itens["Poção de XP"] = itens.get("Poção de XP", 0) + 1
+            if player['moedas'] >= 1:
+                itens["Poção de XP"] = itens.get("Poção de XP", 0) + 1
+                player['moedas'] -= 1
+            else:
+                itens["Poção de XP"] = itens.get("Poção de Cura", 0) + 0
 
         elif escolha_item == "escudo":
-            itens["Poção de Escudo"] = itens.get("Poção de Escudo", 0) + 1
+            if player['moedas'] >= 1:
+                itens["Poção de Escudo"] = itens.get("Poção de Escudo", 0) + 1
+                player['moedas'] -= 1
+            else:
+                itens["Poção de Escudo"] = itens.get("Poção de Escudo", 0) + 0
 
         elif escolha_item == "sair":
             break
@@ -913,6 +927,11 @@ def escolha_seta_loja_item(player: dict) -> int | None:
         extra = exibe_status_item_loja(idx)
 
         limpar_tela()
+        centra_h(f"""
+{Fore.YELLOW}{Style.BRIGHT}✦━━━━━━━━━━━━━━━━━━━━━━━━━━ MOEDAS ━━━━━━━━━━━━━━━━━━━━━━━━━━✦{Style.RESET_ALL}
+{Fore.YELLOW}{Style.BRIGHT}  ✦━━━━━━━━━━━━━━━━━━━━━━━━   {Fore.WHITE + f"{player['moedas']}" + Style.RESET_ALL}   {Fore.YELLOW}━━━━━━━━━━━━━━━━━━━━━━━━━✦{Style.RESET_ALL}
+{Fore.YELLOW}{Style.BRIGHT}✦━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━✦{Style.RESET_ALL}
+""")
         descri_item_mais_img(img, "\n".join(extra))
         print("\n")
         centra_h("\nQUAL ITEM DESEJA COMPRAR?", Fore.YELLOW + Style.BRIGHT)

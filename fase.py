@@ -23,7 +23,6 @@ def fase_1(fase: int, orda: int, player: dict) -> None:
             break
         else:
             pass
-
         escolha = fn.escolha_seta_inimigo_fase1(player, orda)
         if escolha is not None:
             fn.atacar_monstro(escolha, player, orda)

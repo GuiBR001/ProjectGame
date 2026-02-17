@@ -150,6 +150,34 @@ def centra_h_v(mensagem: str, cor_padrao: str = None) -> None:
 
 
 
+def mostrar_comandos() -> None:
+    msg_comandos = f"""
+{Fore.CYAN}{Style.BRIGHT}✦━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━✦{Style.RESET_ALL}
+{Fore.YELLOW}{Style.BRIGHT}               C O M A N D O S   D O   J O G O            {Style.RESET_ALL}
+{Fore.CYAN}{Style.BRIGHT}✦━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━✦{Style.RESET_ALL}
+
+{Fore.WHITE}{Style.BRIGHT}🎮 Navegação e Seleção:{Style.RESET_ALL}
+
+{Fore.YELLOW}{Style.BRIGHT}↑ ↓{Style.RESET_ALL}  {Fore.WHITE}Mover entre inimigos ou opções{Style.RESET_ALL}  
+{Fore.YELLOW}{Style.BRIGHT}TAB{Style.RESET_ALL}  {Fore.WHITE}Alternar foco entre {Fore.RED}INIMIGOS{Fore.WHITE} e {Fore.GREEN}ITENS{Style.RESET_ALL}  
+{Fore.YELLOW}{Style.BRIGHT}ENTER{Style.RESET_ALL} {Fore.WHITE}Confirmar ação ou atacar o alvo selecionado{Style.RESET_ALL}  
+
+{Fore.WHITE}{Style.BRIGHT}⚔️ Ações Especiais:{Style.RESET_ALL}
+
+{Fore.MAGENTA}{Style.BRIGHT}P{Style.RESET_ALL}    {Fore.WHITE}Usar a habilidade especial do herói{Style.RESET_ALL}  
+{Fore.BLUE}{Style.BRIGHT}L{Style.RESET_ALL}    {Fore.WHITE}Entrar na loja e acessar o menu de compras{Style.RESET_ALL}  
+
+{Fore.WHITE}{Style.BRIGHT}💡 Dica:{Style.RESET_ALL}
+{Fore.CYAN}{Style.DIM}Domine seus itens, use habilidades no momento certo{Style.RESET_ALL}
+
+{Fore.CYAN}{Style.BRIGHT}✦━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━✦{Style.RESET_ALL}
+
+            {Fore.WHITE}{Style.DIM}Aperte ENTER para continuar...{Style.RESET_ALL}
+"""
+    print("\n" * 5)
+    centra_h_v(msg_comandos)
+    input()
+
 
 
 #CRIA MULTIPLOS INIMIGOS BASEADO EM ORDAS E NAS FASES
@@ -703,8 +731,8 @@ def escolha_seta_inimigo_fase1(player, orda) -> int | None:
         descri_monstro_mais_img(img, "\n".join(extra))
         print("\n")
         centra_h(Style.DIM + "")
-        centra_h(f"{Style.DIM}Use ↑ ↓ para navegar pelas opções{Style.RESET_ALL}")
-        centra_h(Style.DIM + "TAB alterna (INIMIGOS/ITENS) | ENTER confirma")
+        centra_h(Fore.YELLOW + Style.BRIGHT + "✦ " + Fore.CYAN + Style.BRIGHT + "Pressione " + Fore.MAGENTA + Style.BRIGHT + "J" + Fore.CYAN + Style.BRIGHT + " para abrir o " + Fore.YELLOW + Style.BRIGHT + "Menu de Comandos" + Fore.YELLOW + Style.BRIGHT + " ✦" + Style.RESET_ALL)
+
 
         #monta caixa inimigos
         largura_interna = 35
@@ -759,6 +787,7 @@ def escolha_seta_inimigo_fase1(player, orda) -> int | None:
             centra_h(rgb_text(caixa_poder_heroi(player)))
 
         ch = msvcrt.getch()
+        
 
         if ch in (b"\x00", b"\xe0"):
             ch2 = msvcrt.getch()
@@ -793,6 +822,14 @@ def escolha_seta_inimigo_fase1(player, orda) -> int | None:
             print("\n")
             input()
             return None
+        
+        elif ch in (b'L', b'l'):
+            limpar_tela()
+            comprar_itens(player)
+
+        elif ch in (b'J', b'j'):
+            limpar_tela()
+            mostrar_comandos()
 
         elif ch in (b"1", b"2", b"3", b"4", b"5"):
             n = int(ch.decode()) - 1

@@ -844,29 +844,179 @@ def comprar_itens(player):
             if player['moedas'] >= 1:
                 itens["Poção de Cura"] = itens.get("Poção de Cura", 0) + 1
                 player['moedas'] -= 1
+                limpar_tela()
+                extra_pocao_vida = f"""
+{Fore.MAGENTA}{Style.BRIGHT}✦━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━✦{Style.RESET_ALL}
+{Fore.MAGENTA}{Style.BRIGHT}              P O Ç Ã O   D E   C U R A              {Style.RESET_ALL}
+{Fore.MAGENTA}{Style.BRIGHT}✦━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━✦{Style.RESET_ALL}
+
+{Fore.WHITE}{Style.BRIGHT}Um frasco que pulsa energia vital.{Style.RESET_ALL}
+{Fore.WHITE}{Style.BRIGHT}Ao beber, você recupera parte da sua força.{Style.RESET_ALL}
+
+{Fore.MAGENTA}{Style.BRIGHT}Efeito:{Style.RESET_ALL}
+{Fore.WHITE}{Style.BRIGHT}Cura {Fore.MAGENTA}{Style.BRIGHT}20%{Fore.WHITE}{Style.BRIGHT} da sua vida atual.{Style.RESET_ALL}
+
+{Fore.YELLOW}{Style.DIM}ENTER para comprar  •  ↑/↓ para navegar{Style.RESET_ALL}
+
+{Fore.MAGENTA}{Style.BRIGHT}✦━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━✦{Style.RESET_ALL}
+"""
+                centra_h_v(extra_pocao_vida)
+                input()
+                
             else:
-                itens["Poção de Cura"] = itens.get("Poção de Cura", 0) + 0
+                limpar_tela()
+                msg_sem_moedas = f"""
+{Fore.RED}{Style.BRIGHT}✦━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━✦{Style.RESET_ALL}
+{Fore.RED}{Style.BRIGHT}             S E M   M O E D A S   S U F I C I E N T E S{Style.RESET_ALL}
+{Fore.RED}{Style.BRIGHT}✦━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━✦{Style.RESET_ALL}
+
+{Fore.WHITE}{Style.BRIGHT}Você estendeu a mão… mas sua bolsa está vazia.{Style.RESET_ALL}
+{Fore.WHITE}{Style.BRIGHT}O mercador apenas balança a cabeça em silêncio.{Style.RESET_ALL}
+
+{Fore.YELLOW}{Style.BRIGHT}⚠ Ouro insuficiente para realizar esta compra!{Style.RESET_ALL}
+
+{Fore.WHITE}{Style.BRIGHT}Volte após derrotar mais inimigos e juntar recompensas.{Style.RESET_ALL}
+
+{Fore.CYAN}{Style.DIM}ENTER para continuar...{Style.RESET_ALL}
+
+{Fore.RED}{Style.BRIGHT}✦━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━✦{Style.RESET_ALL}
+"""
+                centra_h_v(msg_sem_moedas)
+                input()
 
         elif escolha_item == "dano":
             if player['moedas'] >= 1:
                 itens["Poção de Dano"] = itens.get("Poção de Dano", 0) + 1
                 player['moedas'] -= 1
+                limpar_tela()
+                extra_pocao_dano = f"""
+{Fore.RED}{Style.BRIGHT}✦━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━✦{Style.RESET_ALL}
+{Fore.RED}{Style.BRIGHT}               E L I X I R   D E   D A N O           {Style.RESET_ALL}
+{Fore.RED}{Style.BRIGHT}✦━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━✦{Style.RESET_ALL}
+
+{Fore.WHITE}{Style.BRIGHT}Uma mistura ardente, feita para caçadores.{Style.RESET_ALL}
+{Fore.WHITE}{Style.BRIGHT}Cada gole desperta sua força interior.{Style.RESET_ALL}
+
+{Fore.RED}{Style.BRIGHT}Efeito:{Style.RESET_ALL}
+{Fore.WHITE}{Style.BRIGHT}Aumenta seu ataque principal em {Fore.RED}{Style.BRIGHT}10%{Fore.WHITE}{Style.BRIGHT}.{Style.RESET_ALL}
+
+{Fore.YELLOW}{Style.DIM}ENTER para comprar  •  ↑/↓ para navegar{Style.RESET_ALL}
+
+{Fore.RED}{Style.BRIGHT}✦━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━✦{Style.RESET_ALL}
+"""
+                centra_h_v(extra_pocao_dano)
+                input()
+
             else:
-                itens["Poção de Dano"] = itens.get("Poção de Dano", 0) + 0
+                limpar_tela()
+                msg_sem_moedas = f"""
+{Fore.RED}{Style.BRIGHT}✦━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━✦{Style.RESET_ALL}
+{Fore.RED}{Style.BRIGHT}             S E M   M O E D A S   S U F I C I E N T E S{Style.RESET_ALL}
+{Fore.RED}{Style.BRIGHT}✦━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━✦{Style.RESET_ALL}
+
+{Fore.WHITE}{Style.BRIGHT}Você estendeu a mão… mas sua bolsa está vazia.{Style.RESET_ALL}
+{Fore.WHITE}{Style.BRIGHT}O mercador apenas balança a cabeça em silêncio.{Style.RESET_ALL}
+
+{Fore.YELLOW}{Style.BRIGHT}⚠ Ouro insuficiente para realizar esta compra!{Style.RESET_ALL}
+
+{Fore.WHITE}{Style.BRIGHT}Volte após derrotar mais inimigos e juntar recompensas.{Style.RESET_ALL}
+
+{Fore.CYAN}{Style.DIM}ENTER para continuar...{Style.RESET_ALL}
+
+{Fore.RED}{Style.BRIGHT}✦━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━✦{Style.RESET_ALL}
+"""
+                centra_h_v(msg_sem_moedas)
+                input()
 
         elif escolha_item == "xp":
             if player['moedas'] >= 1:
                 itens["Poção de XP"] = itens.get("Poção de XP", 0) + 1
                 player['moedas'] -= 1
+                limpar_tela()
+                extra_pocao_xp = f"""
+{Fore.GREEN}{Style.BRIGHT}✦━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━✦{Style.RESET_ALL}
+{Fore.GREEN}{Style.BRIGHT}              E S S Ê N C I A   D E   X P            {Style.RESET_ALL}
+{Fore.GREEN}{Style.BRIGHT}✦━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━✦{Style.RESET_ALL}
+
+{Fore.WHITE}{Style.BRIGHT}Conhecimento condensado em forma líquida.{Style.RESET_ALL}
+{Fore.WHITE}{Style.BRIGHT}Perfeita para quem quer evoluir rápido.{Style.RESET_ALL}
+
+{Fore.GREEN}{Style.BRIGHT}Efeito:{Style.RESET_ALL}
+{Fore.WHITE}{Style.BRIGHT}Ganha {Fore.GREEN}{Style.BRIGHT}25%{Fore.WHITE}{Style.BRIGHT} do XP necessário para subir de nível.{Style.RESET_ALL}
+
+{Fore.YELLOW}{Style.DIM}ENTER para comprar  •  ↑/↓ para navegar{Style.RESET_ALL}
+
+{Fore.GREEN}{Style.BRIGHT}✦━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━✦{Style.RESET_ALL}
+"""
+
+                centra_h_v(extra_pocao_xp)
+                input()
+
             else:
-                itens["Poção de XP"] = itens.get("Poção de Cura", 0) + 0
+                limpar_tela()
+                msg_sem_moedas = f"""
+{Fore.RED}{Style.BRIGHT}✦━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━✦{Style.RESET_ALL}
+{Fore.RED}{Style.BRIGHT}             S E M   M O E D A S   S U F I C I E N T E S{Style.RESET_ALL}
+{Fore.RED}{Style.BRIGHT}✦━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━✦{Style.RESET_ALL}
+
+{Fore.WHITE}{Style.BRIGHT}Você estendeu a mão… mas sua bolsa está vazia.{Style.RESET_ALL}
+{Fore.WHITE}{Style.BRIGHT}O mercador apenas balança a cabeça em silêncio.{Style.RESET_ALL}
+
+{Fore.YELLOW}{Style.BRIGHT}⚠ Ouro insuficiente para realizar esta compra!{Style.RESET_ALL}
+
+{Fore.WHITE}{Style.BRIGHT}Volte após derrotar mais inimigos e juntar recompensas.{Style.RESET_ALL}
+
+{Fore.CYAN}{Style.DIM}ENTER para continuar...{Style.RESET_ALL}
+
+{Fore.RED}{Style.BRIGHT}✦━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━✦{Style.RESET_ALL}
+"""
+                centra_h_v(msg_sem_moedas)
+                input()
 
         elif escolha_item == "escudo":
             if player['moedas'] >= 1:
                 itens["Poção de Escudo"] = itens.get("Poção de Escudo", 0) + 1
                 player['moedas'] -= 1
+                limpar_tela()
+                extra_pocao_escudo = f"""
+{Fore.BLUE}{Style.BRIGHT}✦━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━✦{Style.RESET_ALL}
+{Fore.BLUE}{Style.BRIGHT}              P O Ç Ã O   D E   E S C U D O          {Style.RESET_ALL}
+{Fore.BLUE}{Style.BRIGHT}✦━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━✦{Style.RESET_ALL}
+
+{Fore.WHITE}{Style.BRIGHT}Uma barreira mágica se forma ao seu redor.{Style.RESET_ALL}
+{Fore.WHITE}{Style.BRIGHT}Ideal para aguentar ataques devastadores.{Style.RESET_ALL}
+
+{Fore.BLUE}{Style.BRIGHT}Efeito:{Style.RESET_ALL}
+{Fore.WHITE}{Style.BRIGHT}Ganha escudo de {Fore.BLUE}{Style.BRIGHT}30%{Fore.WHITE}{Style.BRIGHT} da sua vida atual.{Style.RESET_ALL}
+
+{Fore.YELLOW}{Style.DIM}ENTER para comprar  •  ↑/↓ para navegar{Style.RESET_ALL}
+
+{Fore.BLUE}{Style.BRIGHT}✦━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━✦{Style.RESET_ALL}
+"""
+
+                centra_h_v(extra_pocao_escudo)
+                input()
+
             else:
-                itens["Poção de Escudo"] = itens.get("Poção de Escudo", 0) + 0
+                limpar_tela()
+                msg_sem_moedas = f"""
+{Fore.RED}{Style.BRIGHT}✦━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━✦{Style.RESET_ALL}
+{Fore.RED}{Style.BRIGHT}             S E M   M O E D A S   S U F I C I E N T E S{Style.RESET_ALL}
+{Fore.RED}{Style.BRIGHT}✦━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━✦{Style.RESET_ALL}
+
+{Fore.WHITE}{Style.BRIGHT}Você estendeu a mão… mas sua bolsa está vazia.{Style.RESET_ALL}
+{Fore.WHITE}{Style.BRIGHT}O mercador apenas balança a cabeça em silêncio.{Style.RESET_ALL}
+
+{Fore.YELLOW}{Style.BRIGHT}⚠ Ouro insuficiente para realizar esta compra!{Style.RESET_ALL}
+
+{Fore.WHITE}{Style.BRIGHT}Volte após derrotar mais inimigos e juntar recompensas.{Style.RESET_ALL}
+
+{Fore.CYAN}{Style.DIM}ENTER para continuar...{Style.RESET_ALL}
+
+{Fore.RED}{Style.BRIGHT}✦━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━✦{Style.RESET_ALL}
+"""
+                centra_h_v(msg_sem_moedas)
+                input()
 
         elif escolha_item == "sair":
             break

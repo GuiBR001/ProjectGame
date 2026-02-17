@@ -823,7 +823,7 @@ def escolha_seta_inimigo_fase1(player, orda) -> int | None:
             input()
             return None
         
-        elif ch in (b'L', b'l'):
+        elif ch in (b'L', b'l') and orda >= 2:
             limpar_tela()
             comprar_itens(player)
 

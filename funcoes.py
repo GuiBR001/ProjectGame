@@ -166,6 +166,7 @@ def mostrar_comandos() -> None:
 
 {Fore.MAGENTA}{Style.BRIGHT}P{Style.RESET_ALL}    {Fore.WHITE}Usar a habilidade especial do herói{Style.RESET_ALL}  
 {Fore.BLUE}{Style.BRIGHT}L{Style.RESET_ALL}    {Fore.WHITE}Entrar na loja e acessar o menu de compras{Style.RESET_ALL}  
+{Fore.GREEN}{Style.BRIGHT}M{Style.RESET_ALL}    {Fore.WHITE}Entrar no menu de estátisticas do jogador{Style.RESET_ALL} 
 
 {Fore.WHITE}{Style.BRIGHT}💡 Dica:{Style.RESET_ALL}
 {Fore.CYAN}{Style.DIM}Domine seus itens, use habilidades no momento certo{Style.RESET_ALL}
@@ -575,6 +576,138 @@ def exibir_player(player: dict) -> None:
 
 
 
+#exibir player com tecla M
+def exibir_player_M(player: dict) -> None:
+    nome = player.get('nome', '')
+    raca = player.get('raca', '')
+    level = player.get('level', 0)
+    exp = player.get('exp', 0)
+    xp_next = player.get('xp_next', 0)
+    vida = player.get('hp', 0)
+    dano = player.get('dano', 0)
+    sorte_val = player.get('sorte', 0)
+    habilidade = player.get('habilidade', '')
+
+    if 0 <= sorte_val <= 0.15:
+        sorte_txt = "Baixa"
+        cor_sorte = Fore.RED
+    elif 0.2 <= sorte_val <= 0.29:
+        sorte_txt = "Normal"
+        cor_sorte = Fore.YELLOW
+    elif sorte_val >= 0.3:
+        sorte_txt = "Acima"
+        cor_sorte = Fore.GREEN
+    else:
+        sorte_txt = str(sorte_val)
+        cor_sorte = Fore.WHITE
+
+    def strip_ansi_local(s: str) -> str:
+        return _ANSI.sub("", s or "")
+
+    def pad_dir(s: str, largura: int) -> str:
+        vis = len(strip_ansi_local(s))
+        return s + (" " * max(0, largura - vis))
+
+    cor_titulo = Fore.CYAN + Style.BRIGHT
+    cor_label = Fore.WHITE + Style.BRIGHT
+    cor_val = Fore.YELLOW + Style.BRIGHT
+    cor_barra = Fore.GREEN + Style.BRIGHT
+    cor_linha = Fore.CYAN + Style.BRIGHT
+
+    v_nome = f"{cor_val}{nome}{Style.RESET_ALL}"
+    v_raca = f"{cor_val}{raca}{Style.RESET_ALL}"
+    v_level = f"{Fore.MAGENTA}{Style.BRIGHT}{level}{Style.RESET_ALL}"
+    v_exp = f"{Fore.YELLOW}{Style.BRIGHT}{exp}{Style.RESET_ALL}"
+    v_xpnext = f"{Fore.YELLOW}{Style.BRIGHT}{xp_next}{Style.RESET_ALL}"
+    v_hp = f"{Fore.RED}{Style.BRIGHT}{vida}{Style.RESET_ALL}"
+    v_dano = f"{Fore.RED}{Style.BRIGHT}{dano}{Style.RESET_ALL}"
+    v_sorte = f"{cor_sorte}{Style.BRIGHT}{sorte_txt}{Style.RESET_ALL}"
+    v_hab = f"{Fore.CYAN}{Style.BRIGHT}{habilidade}{Style.RESET_ALL}"
+
+    barra = barra_xp(exp, xp_next)
+    v_barra = f"{cor_barra}{barra}{Style.RESET_ALL}"
+
+    linhas = []
+    linhas.append(f"{cor_titulo}S T A T U S   D O   J O G A D O R{Style.RESET_ALL}")
+    linhas.append("")
+
+    linhas.append(f"{cor_label}Nome      : {Style.RESET_ALL}{v_nome}")
+    linhas.append(f"{cor_label}Raça      : {Style.RESET_ALL}{v_raca}")
+    linhas.append(f"{cor_label}Level     : {Style.RESET_ALL}{v_level}")
+    linhas.append(f"{cor_label}EXP       : {Style.RESET_ALL}{v_exp}")
+    linhas.append(f"{cor_label}Próx Nível: {Style.RESET_ALL}{v_xpnext}")
+    linhas.append(f"{cor_label}XP Barra  : {Style.RESET_ALL}{v_barra}")
+    linhas.append("")
+    linhas.append(f"{cor_label}HP        : {Style.RESET_ALL}{v_hp}")
+    linhas.append(f"{cor_label}Dano      : {Style.RESET_ALL}{v_dano}")
+    linhas.append(f"{cor_label}Sorte     : {Style.RESET_ALL}{v_sorte}")
+    linhas.append(f"{cor_label}Habilidade: {Style.RESET_ALL}{v_hab}")
+
+    largura_interna = max(len(strip_ansi_local(l)) for l in linhas) + 2
+    largura_interna = max(largura_interna, 44)
+
+    topo = f"{cor_linha}╔{'═' * (largura_interna)}╗{Style.RESET_ALL}"
+    meio = f"{cor_linha}╠{'═' * (largura_interna)}╣{Style.RESET_ALL}"
+    rod = f"{cor_linha}╚{'═' * (largura_interna)}╝{Style.RESET_ALL}"
+
+    box = [topo]
+    titulo = linhas[0]
+    tvis = len(strip_ansi_local(titulo))
+    pad_esq = max(0, (largura_interna - tvis) // 2)
+    pad_dirr = max(0, largura_interna - tvis - pad_esq)
+    box.append(f"{cor_linha}║{Style.RESET_ALL}" + (" " * pad_esq) + titulo + (" " * pad_dirr) + f"{cor_linha}║{Style.RESET_ALL}")
+    box.append(meio)
+
+    for l in linhas[1:]:
+        if l == "":
+            box.append(f"{cor_linha}║{Style.RESET_ALL}" + (" " * largura_interna) + f"{cor_linha}║{Style.RESET_ALL}")
+        else:
+            conteudo = pad_dir(l, largura_interna)
+            box.append(f"{cor_linha}║{Style.RESET_ALL}{conteudo}{cor_linha}║{Style.RESET_ALL}")
+
+    box.append(rod)
+
+    return box
+
+
+def exibir_tela_status(player: dict) -> None:
+    centra_h_v(
+    Fore.CYAN + Style.BRIGHT +
+    "✦━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━✦" +
+    Style.RESET_ALL
+    )
+    print("\n")
+
+    centra_h(
+        Fore.YELLOW + Style.BRIGHT +
+        "   M E N U   D E   S T A T U S" +
+        Style.RESET_ALL
+    )
+    print("\n" * 2)
+
+    centra_h("\n".join(exibir_player_M(player)))
+    print("\n" * 2)
+
+    centra_h(
+        Fore.WHITE + Style.BRIGHT +
+        "Aqui estão suas informações atuais de batalha..." +
+        Style.RESET_ALL
+    )
+    print("\n" * 2)
+
+    centra_h(
+        Fore.CYAN + Style.BRIGHT +
+        "✦━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━✦" +
+        Style.RESET_ALL
+    )
+
+    print("\n")
+    centra_h(Fore.WHITE + Style.DIM + "Pressione ENTER para voltar" + Style.RESET_ALL)
+
+
+
+
+
 
 
 
@@ -826,6 +959,11 @@ def escolha_seta_inimigo_fase1(player, orda) -> int | None:
         elif ch in (b'L', b'l') and orda >= 2:
             limpar_tela()
             comprar_itens(player)
+
+        elif ch in (b'M', b'm'):
+            limpar_tela()
+            exibir_tela_status(player)
+            input()
 
         elif ch in (b'J', b'j'):
             limpar_tela()

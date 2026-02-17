@@ -817,7 +817,7 @@ def escolha_seta_inimigo_fase1(player, orda) -> int | None:
             else:
                 return idx
 
-        elif mostrar_poder and ch in (b"p", b"P"):
+        elif mostrar_poder and ch in (b"p", b"P") and orda >= 2:
             atacar_monstro_habilidade(player, idx)
             print("\n")
             input()

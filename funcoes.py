@@ -863,6 +863,7 @@ def comprar_itens(player):
 {Fore.BLUE}{Style.BRIGHT}✦ Escudos Místicos{Style.RESET_ALL}
 {Fore.WHITE}Proteja-se contra ataques devastadores.{Style.RESET_ALL}
 
+    {Fore.YELLOW}{Style.DIM}Sempre que quiser voltar a loja, Aperte a tecla 'L'{Style.RESET_ALL}
 {Fore.YELLOW}{Style.DIM}Use ↑/↓ para navegar • ENTER para comprar • SAIR para voltar{Style.RESET_ALL}
 
 {Fore.YELLOW}{Style.BRIGHT}✦━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━✦{Style.RESET_ALL}

@@ -71,5 +71,23 @@ def fase_1(fase: int, orda: int, player: dict) -> None:
             else: 
                 continue
 
+    fn.escolhas_boss.append(fn.ogro_boss)
+    while fn.ogro_boss['boss'] == True and player['hp'] >= 1:
+        escolha = fn.escolha_seta_inimigo_bossfight(player)
+        if fn.ogro_boss['hp'] <= 0:
+            fn.ogro_boss['boss'] = False
+        else: 
+            pass
 
-        
+        if fn.ogro_boss['boss'] == False:
+            break
+        else:
+            pass
+
+        if escolha is not None:
+            fn.atacar_boss(escolha, player)
+            fn.ataque_dos_boss(player, fn.escolhas_boss)
+            if player['hp'] <= 0:
+                break
+            else: 
+                continue

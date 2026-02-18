@@ -15,6 +15,7 @@ init(autoreset= True)
 #VARIAVEIS
 lista_npcs = []
 escolhas_inimigo = []
+escolhas_boss = []
 escolhas_item = ["saude", "dano", "escudo", "xp", "sair"]
 escolhas_menu = ["Começar Novo Jogo", "Ultimos Recordes", "Créditos", "Sair"]
 escolhas_raca = ["Esqueleto Flamejante", "Anjo Caído", "Sábio Feiticeiro", "Princesa Medusa", "Morte Mormurante", "Arqueiro Mágico"]
@@ -24,6 +25,20 @@ habilidade = []
 tamanho = shutil.get_terminal_size()
 largura_tela = tamanho.columns
 altura_tela = tamanho.lines
+
+ogro_boss = {
+    "nome": "GORMAK, O OGRO DE AÇO",
+    "sexo": "Macho",
+    "level": 6,
+    "hp": 260,
+    "hp_max": 260,
+    "dano": 21,
+    "exp": 180,
+    "crit_chance": 0.20,
+    "crit_mult": 0.16,
+    "cor": Fore.RED + Style.BRIGHT,
+    "boss": True
+}
 
 
 #COMPILA TODOS OS CARACTERES ESPECIAIS
@@ -973,6 +988,139 @@ def escolha_seta_inimigo_fase1(player, orda) -> int | None:
             n = int(ch.decode()) - 1
             if 0 <= n < len(escolhas_inimigo):
                 return n
+            
+
+
+#ESCOLHA DE BOSSFIGHT
+def escolha_seta_inimigo_bossfight(player) -> int | None:
+
+    idx = 0
+    idx_item = 0
+    foco_itens = False
+
+    sorte = player['sorte'] * 100
+    mostrar_poder = (randint(1, 100) <= sorte)
+
+    while True:
+        if not escolhas_boss:
+            return None
+
+        img = ic.boss1_img()
+        extra = exibe_status_ogro_boss(ogro_boss)
+
+        limpar_tela()
+        descri_item_mais_img(img, "\n".join(extra))
+        print("\n")
+        centra_h(Style.DIM + "")
+        centra_h(Fore.YELLOW + Style.BRIGHT + "✦ " + Fore.CYAN + Style.BRIGHT + "Pressione " + Fore.MAGENTA + Style.BRIGHT + "J" + Fore.CYAN + Style.BRIGHT + " para abrir o " + Fore.YELLOW + Style.BRIGHT + "Menu de Comandos" + Fore.YELLOW + Style.BRIGHT + " ✦" + Style.RESET_ALL)
+
+
+        #monta caixa inimigos
+        largura_interna = 35
+        caixa_inimigos = []
+        caixa_inimigos.append(Fore.CYAN + "╔" + "═" * largura_interna + "╗" + Style.RESET_ALL)
+
+        for i, esc in enumerate(escolhas_boss):
+            selecionado = (i == idx)
+            seta = "➤" if selecionado else " "
+
+            if (not foco_itens) and selecionado:
+                cor = Fore.RED + Style.BRIGHT
+            else:
+                cor = Fore.WHITE
+
+            nome = ogro_boss['nome']
+            sexo = "Macho"
+            coresc = (Fore.BLUE + sexo if sexo == "Macho" else Fore.MAGENTA + sexo) + Style.RESET_ALL
+
+            conteudo = f"{seta} {nome} {coresc}"
+            largura_visivel = len(_ANSI.sub("", conteudo))
+            espaco = max(largura_interna - largura_visivel, 0)
+
+            linha_final = (
+                Fore.CYAN + "║ " + Style.RESET_ALL +
+                cor + conteudo + Style.RESET_ALL +
+                " " * espaco +
+                Fore.CYAN + " ║" + Style.RESET_ALL
+            )
+            caixa_inimigos.append(linha_final)
+
+        caixa_inimigos.append(Fore.CYAN + "╚" + "═" * largura_interna + "╝" + Style.RESET_ALL)
+
+        #caixa itens
+        caixa_itens = render_inventario(itens, idx_item, foco_itens)
+        altura = max(len(caixa_inimigos), len(caixa_itens))
+        while len(caixa_inimigos) < altura:
+            caixa_inimigos.append(" " * (largura_interna + 2))
+        while len(caixa_itens) < altura:
+            caixa_itens.append("")
+
+        larg_esq = max(vis_len(l) for l in caixa_inimigos) if caixa_inimigos else 0
+
+        espaco_meio = " " * 6
+        for a, b in zip(caixa_inimigos, caixa_itens):
+            a_fix = pad_vis_right(a, larg_esq)
+            centra_h(a_fix + espaco_meio + b)
+
+
+
+        if mostrar_poder:
+            centra_h(rgb_text(caixa_poder_heroi(player)))
+
+        ch = msvcrt.getch()
+        
+
+        if ch in (b"\x00", b"\xe0"):
+            ch2 = msvcrt.getch()
+
+            if not foco_itens:
+                if ch2 == b"H":
+                    idx = (idx - 1) % len(escolhas_boss)
+                elif ch2 == b"P":
+                    idx = (idx + 1) % len(escolhas_boss)
+
+            else:
+                if itens:
+                    if ch2 == b"H":  
+                        idx_item = (idx_item - 1) % len(itens)
+                    elif ch2 == b"P": 
+                        idx_item = (idx_item + 1) % len(itens)
+
+        elif ch == b"\t":
+            foco_itens = not foco_itens
+
+        elif ch in (b"\r", b"\n"):
+            if foco_itens:
+                msg = usar_item_dict(player, itens, idx_item)
+                limpar_tela()
+                centra_h_v(msg)
+                input(" ")
+            else:
+                return idx
+
+        elif mostrar_poder and ch in (b"p", b"P"):
+            atacar_boss_habilidade(player, idx)
+            print("\n")
+            input()
+            return None
+        
+        elif ch in (b'L', b'l'):
+            limpar_tela()
+            comprar_itens(player)
+
+        elif ch in (b'M', b'm'):
+            limpar_tela()
+            exibir_tela_status(player)
+            input()
+
+        elif ch in (b'J', b'j'):
+            limpar_tela()
+            mostrar_comandos()
+
+        elif ch in (b"1", b"2", b"3", b"4", b"5"):
+            n = int(ch.decode()) - 1
+            if 0 <= n < len(escolhas_boss):
+                return n
 
 
 
@@ -1622,6 +1770,71 @@ def usar_item_dict(player: dict, itens: dict[str, int], idx_item: int) -> str:
     return f"{Fore.YELLOW}{Style.BRIGHT}Item desconhecido.{Style.RESET_ALL}"
 
 
+#EXIBE STATUS BOSS1
+def exibe_status_ogro_boss(boss: dict) -> list[str]:
+    def strip_ansi_local(s: str) -> str:
+        return _ANSI.sub("", s or "")
+
+    nome   = str(boss.get("nome", "OGRO DO REI DE FERRO"))
+    level  = str(boss.get("level", "???"))
+    hp     = int(boss.get("hp", 0))
+    hp_max = int(boss.get("hp_max", max(hp, 1)))
+    dano   = int(boss.get("dano", 0))
+    crit   = float(boss.get("crit_mult", 0.0)) 
+
+    W = 72 
+    BAR_W = 52 
+
+    def pad_line(conteudo: str) -> str:
+        vis = strip_ansi_local(conteudo)
+        faltam = max(0, W - len(vis))
+        return conteudo + (" " * faltam)
+
+    def line(conteudo: str) -> str:
+        return f"{Fore.CYAN}║{Style.RESET_ALL} " + pad_line(conteudo) + f" {Fore.CYAN}║{Style.RESET_ALL}"
+
+    topo   = f"{Fore.CYAN}╔{'═' * (W + 2)}╗{Style.RESET_ALL}"
+    meio   = f"{Fore.CYAN}╠{'═' * (W + 2)}╣{Style.RESET_ALL}"
+    base   = f"{Fore.CYAN}╚{'═' * (W + 2)}╝{Style.RESET_ALL}"
+
+    total = max(hp_max, 1)
+    atual = max(0, min(hp, total))
+    preenchido = int(round((atual / total) * BAR_W))
+
+    cheios = "█" * preenchido
+    vazios = "░" * (BAR_W - preenchido)
+
+    barra = (
+        f"{Fore.WHITE}{Style.BRIGHT}┃{Style.RESET_ALL}"
+        f"{Fore.RED}{Style.BRIGHT}{cheios}{Style.RESET_ALL}"
+        f"{Style.DIM}{vazios}{Style.RESET_ALL}"
+        f"{Fore.WHITE}{Style.BRIGHT}┃{Style.RESET_ALL}"
+    )
+
+    titulo = "⚔  B O S S  —  C A S T E L O  D O  R E I  D E  F E R R O  ⚔"
+    crit_txt = f"{int(round(crit * 100))}%"
+
+    linhas = [
+        topo,
+        line(f"{Fore.RED}{Style.BRIGHT}{titulo.center(W)}{Style.RESET_ALL}"),
+        meio,
+        line(f"{Fore.YELLOW}{Style.BRIGHT}NOME:{Style.RESET_ALL} {Fore.WHITE}{Style.BRIGHT}{nome}{Style.RESET_ALL}"),
+        line(f"{Fore.YELLOW}{Style.BRIGHT}LEVEL:{Style.RESET_ALL} {Fore.MAGENTA}{Style.BRIGHT}{level}{Style.RESET_ALL}"),
+        meio,
+        line(f"{Fore.YELLOW}{Style.BRIGHT}HP:{Style.RESET_ALL} {Fore.RED}{Style.BRIGHT}{hp}/{hp_max}{Style.RESET_ALL}"),
+        line(f"{Fore.YELLOW}{Style.BRIGHT}BARRA DE VIDA:{Style.RESET_ALL} {barra}"),
+        meio,
+        line(f"{Fore.YELLOW}{Style.BRIGHT}DANO:{Style.RESET_ALL} {Fore.RED}{Style.BRIGHT}{dano}{Style.RESET_ALL}"),
+        line(f"{Fore.YELLOW}{Style.BRIGHT}CHANCE DE DANO CRÍTICO:{Style.RESET_ALL} {Fore.MAGENTA}{Style.BRIGHT}{crit_txt}{Style.RESET_ALL}"),
+        base
+    ]
+
+    return linhas
+
+
+
+
+
 
 
 
@@ -1691,7 +1904,7 @@ def caixa_poder_heroi(player: dict) -> str:
 
 #USA A HABILIDADE DO PLAYER PARA ATACAR MONSTROS
 def atacar_monstro_habilidade(player: dict, idx: int) -> None:
-    import time
+
     from icons import (
         esqueleto_flamejante_especial,
         anjo_caido_especial,
@@ -2786,6 +2999,818 @@ def atacar_monstro_habilidade(player: dict, idx: int) -> None:
 
 
 
+def mostrar_boss1_derrotado() -> None:
+    mensagem_morte_boss = f"""
+{Fore.RED}{Style.BRIGHT}✦━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━✦{Style.RESET_ALL}
+{Fore.YELLOW}{Style.BRIGHT}              O  B O S S  F O I  D E R R O T A D O!           {Style.RESET_ALL}
+{Fore.RED}{Style.BRIGHT}✦━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━✦{Style.RESET_ALL}
+
+{Fore.WHITE}{Style.BRIGHT}O chão treme... o silêncio domina o castelo.{Style.RESET_ALL}
+
+{Fore.RED}{Style.BRIGHT}O Ogro do Rei de Ferro caiu de joelhos.{Style.RESET_ALL}
+{Fore.WHITE}{Style.BRIGHT}Seu bafo terrível se apaga... sua força monstruosa desaparece.{Style.RESET_ALL}
+
+{Fore.YELLOW}{Style.BRIGHT}Você encara o gigante derrotado.{Style.RESET_ALL}
+{Fore.WHITE}{Style.BRIGHT}E por um instante... percebe que sobreviveu ao impossível.{Style.RESET_ALL}
+
+{Fore.GREEN}{Style.BRIGHT}✦ O Castelo do Rei de Ferro ainda está de pé... graças a você. ✦{Style.RESET_ALL}
+
+{Fore.RED}{Style.BRIGHT}✦━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━✦{Style.RESET_ALL}
+
+{Fore.YELLOW}{Style.DIM}Pressione ENTER para continuar sua jornada...{Style.RESET_ALL}
+"""
+    limpar_tela()
+    print("\n" * 2)
+    descri_monstro_mais_img(ic.fase1_cidade_salva(), mensagem_morte_boss)
+    input()
+
+
+def atacar_boss_habilidade(player: dict, idx: int) -> None:
+
+    from icons import (
+        esqueleto_flamejante_especial,
+        anjo_caido_especial,
+        sabio_feiticeiro_especial,
+        pricesa_medusa_especial,
+        arqueiro_magico_especial,
+        morte_mormurante_especial
+    )
+
+    if not escolhas_boss:
+        return
+    if idx < 0 or idx >= len(escolhas_boss):
+        return
+
+    habilidade = player['habilidade']
+    hp = escolhas_boss[idx]['hp']
+    nome = escolhas_boss[idx]['nome']
+
+    def processar_mortos_boss() -> None:
+        indices_mortos = []
+        mortes = []
+
+        for i, npc in enumerate(escolhas_boss):
+            if int(npc["hp"]) <= 0:
+                npc["hp"] = 0
+                indices_mortos.append(i)
+                player['moedas'] = int(player.get('moedas', 0)) + 5
+
+        if not indices_mortos:
+            centra_h(f"{Fore.WHITE}{Style.BRIGHT}Aperte ENTER para continuar...{Style.RESET_ALL}")
+            return
+
+        centra_h(f"{Fore.WHITE}{Style.BRIGHT}Aperte ENTER para continuar...{Style.RESET_ALL}")
+        input(" ")
+
+        for i in indices_mortos:
+            npc = escolhas_boss[i]
+            xp_ganho = int(calcular_xp(npc, player, len(escolhas_boss)))
+            player['exp'] = int(player.get('exp', 0)) + xp_ganho
+            verificar_level_up(player)
+            normalizar_stats(player)
+
+            img_monstro = ic.boss1_img()
+            mortes.append((img_monstro, npc['nome'], xp_ganho))
+
+        for i in reversed(indices_mortos):
+            del escolhas_boss[i]
+
+        for img_monstro, nome_monstro, xp_ganho in mortes:
+            mostrar_monstro_derrotado(img_monstro, nome_monstro, player, xp_ganho)
+            mostrar_boss1_derrotado()
+
+    # HABILIDADE ESQUELETO FLAMEJANTE
+    if habilidade == "CHAMAS INFERNAIS" and len(escolhas_boss) > 0:
+
+        player['dano por fogo'] = int(player['dano'] * 0.8)
+        for npc in escolhas_boss:
+            npc['hp'] -= player['dano por fogo']
+
+        img = esqueleto_flamejante_especial()
+        linhas_img = img.splitlines()
+
+        for i, linha in enumerate(linhas_img):
+            linhas_img[i] = Fore.RED + linha + Style.RESET_ALL
+
+        linhas_texto = []
+        largura_barra = 54
+        linhas_texto.append(
+            Fore.RED + Style.BRIGHT + "✦" + "━" * largura_barra + "✦" + Style.RESET_ALL
+        )
+        linhas_texto.append(
+            Fore.YELLOW + Style.BRIGHT + "          H A B I L I D A D E   A T I V A D A          " + Style.RESET_ALL
+        )
+        linhas_texto.append(" ")
+        linhas_texto.append(
+            Fore.WHITE + Style.BRIGHT + f"{player['nome']}" + Style.RESET_ALL
+            + Fore.WHITE + Style.BRIGHT + " invocou " + Style.RESET_ALL
+            + Fore.RED + Style.BRIGHT + f"{player['habilidade']}" + Style.RESET_ALL
+        )
+        linhas_texto.append(" ")
+        linhas_texto.append(
+            Fore.WHITE + Style.BRIGHT + "Dano em área: " + Style.RESET_ALL
+            + Fore.RED + Style.BRIGHT + f"{int(player['dano por fogo'])}" + Style.RESET_ALL
+            + Fore.WHITE + Style.BRIGHT + " (Fogo)" + Style.RESET_ALL
+        )
+        linhas_texto.append(" ")
+        linhas_texto.append(
+            Fore.CYAN + Style.BRIGHT + "Alvos atingidos:" + Style.RESET_ALL
+        )
+        for npc in escolhas_boss:
+            linhas_texto.append(Fore.WHITE + Style.BRIGHT + f"• {npc['nome']}" + Style.RESET_ALL)
+
+        linhas_texto.append(" ")
+        linhas_texto.append(
+            Fore.RED + Style.BRIGHT + "✦" + "━" * largura_barra + "✦" + Style.RESET_ALL
+        )
+
+        largura_bloco = max(len(strip_ansi(l)) for l in linhas_texto)
+
+        for i, linha in enumerate(linhas_texto, start=7):
+            if i >= len(linhas_img):
+                break
+            visivel = strip_ansi(linha)
+            espaco_esq = (largura_bloco - len(visivel)) // 2
+            linha_centro = " " * espaco_esq + linha
+            linhas_img[i] = linhas_img[i] + " " * 8 + linha_centro
+
+        img_final = "\n".join(linhas_img)
+        centra_h_v(img_final)
+
+        processar_mortos_boss()
+        return
+
+    # HABILIDADE ANJO CAÍDO
+    elif habilidade == "CEIFEIRO" and len(escolhas_boss) > 0:
+
+        escolhas_boss[idx]['hp'] -= player['dano']
+        player['vida ceifada'] = int(int(player['dano']) * 0.6)
+        player['hp'] = int(player['hp']) + int(player['vida ceifada'])
+        if 'hp_max' in player:
+            player['hp'] = min(int(player['hp']), int(player['hp_max']))
+
+        img = anjo_caido_especial()
+        linhas_img = img.splitlines()
+
+        for i, linha in enumerate(linhas_img):
+            linhas_img[i] = Fore.BLACK + linha + Style.RESET_ALL
+
+        linhas_texto = []
+        largura_barra = 54
+        linhas_texto.append(
+            Fore.WHITE + Style.BRIGHT + "✦" + "━" * largura_barra + "✦" + Style.RESET_ALL
+        )
+        linhas_texto.append(
+            Fore.MAGENTA + Style.BRIGHT + "              G O L P E   D A   F O I C E              " + Style.RESET_ALL
+        )
+        linhas_texto.append(" ")
+        linhas_texto.append(
+            Fore.WHITE + Style.BRIGHT + f"{player['nome']}" + Style.RESET_ALL
+            + Fore.WHITE + Style.BRIGHT + " usou " + Style.RESET_ALL
+            + Fore.MAGENTA + Style.BRIGHT + f"{player['habilidade']}" + Style.RESET_ALL
+        )
+        linhas_texto.append(" ")
+        linhas_texto.append(
+            Fore.WHITE + Style.BRIGHT + "Alvo: " + Style.RESET_ALL
+            + Fore.RED + Style.BRIGHT + f"{escolhas_boss[idx]['nome']}" + Style.RESET_ALL
+        )
+        linhas_texto.append(
+            Fore.WHITE + Style.BRIGHT + "Dano causado: " + Style.RESET_ALL
+            + Fore.RED + Style.BRIGHT + f"{int(player['dano'])}" + Style.RESET_ALL
+        )
+        linhas_texto.append(
+            Fore.WHITE + Style.BRIGHT + "Vida ceifada: " + Style.RESET_ALL
+            + Fore.GREEN + Style.BRIGHT + f"+{int(player['vida ceifada'])}" + Style.RESET_ALL
+        )
+        linhas_texto.append(" ")
+        linhas_texto.append(
+            Fore.WHITE + Style.BRIGHT + "✦" + "━" * largura_barra + "✦" + Style.RESET_ALL
+        )
+
+        largura_bloco = max(len(strip_ansi(l)) for l in linhas_texto)
+
+        for i, linha in enumerate(linhas_texto, start=17):
+            if i >= len(linhas_img):
+                break
+            visivel = strip_ansi(linha)
+            espaco_esq = (largura_bloco - len(visivel)) // 2
+            linha_centro = " " * espaco_esq + linha
+            linhas_img[i] = linhas_img[i] + " " * 8 + linha_centro
+
+        img_final = "\n".join(linhas_img)
+        centra_h_v(img_final)
+
+        processar_mortos_boss()
+        return
+
+    # HABILIDADE SÁBIO FEITICEIRO
+    elif habilidade == "FEITIÇOS ELEMENTAIS" and len(escolhas_boss) > 0:
+        poderes = ["Tsunami", "Terremoto", "Tornado", "Vinhas"]
+        poder_escolhido = choice(poderes)
+
+        # ---------------- TSUNAMI ----------------
+        if poder_escolhido == "Tsunami":
+            player['dano por tsunami'] = int(player["dano"] * 1.5)
+            escolhas_boss[idx]['hp'] -= player['dano por tsunami']
+            escolhas_boss[idx]['dano'] = int(escolhas_boss[idx]['dano'] * 0.85)
+
+            img = sabio_feiticeiro_especial()
+            linhas_img = img.splitlines()
+
+            for i, linha in enumerate(linhas_img):
+                linhas_img[i] = Fore.BLUE + linha + Style.RESET_ALL
+
+            linhas_texto = []
+            largura_barra = 54
+            linhas_texto.append(
+                Fore.BLUE + Style.BRIGHT + "✦" + "━" * largura_barra + "✦" + Style.RESET_ALL
+            )
+            linhas_texto.append(
+                Fore.CYAN + Style.BRIGHT + "                 F E I T I Ç O   A T I V O              " + Style.RESET_ALL
+            )
+            linhas_texto.append(" ")
+            linhas_texto.append(
+                Fore.WHITE + Style.BRIGHT + f"{player['nome']}" + Style.RESET_ALL
+                + Fore.WHITE + Style.BRIGHT + " conjurou " + Style.RESET_ALL
+                + Fore.CYAN + Style.BRIGHT + f"{player['habilidade']}" + Style.RESET_ALL
+            )
+            linhas_texto.append(" ")
+            linhas_texto.append(
+                Fore.CYAN + Style.BRIGHT + "Elemento: " + Style.RESET_ALL
+                + Fore.BLUE + Style.BRIGHT + "Água (Tsunami)" + Style.RESET_ALL
+            )
+            linhas_texto.append(
+                Fore.WHITE + Style.BRIGHT + "Dano causado: " + Style.RESET_ALL
+                + Fore.RED + Style.BRIGHT + f"{int(player['dano por tsunami'])}" + Style.RESET_ALL
+            )
+            linhas_texto.append(
+                Fore.WHITE + Style.BRIGHT + "Alvo: " + Style.RESET_ALL
+                + Fore.RED + Style.BRIGHT + f"{escolhas_boss[idx]['nome']}" + Style.RESET_ALL
+            )
+            linhas_texto.append(
+                Fore.WHITE + Style.BRIGHT + "Efeito: " + Style.RESET_ALL
+                + Fore.YELLOW + Style.BRIGHT + "-15% ataque do inimigo" + Style.RESET_ALL
+            )
+            linhas_texto.append(" ")
+            linhas_texto.append(
+                Fore.BLUE + Style.BRIGHT + "✦" + "━" * largura_barra + "✦" + Style.RESET_ALL
+            )
+
+            largura_bloco = max(len(strip_ansi(l)) for l in linhas_texto)
+
+            for i, linha in enumerate(linhas_texto, start=17):
+                if i >= len(linhas_img):
+                    break
+                visivel = strip_ansi(linha)
+                espaco_esq = (largura_bloco - len(visivel)) // 2
+                linha_centro = " " * espaco_esq + linha
+                linhas_img[i] = linhas_img[i] + " " * 8 + linha_centro
+
+            img_final = "\n".join(linhas_img)
+            centra_h_v(img_final)
+
+            processar_mortos_boss()
+            return
+
+        # ---------------- TERREMOTO ----------------
+        elif poder_escolhido == "Terremoto":
+            sorte = randint(1, 3)
+
+            if sorte == 2:
+                player['dano por terremoto'] = int(escolhas_boss[idx]['hp'] * 0.7)
+                escolhas_boss[idx]['hp'] -= player['dano por terremoto']
+
+                img = sabio_feiticeiro_especial()
+                linhas_img = img.splitlines()
+
+                for i, linha in enumerate(linhas_img):
+                    linhas_img[i] = Fore.BLUE + linha + Style.RESET_ALL
+
+                linhas_texto = []
+                largura_barra = 54
+                linhas_texto.append(
+                    Fore.BLUE + Style.BRIGHT + "✦" + "━" * largura_barra + "✦" + Style.RESET_ALL
+                )
+                linhas_texto.append(
+                    Fore.YELLOW + Style.BRIGHT + "                 T E R R E M O T O   C R Í T I C O       " + Style.RESET_ALL
+                )
+                linhas_texto.append(" ")
+                linhas_texto.append(
+                    Fore.WHITE + Style.BRIGHT + "A terra se abriu sob os pés do inimigo!" + Style.RESET_ALL
+                )
+                linhas_texto.append(
+                    Fore.WHITE + Style.BRIGHT + "Alvo: " + Style.RESET_ALL
+                    + Fore.RED + Style.BRIGHT + f"{escolhas_boss[idx]['nome']}" + Style.RESET_ALL
+                )
+                linhas_texto.append(
+                    Fore.WHITE + Style.BRIGHT + "Dano causado: " + Style.RESET_ALL
+                    + Fore.RED + Style.BRIGHT + f"{int(player['dano por terremoto'])}" + Style.RESET_ALL
+                    + Fore.WHITE + Style.BRIGHT + " (70% da vida)" + Style.RESET_ALL
+                )
+                linhas_texto.append(" ")
+                linhas_texto.append(
+                    Fore.BLUE + Style.BRIGHT + "✦" + "━" * largura_barra + "✦" + Style.RESET_ALL
+                )
+
+                largura_bloco = max(len(strip_ansi(l)) for l in linhas_texto)
+
+                for i, linha in enumerate(linhas_texto, start=17):
+                    if i >= len(linhas_img):
+                        break
+                    visivel = strip_ansi(linha)
+                    espaco_esq = (largura_bloco - len(visivel)) // 2
+                    linha_centro = " " * espaco_esq + linha
+                    linhas_img[i] = linhas_img[i] + " " * 8 + linha_centro
+
+                img_final = "\n".join(linhas_img)
+                centra_h_v(img_final)
+
+                processar_mortos_boss()
+                return
+
+            else:
+                escolhas_boss[idx]['hp'] -= int(player['dano'] * 0.5)
+
+                img = sabio_feiticeiro_especial()
+                linhas_img = img.splitlines()
+
+                for i, linha in enumerate(linhas_img):
+                    linhas_img[i] = Fore.BLUE + linha + Style.RESET_ALL
+
+                linhas_texto = []
+                largura_barra = 54
+                linhas_texto.append(
+                    Fore.BLUE + Style.BRIGHT + "✦" + "━" * largura_barra + "✦" + Style.RESET_ALL
+                )
+                linhas_texto.append(
+                    Fore.YELLOW + Style.BRIGHT + "                   T E R R E M O T O                     " + Style.RESET_ALL
+                )
+                linhas_texto.append(" ")
+                linhas_texto.append(
+                    Fore.WHITE + Style.BRIGHT + "A criatura escapou do pior por pouco..." + Style.RESET_ALL
+                )
+                linhas_texto.append(
+                    Fore.WHITE + Style.BRIGHT + "Alvo: " + Style.RESET_ALL
+                    + Fore.RED + Style.BRIGHT + f"{escolhas_boss[idx]['nome']}" + Style.RESET_ALL
+                )
+                linhas_texto.append(
+                    Fore.WHITE + Style.BRIGHT + "Dano causado: " + Style.RESET_ALL
+                    + Fore.RED + Style.BRIGHT + f"{int(player['dano'] * 0.5)}" + Style.RESET_ALL
+                )
+                linhas_texto.append(" ")
+                linhas_texto.append(
+                    Fore.BLUE + Style.BRIGHT + "✦" + "━" * largura_barra + "✦" + Style.RESET_ALL
+                )
+
+                largura_bloco = max(len(strip_ansi(l)) for l in linhas_texto)
+
+                for i, linha in enumerate(linhas_texto, start=17):
+                    if i >= len(linhas_img):
+                        break
+                    visivel = strip_ansi(linha)
+                    espaco_esq = (largura_bloco - len(visivel)) // 2
+                    linha_centro = " " * espaco_esq + linha
+                    linhas_img[i] = linhas_img[i] + " " * 8 + linha_centro
+
+                img_final = "\n".join(linhas_img)
+                centra_h_v(img_final)
+
+                processar_mortos_boss()
+                return
+
+        # ---------------- TORNADO ----------------
+        elif poder_escolhido == "Tornado":
+
+            multiplicador = randint(2, 3)
+            player['dano por tornado'] = player['dano'] * multiplicador
+            escolhas_boss[idx]['hp'] -= player['dano por tornado']
+
+            img = sabio_feiticeiro_especial()
+            linhas_img = img.splitlines()
+
+            for i, linha in enumerate(linhas_img):
+                linhas_img[i] = Fore.BLUE + linha + Style.RESET_ALL
+
+            linhas_texto = []
+            largura_barra = 54
+            linhas_texto.append(
+                Fore.BLUE + Style.BRIGHT + "✦" + "━" * largura_barra + "✦" + Style.RESET_ALL
+            )
+            linhas_texto.append(
+                Fore.CYAN + Style.BRIGHT + "                     T O R N A D O                      " + Style.RESET_ALL
+            )
+            linhas_texto.append(" ")
+            linhas_texto.append(
+                Fore.WHITE + Style.BRIGHT + "Ventos violentos rasgam o campo de batalha!" + Style.RESET_ALL
+            )
+            linhas_texto.append(
+                Fore.WHITE + Style.BRIGHT + "Alvo: " + Style.RESET_ALL
+                + Fore.RED + Style.BRIGHT + f"{escolhas_boss[idx]['nome']}" + Style.RESET_ALL
+            )
+            linhas_texto.append(
+                Fore.WHITE + Style.BRIGHT + "Dano causado: " + Style.RESET_ALL
+                + Fore.RED + Style.BRIGHT + f"{int(player['dano por tornado'])}" + Style.RESET_ALL
+                + Fore.WHITE + Style.BRIGHT + f" (x{multiplicador})" + Style.RESET_ALL
+            )
+            linhas_texto.append(" ")
+            linhas_texto.append(
+                Fore.BLUE + Style.BRIGHT + "✦" + "━" * largura_barra + "✦" + Style.RESET_ALL
+            )
+
+            largura_bloco = max(len(strip_ansi(l)) for l in linhas_texto)
+
+            for i, linha in enumerate(linhas_texto, start=17):
+                if i >= len(linhas_img):
+                    break
+                visivel = strip_ansi(linha)
+                espaco_esq = (largura_bloco - len(visivel)) // 2
+                linha_centro = " " * espaco_esq + linha
+                linhas_img[i] = linhas_img[i] + " " * 8 + linha_centro
+
+            img_final = "\n".join(linhas_img)
+            centra_h_v(img_final)
+
+            processar_mortos_boss()
+            return
+
+        # ---------------- VINHAS ----------------
+        elif poder_escolhido == "Vinhas":
+
+            sorte = randint(1, 3)
+            if sorte == 2:
+                multiplicador = min(len(escolhas_boss), 3)
+                player['dano por vinhas'] = player['dano'] * multiplicador * 2
+                escolhas_boss[idx]['hp'] -= player['dano por vinhas']
+
+                img = sabio_feiticeiro_especial()
+                linhas_img = img.splitlines()
+
+                for i, linha in enumerate(linhas_img):
+                    linhas_img[i] = Fore.BLUE + linha + Style.RESET_ALL
+
+                linhas_texto = []
+                largura_barra = 54
+                linhas_texto.append(
+                    Fore.BLUE + Style.BRIGHT + "✦" + "━" * largura_barra + "✦" + Style.RESET_ALL
+                )
+                linhas_texto.append(
+                    Fore.GREEN + Style.BRIGHT + "                       V I N H A S                      " + Style.RESET_ALL
+                )
+                linhas_texto.append(" ")
+                linhas_texto.append(
+                    Fore.WHITE + Style.BRIGHT + "Vinhas espinhosas prendem o inimigo com força!" + Style.RESET_ALL
+                )
+                linhas_texto.append(
+                    Fore.WHITE + Style.BRIGHT + "Alvo: " + Style.RESET_ALL
+                    + Fore.RED + Style.BRIGHT + f"{escolhas_boss[idx]['nome']}" + Style.RESET_ALL
+                )
+                linhas_texto.append(
+                    Fore.WHITE + Style.BRIGHT + "Dano causado: " + Style.RESET_ALL
+                    + Fore.RED + Style.BRIGHT + f"{int(player['dano por vinhas'])}" + Style.RESET_ALL
+                )
+                linhas_texto.append(
+                    Fore.WHITE + Style.BRIGHT + "Bônus: " + Style.RESET_ALL
+                    + Fore.YELLOW + Style.BRIGHT + "escala com inimigos na arena" + Style.RESET_ALL
+                )
+                linhas_texto.append(" ")
+                linhas_texto.append(
+                    Fore.BLUE + Style.BRIGHT + "✦" + "━" * largura_barra + "✦" + Style.RESET_ALL
+                )
+
+                largura_bloco = max(len(strip_ansi(l)) for l in linhas_texto)
+
+                for i, linha in enumerate(linhas_texto, start=17):
+                    if i >= len(linhas_img):
+                        break
+                    visivel = strip_ansi(linha)
+                    espaco_esq = (largura_bloco - len(visivel)) // 2
+                    linha_centro = " " * espaco_esq + linha
+                    linhas_img[i] = linhas_img[i] + " " * 8 + linha_centro
+
+                img_final = "\n".join(linhas_img)
+                centra_h_v(img_final)
+
+                processar_mortos_boss()
+                return
+
+            else:
+                escolhas_boss[idx]['hp'] -= player['dano']
+
+                img = sabio_feiticeiro_especial()
+                linhas_img = img.splitlines()
+
+                for i, linha in enumerate(linhas_img):
+                    linhas_img[i] = Fore.BLUE + linha + Style.RESET_ALL
+
+                linhas_texto = []
+                largura_barra = 54
+                linhas_texto.append(
+                    Fore.BLUE + Style.BRIGHT + "✦" + "━" * largura_barra + "✦" + Style.RESET_ALL
+                )
+                linhas_texto.append(
+                    Fore.GREEN + Style.BRIGHT + "                       V I N H A S                      " + Style.RESET_ALL
+                )
+                linhas_texto.append(" ")
+                linhas_texto.append(
+                    Fore.WHITE + Style.BRIGHT + "A conjuração saiu torta... mas ainda atingiu!" + Style.RESET_ALL
+                )
+                linhas_texto.append(
+                    Fore.WHITE + Style.BRIGHT + "Alvo: " + Style.RESET_ALL
+                    + Fore.RED + Style.BRIGHT + f"{escolhas_boss[idx]['nome']}" + Style.RESET_ALL
+                )
+                linhas_texto.append(
+                    Fore.WHITE + Style.BRIGHT + "Dano causado: " + Style.RESET_ALL
+                    + Fore.RED + Style.BRIGHT + f"{int(player['dano'])}" + Style.RESET_ALL
+                )
+                linhas_texto.append(" ")
+                linhas_texto.append(
+                    Fore.BLUE + Style.BRIGHT + "✦" + "━" * largura_barra + "✦" + Style.RESET_ALL
+                )
+
+                largura_bloco = max(len(strip_ansi(l)) for l in linhas_texto)
+
+                for i, linha in enumerate(linhas_texto, start=17):
+                    if i >= len(linhas_img):
+                        break
+                    visivel = strip_ansi(linha)
+                    espaco_esq = (largura_bloco - len(visivel)) // 2
+                    linha_centro = " " * espaco_esq + linha
+                    linhas_img[i] = linhas_img[i] + " " * 8 + linha_centro
+
+                img_final = "\n".join(linhas_img)
+                centra_h_v(img_final)
+
+                processar_mortos_boss()
+                return
+
+    # HABILIDADE PRINCESA MEDUSA
+    elif habilidade == "ENCANTO DE PEDRA" and len(escolhas_boss) > 0:
+        sorte = randint(1, 3)
+        if sorte == 1:
+            player['dano por medusa'] = escolhas_boss[idx]['hp']
+            escolhas_boss[idx]['hp'] -= player["dano por medusa"]
+
+            img = pricesa_medusa_especial()
+            linhas_img = img.splitlines()
+
+            for i, linha in enumerate(linhas_img):
+                linhas_img[i] = Fore.GREEN + linha + Style.RESET_ALL
+
+            linhas_texto = []
+            largura_barra = 54
+            linhas_texto.append(
+                Fore.GREEN + Style.BRIGHT + "✦" + "━" * largura_barra + "✦" + Style.RESET_ALL
+            )
+            linhas_texto.append(
+                Fore.YELLOW + Style.BRIGHT + "                P E T R I F I C A Ç Ã O !               " + Style.RESET_ALL
+            )
+            linhas_texto.append(" ")
+            linhas_texto.append(
+                Fore.WHITE + Style.BRIGHT + "O olhar da Medusa selou o destino do inimigo..." + Style.RESET_ALL
+            )
+            linhas_texto.append(
+                Fore.WHITE + Style.BRIGHT + "Alvo: " + Style.RESET_ALL
+                + Fore.RED + Style.BRIGHT + f"{escolhas_boss[idx]['nome']}" + Style.RESET_ALL
+            )
+            linhas_texto.append(
+                Fore.WHITE + Style.BRIGHT + "Resultado: " + Style.RESET_ALL
+                + Fore.RED + Style.BRIGHT + "morte instantânea" + Style.RESET_ALL
+            )
+            linhas_texto.append(" ")
+            linhas_texto.append(
+                Fore.GREEN + Style.BRIGHT + "✦" + "━" * largura_barra + "✦" + Style.RESET_ALL
+            )
+
+            largura_bloco = max(len(strip_ansi(l)) for l in linhas_texto)
+
+            for i, linha in enumerate(linhas_texto, start=17):
+                if i >= len(linhas_img):
+                    break
+                visivel = strip_ansi(linha)
+                espaco_esq = (largura_bloco - len(visivel)) // 2
+                linha_centro = " " * espaco_esq + linha
+                linhas_img[i] = linhas_img[i] + " " * 8 + linha_centro
+
+            img_final = "\n".join(linhas_img)
+            centra_h_v(img_final)
+
+            processar_mortos_boss()
+            return
+
+        else:
+            escolhas_boss[idx]['hp'] -= player['dano']
+
+            img = pricesa_medusa_especial()
+            linhas_img = img.splitlines()
+
+            for i, linha in enumerate(linhas_img):
+                linhas_img[i] = Fore.GREEN + linha + Style.RESET_ALL
+
+            linhas_texto = []
+            largura_barra = 54
+            linhas_texto.append(
+                Fore.GREEN + Style.BRIGHT + "✦" + "━" * largura_barra + "✦" + Style.RESET_ALL
+            )
+            linhas_texto.append(
+                Fore.YELLOW + Style.BRIGHT + "                 F Ú R I A   D A   M E D U S A           " + Style.RESET_ALL
+            )
+            linhas_texto.append(" ")
+            linhas_texto.append(
+                Fore.WHITE + Style.BRIGHT + "O inimigo desviou do olhar... mas não do ataque!" + Style.RESET_ALL
+            )
+            linhas_texto.append(
+                Fore.WHITE + Style.BRIGHT + "Alvo: " + Style.RESET_ALL
+                + Fore.RED + Style.BRIGHT + f"{escolhas_boss[idx]['nome']}" + Style.RESET_ALL
+            )
+            linhas_texto.append(
+                Fore.WHITE + Style.BRIGHT + "Dano causado: " + Style.RESET_ALL
+                + Fore.RED + Style.BRIGHT + f"{int(player['dano'])}" + Style.RESET_ALL
+            )
+            linhas_texto.append(" ")
+            linhas_texto.append(
+                Fore.GREEN + Style.BRIGHT + "✦" + "━" * largura_barra + "✦" + Style.RESET_ALL
+            )
+
+            largura_bloco = max(len(strip_ansi(l)) for l in linhas_texto)
+
+            for i, linha in enumerate(linhas_texto, start=17):
+                if i >= len(linhas_img):
+                    break
+                visivel = strip_ansi(linha)
+                espaco_esq = (largura_bloco - len(visivel)) // 2
+                linha_centro = " " * espaco_esq + linha
+                linhas_img[i] = linhas_img[i] + " " * 8 + linha_centro
+
+            img_final = "\n".join(linhas_img)
+            centra_h_v(img_final)
+
+            processar_mortos_boss()
+            return
+
+    # HABILIDADE ARQUEIRO MÁGICO
+    elif habilidade == "FLECHA MÁGICA" and len(escolhas_boss) > 0:
+
+        if len(escolhas_boss) >= 3:
+            player['dano por flecha magica'] = int(player['dano'] * 1.8)
+            alvos = sample(escolhas_boss, 3)
+            for npc in alvos:
+                npc['hp'] -= player['dano por flecha magica']
+
+            img = arqueiro_magico_especial()
+            linhas_img = img.splitlines()
+
+            for i, linha in enumerate(linhas_img):
+                linhas_img[i] = Fore.CYAN + linha + Style.RESET_ALL
+
+            nomes = ", ".join(npc['nome'] for npc in alvos)
+
+            linhas_texto = []
+            largura_barra = 54
+            linhas_texto.append(
+                Fore.CYAN + Style.BRIGHT + "✦" + "━" * largura_barra + "✦" + Style.RESET_ALL
+            )
+            linhas_texto.append(
+                Fore.YELLOW + Style.BRIGHT + "                   F L E C H A   M Á G I C A            " + Style.RESET_ALL
+            )
+            linhas_texto.append(" ")
+            linhas_texto.append(
+                Fore.WHITE + Style.BRIGHT + "Disparo múltiplo atravessando os inimigos!" + Style.RESET_ALL
+            )
+            linhas_texto.append(
+                Fore.WHITE + Style.BRIGHT + "Alvos: " + Style.RESET_ALL
+                + Fore.RED + Style.BRIGHT + f"{nomes}" + Style.RESET_ALL
+            )
+            linhas_texto.append(
+                Fore.WHITE + Style.BRIGHT + "Dano em cada alvo: " + Style.RESET_ALL
+                + Fore.RED + Style.BRIGHT + f"{int(player['dano por flecha magica'])}" + Style.RESET_ALL
+            )
+            linhas_texto.append(" ")
+            linhas_texto.append(
+                Fore.CYAN + Style.BRIGHT + "✦" + "━" * largura_barra + "✦" + Style.RESET_ALL
+            )
+
+            largura_bloco = max(len(strip_ansi(l)) for l in linhas_texto)
+
+            for i, linha in enumerate(linhas_texto, start=17):
+                if i >= len(linhas_img):
+                    break
+                visivel = strip_ansi(linha)
+                espaco_esq = (largura_bloco - len(visivel)) // 2
+                linha_centro = " " * espaco_esq + linha
+                linhas_img[i] = linhas_img[i] + " " * 8 + linha_centro
+
+            img_final = "\n".join(linhas_img)
+            centra_h_v(img_final)
+
+            processar_mortos_boss()
+            return
+
+        else:
+            alvos = sample(escolhas_boss, len(escolhas_boss))
+            for npc in alvos:
+                npc['hp'] -= player['dano'] * 2
+
+            img = arqueiro_magico_especial()
+            linhas_img = img.splitlines()
+
+            for i, linha in enumerate(linhas_img):
+                linhas_img[i] = Fore.CYAN + linha + Style.RESET_ALL
+
+            nomes = ", ".join(npc['nome'] for npc in alvos)
+
+            linhas_texto = []
+            largura_barra = 54
+            linhas_texto.append(
+                Fore.CYAN + Style.BRIGHT + "✦" + "━" * largura_barra + "✦" + Style.RESET_ALL
+            )
+            linhas_texto.append(
+                Fore.YELLOW + Style.BRIGHT + "                   F L E C H A   M Á G I C A            " + Style.RESET_ALL
+            )
+            linhas_texto.append(" ")
+            linhas_texto.append(
+                Fore.WHITE + Style.BRIGHT + "Poucos inimigos na arena — disparo certeiro!" + Style.RESET_ALL
+            )
+            linhas_texto.append(
+                Fore.WHITE + Style.BRIGHT + "Alvos: " + Style.RESET_ALL
+                + Fore.RED + Style.BRIGHT + f"{nomes}" + Style.RESET_ALL
+            )
+            linhas_texto.append(
+                Fore.WHITE + Style.BRIGHT + "Dano em cada alvo: " + Style.RESET_ALL
+                + Fore.RED + Style.BRIGHT + f"{int(player['dano'] * 2)}" + Style.RESET_ALL
+            )
+            linhas_texto.append(" ")
+            linhas_texto.append(
+                Fore.CYAN + Style.BRIGHT + "✦" + "━" * largura_barra + "✦" + Style.RESET_ALL
+            )
+
+            largura_bloco = max(len(strip_ansi(l)) for l in linhas_texto)
+
+            for i, linha in enumerate(linhas_texto, start=17):
+                if i >= len(linhas_img):
+                    break
+                visivel = strip_ansi(linha)
+                espaco_esq = (largura_bloco - len(visivel)) // 2
+                linha_centro = " " * espaco_esq + linha
+                linhas_img[i] = linhas_img[i] + " " * 8 + linha_centro
+
+            img_final = "\n".join(linhas_img)
+            centra_h_v(img_final)
+
+            processar_mortos_boss()
+            return
+
+    # HABILIDADE MORTE MURMURANTE
+    elif habilidade == "ILUSÃO" and len(escolhas_boss) > 0:
+        for npc in escolhas_boss:
+            npc['hp'] = int(npc['hp']) - int(npc['dano']) * 2
+
+        img = morte_mormurante_especial()
+        linhas_img = img.splitlines()
+
+        for i, linha in enumerate(linhas_img):
+            linhas_img[i] = Fore.CYAN + linha + Style.RESET_ALL
+
+        linhas_texto = []
+        largura_barra = 54
+        linhas_texto.append(
+            Fore.MAGENTA + Style.BRIGHT + "✦" + "━" * largura_barra + "✦" + Style.RESET_ALL
+        )
+        linhas_texto.append(
+            Fore.CYAN + Style.BRIGHT + "                         I L U S Ã O                    " + Style.RESET_ALL
+        )
+        linhas_texto.append(" ")
+        linhas_texto.append(
+            Fore.WHITE + Style.BRIGHT + "As criaturas perderam o controle..." + Style.RESET_ALL
+        )
+        linhas_texto.append(
+            Fore.WHITE + Style.BRIGHT + "Efeito: " + Style.RESET_ALL
+            + Fore.YELLOW + Style.BRIGHT + "inimigos atacam a si mesmos (dano dobrado)" + Style.RESET_ALL
+        )
+        linhas_texto.append(" ")
+        linhas_texto.append(
+            Fore.MAGENTA + Style.BRIGHT + "✦" + "━" * largura_barra + "✦" + Style.RESET_ALL
+        )
+
+        largura_bloco = max(len(strip_ansi(l)) for l in linhas_texto)
+
+        for i, linha in enumerate(linhas_texto, start=17):
+            if i >= len(linhas_img):
+                break
+            visivel = strip_ansi(linha)
+            espaco_esq = (largura_bloco - len(visivel)) // 2
+            linha_centro = " " * espaco_esq + linha
+            linhas_img[i] = linhas_img[i] + " " * 8 + linha_centro
+
+        img_final = "\n".join(linhas_img)
+        centra_h_v(img_final)
+
+        processar_mortos_boss()
+        return
+
+
+
+
+
                 
 
 
@@ -2871,6 +3896,85 @@ def atacar_monstro(idx: int, player: dict, orda: int) -> None:
 
 
 
+#ATACAR BOSS
+def atacar_boss(idx: int, player: dict) -> None:
+
+    img = ic.boss1_img()
+    inimigo = escolhas_boss[idx]
+
+    escolhas_boss[idx]['hp'] = int(escolhas_boss[idx]['hp']) - int(player['dano'])
+
+    if escolhas_boss[idx]['hp'] <= 0:
+
+        escolhas_boss[idx]['hp'] = 0
+
+        npc = escolhas_boss[idx]
+        xp_ganho = int(calcular_xp(npc, player, len(escolhas_boss)))
+        player['exp'] = int(player.get('exp', 0)) + xp_ganho
+        verificar_level_up(player)
+        normalizar_stats(player)
+        player['moedas'] += 5
+
+        inimigo = npc['nome']
+
+        del escolhas_boss[idx]
+
+        mostrar_monstro_derrotado(img, inimigo, player, xp_ganho)
+
+
+    if len(escolhas_boss) == 0:
+        
+        mensagem_morte_boss = f"""
+{Fore.RED}{Style.BRIGHT}✦━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━✦{Style.RESET_ALL}
+{Fore.YELLOW}{Style.BRIGHT}              O  B O S S  F O I  D E R R O T A D O!           {Style.RESET_ALL}
+{Fore.RED}{Style.BRIGHT}✦━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━✦{Style.RESET_ALL}
+
+{Fore.WHITE}{Style.BRIGHT}O chão treme... o silêncio domina o castelo.{Style.RESET_ALL}
+
+{Fore.RED}{Style.BRIGHT}O Ogro do Rei de Ferro caiu de joelhos.{Style.RESET_ALL}
+{Fore.WHITE}{Style.BRIGHT}Seu bafo terrível se apaga... sua força monstruosa desaparece.{Style.RESET_ALL}
+
+{Fore.YELLOW}{Style.BRIGHT}Você encara o gigante derrotado.{Style.RESET_ALL}
+{Fore.WHITE}{Style.BRIGHT}E por um instante... percebe que sobreviveu ao impossível.{Style.RESET_ALL}
+
+{Fore.GREEN}{Style.BRIGHT}✦ O Castelo do Rei de Ferro ainda está de pé... graças a você. ✦{Style.RESET_ALL}
+
+{Fore.RED}{Style.BRIGHT}✦━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━✦{Style.RESET_ALL}
+
+{Fore.YELLOW}{Style.DIM}Pressione ENTER para continuar sua jornada...{Style.RESET_ALL}
+"""
+
+
+        limpar_tela()
+        print("\n" * 2)
+        descri_monstro_mais_img(ic.fase1_cidade_salva(), mensagem_morte_boss)
+        input()
+
+    else:
+        mensagem_dano_oponente = (
+            f"\n"
+            f"\n"
+            f"\n"
+            f"\n"
+            f"\n"
+            f"\n"
+            f"{Fore.RED}✦━━━━━━━━━━━━━━ ✧ DANO CAUSADO ✧ ━━━━━━━━━━━━━━✦{Style.RESET_ALL}\n"
+            f"\n"
+            f"{Style.BRIGHT}você atacou o inimigo {Fore.RED + escolhas_boss[idx]['nome'] + Style.RESET_ALL}!"
+            f"\n"
+            f"{Style.BRIGHT}Dano dado: {Fore.RED + str(player['dano'])}{Style.BRIGHT}{Style.RESET_ALL}\n"
+            f"{Style.BRIGHT}HP restante do inimigo: {Fore.MAGENTA + str(escolhas_boss[idx]['hp'])}{Style.BRIGHT}{Style.RESET_ALL}\n"
+            f"\n"
+            f"{Style.BRIGHT}Aperte ENTER para continuar{Style.RESET_ALL}"
+        )
+
+        limpar_tela()
+        print("\n" * 2)
+        descri_monstro_mais_img(img, mensagem_dano_oponente)
+        input()
+
+
+
 
 
 
@@ -2919,6 +4023,91 @@ def ataque_dos_monstros(player: dict, lista_npcs: list) -> None:
         f"{Fore.RED}✦━━━━━━━━━━━━━━ {Style.BRIGHT}ATAQUE INIMIGO{Style.RESET_ALL}{Fore.RED} ━━━━━━━━━━━━━━✦{Style.RESET_ALL}\n"
         f"\n"
         f"{Style.BRIGHT}{Fore.YELLOW}O monstro atacou!{Style.RESET_ALL}\n"
+        f"\n"
+        f"{Style.BRIGHT}Inimigo:{Style.RESET_ALL} {Fore.MAGENTA}{Style.BRIGHT}{monstro['nome']}{Style.RESET_ALL} "
+        f"{Fore.CYAN}{Style.BRIGHT}(Lv. {monstro['level']}){Style.RESET_ALL}\n"
+        f"\n"
+        f"{Style.BRIGHT}Dano recebido:{Style.RESET_ALL} {Fore.RED}{Style.BRIGHT}{monstro['dano']}{Style.RESET_ALL}\n"
+        f"{Style.BRIGHT}Sua vida agora:{Style.RESET_ALL} {Fore.GREEN}{Style.BRIGHT}{player['hp']}{Style.RESET_ALL}\n"
+        f"\n"
+        f"{Fore.RED}✦━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━✦{Style.RESET_ALL}\n"
+        f"\n"
+        f"{Style.BRIGHT}{Fore.WHITE}Aperte ENTER para continuar...{Style.RESET_ALL}"
+    )
+
+    limpar_tela()
+    descri_monstro_mais_img(img, mensagem_ataque)
+    input(" ")
+
+
+    if player['hp'] <= 0:
+        limpar_tela()
+        img_morte = ic.morte_player_img() 
+
+        extra_morte = Fore.WHITE + f"""
+O silêncio toma conta do campo de batalha.
+Seu corpo já não responde, e suas forças se esgotaram por completo.
+Os inimigos ainda estão de pé, enquanto sua jornada chega ao fim.
+Cada escolha feita ecoa como uma última lembrança do combate.
+Não foi o fim que você esperava, mas foi o fim que encontrou.
+A história para aqui, mas poderia ter sido diferente.
+
+                    {Fore.RED}VOCÊ MORREU{Style.RESET_ALL}
+                    
+        {rgb_text("Aperte ENTER para voltar para o inicio!")}
+"""
+
+        descri_monstro_mais_img(img_morte, extra_morte)
+        input(" ")
+
+
+
+
+
+#ATAQUE DO BOSS
+def ataque_dos_boss(player: dict, escolhas_boss: list[dict]) -> None:
+
+    if not escolhas_boss:
+        return 
+    
+    idx = randint(0, len(escolhas_boss) - 1)
+    monstro = escolhas_boss[idx]
+
+    player['hp'] -= monstro['dano']
+    if player['hp'] <= 0:
+        player['hp'] = 0
+
+    img = ic.boss1_img()
+
+    limpar_tela()
+
+    mensagem_turno_oponente = (
+        f"{Fore.RED}{Style.BRIGHT}"
+        f"✦━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━✦\n"
+        f"{Style.RESET_ALL}"
+        f"\n"
+        f"             {Fore.YELLOW}{Style.BRIGHT}T U R N O   D O   O P O N E N T E{Style.RESET_ALL}\n"
+        f"\n"
+        f"              {Fore.WHITE}{Style.BRIGHT}Agora é a vez do BOSS...{Style.RESET_ALL}\n"
+        f"                   {Fore.WHITE}{Style.BRIGHT}Esteja preparado!{Style.RESET_ALL}\n"
+        f"\n"
+        f"{Fore.RED}{Style.BRIGHT}"
+        f"✦━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━✦"
+        f"{Style.RESET_ALL}"
+    )
+
+    print("\n" * 3)
+    centra_h_v(mensagem_turno_oponente)
+    print("\n")
+    centra_h(f"{Fore.CYAN}{Style.BRIGHT}Aperte ENTER para continuar{Style.RESET_ALL}")
+    input(" ")
+
+
+    mensagem_ataque = (
+        f"\n"
+        f"{Fore.RED}✦━━━━━━━━━━━━━━ {Style.BRIGHT}ATAQUE INIMIGO{Style.RESET_ALL}{Fore.RED} ━━━━━━━━━━━━━━✦{Style.RESET_ALL}\n"
+        f"\n"
+        f"{Style.BRIGHT}{Fore.YELLOW}O BOSS atacou!{Style.RESET_ALL}\n"
         f"\n"
         f"{Style.BRIGHT}Inimigo:{Style.RESET_ALL} {Fore.MAGENTA}{Style.BRIGHT}{monstro['nome']}{Style.RESET_ALL} "
         f"{Fore.CYAN}{Style.BRIGHT}(Lv. {monstro['level']}){Style.RESET_ALL}\n"

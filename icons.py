@@ -1365,6 +1365,124 @@ def fase1_heroina_parabenizando():
 ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠐⠛⠛⠛⠛⠂⠀⠀⠀⢸⣿⣱⣶⣶⣞⣼⣿⣿⡿⠀⠀⠀⠀⠀⠀⠀⢸⣿⣇⣦⣤⣤⣾⣱⣿⣿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
 """
 
+    dialogo_vitoria_1 = f"""
+{Fore.YELLOW}{Style.BRIGHT}✦━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━✦{Style.RESET_ALL}
+{Fore.CYAN}{Style.BRIGHT}         V I T Ó R I A  D O S  H E R Ó I S        {Style.RESET_ALL}
+{Fore.YELLOW}{Style.BRIGHT}✦━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━✦{Style.RESET_ALL}
+
+{Fore.GREEN}{Style.BRIGHT}[Aldeões ao fundo]{Style.RESET_ALL}
+{Fore.WHITE}"ELES VENCERAM!!"{Style.RESET_ALL}
+{Fore.WHITE}"O OGRO CAIU!!"{Style.RESET_ALL}
+{Fore.WHITE}"O CASTELO ESTÁ SALVO!!"{Style.RESET_ALL}
+
+{Fore.GREEN}{Style.BRIGHT}[Som de passos, gritos e comemoração]{Style.RESET_ALL}
+{Fore.WHITE}O castelo inteiro vibra em alegria...{Style.RESET_ALL}
+
+{Fore.MAGENTA}{Style.BRIGHT}Heroína:{Style.RESET_ALL}
+{Fore.WHITE}"...acabou. Finalmente acabou..." {Style.RESET_ALL}
+
+{Fore.MAGENTA}{Style.BRIGHT}Heroína:{Style.RESET_ALL}
+{Fore.WHITE}"Eu nunca pensei que conseguiríamos segurar esse ataque..." {Style.RESET_ALL}
+
+{Fore.YELLOW}{Style.BRIGHT}Você:{Style.RESET_ALL}
+{Fore.WHITE}"Eu também não... mas a gente conseguiu, né?"{Style.RESET_ALL}
+
+{Fore.GREEN}{Style.BRIGHT}[Aldeões]{Style.RESET_ALL}
+{Fore.WHITE}"VIVA!! VIVA OS HERÓIS!!"{Style.RESET_ALL}
+
+{Fore.YELLOW}{Style.DIM}Pressione ENTER para continuar...{Style.RESET_ALL}
+"""
+    
+    fn.limpar_tela()
+    print("\n" * 3)
+    fn.descri_item_mais_img(mensagem, dialogo_vitoria_1) 
+
+
+
+
+def fase1_heroina_parabenizando2():
+    mensagem = """
+⣷⣦⣤⣀⣸⣿⡇⠀⠀⠀⠀⣿⣟⠀⢈⣻⣿⣦⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⣾⢟⡼⢫⡞⢃⣼⠋⣰⠏
+⠙⠛⠿⢿⣿⣿⣷⣶⣤⣄⣀⣿⣯⣴⣿⠟⠛⢿⣷⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⣴⣶⣿⣿⣶⣦⣤⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣴⡿⣡⠟⣱⠏⣠⠟⢁⣾⣃⣤
+⠀⠀⣀⣶⡿⣿⡍⠛⣿⠿⡿⣿⣿⣿⣤⣄⣄⠈⠻⣿⣦⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣶⣿⢏⣵⢟⣵⡿⣿⣟⢿⣷⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⣿⢏⣴⢋⣼⣣⣼⣯⣾⣿⣿⣿⡿
+⣀⣶⡿⠋⢸⣿⡇⠨⣿⣷⣶⣤⣭⣿⠛⢿⣿⣿⣷⣿⣿⣷⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀⡀⠀⠀⢀⠀⠀⢀⠀⠀⠀⢀⣼⣿⣯⣿⣷⡿⠿⠚⠁⠙⢿⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣾⣿⣥⣾⣷⣿⣿⣿⠿⠟⠛⠋⠉⠀⠀
+⡿⠋⠀⠀⢸⣿⡇⠨⣿⣿⡇⣿⣿⣿⠀⢸⣿⠀⠉⢽⣿⠿⠿⠇⠀⠀⠀⢀⠐⡀⠈⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣼⣾⣿⡿⣫⡿⠐⡿⣷⠆⢰⣾⡒⣿⣿⡄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡀⠀⠰⠿⠿⢿⣿⡟⠛⠉⠁⢀⣠⠴⠂⠀⠒⠃⠀
+⠁⠀⠀⠀⢸⣿⡇⠨⣿⣦⡅⣍⣛⣿⠀⢸⣿⡀⠀⢽⣿⠶⣶⡶⣷⡟⢿⡿⢻⣿⣇⠀⠀⠀⠀⠀⢀⠀⠀⠀⣾⣟⣾⡏⣾⡿⠁⠀⠈⠀⣀⢸⡉⠀⣿⣟⢿⡄⠀⠀⠀⠀⠀⠀⠄⠀⠀⠀⠠⠀⣠⣤⡄⠠⣤⡄⠠⣤⡄⠐⣤⣄⠀⠀⠀⠀⢸⣿⡦⠔⠂⠀⠀⣤⣤⡄⠀⠀⠀⠀
+⣷⣦⣤⣄⣸⣿⡇⠨⣿⣿⡇⣿⣿⣿⠀⢸⣿⣿⡄⢽⣿⢠⡞⣰⠏⣰⡟⢡⡿⣿⢿⡄⠀⠀⠀⠀⠀⠀⠀⠀⢹⣿⣿⣼⣿⣷⣆⠀⠀⣠⣨⣍⡀⢸⣿⢿⣺⡗⠀⠀⠀⠀⢀⠀⠀⠀⠀⠀⠀⢠⡟⠙⣿⣄⠘⢿⣄⠘⣿⣄⠙⣿⣧⠀⠀⠀⢸⣿⡅⢀⠀⠀⢸⣿⣿⣿⠀⠀⠚⠉
+⠛⠛⠿⠿⣿⣿⣿⣾⣿⣿⣿⣿⣿⣿⠀⢸⣿⠘⢿⣿⣿⠏⣰⠏⣰⡟⣰⡿⠁⣿⠸⣷⠀⠀⠀⠠⠀⠀⠀⠠⠟⠃⣿⣿⢻⣿⣿⢦⣀⠀⠐⠃⣠⣿⣏⣿⡿⠃⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢠⡿⠁⠀⠘⢿⣆⠈⢿⣦⠈⢿⣆⠈⢿⣷⡀⠀⢸⣿⡋⠉⠀⠀⣹⣿⣿⣿⠀⠀⠀⠀
+⠀⠀⠀⠀⢸⣷⡏⠉⠙⠛⠻⠽⣷⣿⣷⣾⣿⣤⣄⣻⣿⣼⠃⣼⠏⣰⣿⣶⣤⣿⡀⣹⣇⠀⠀⠀⠀⠀⠀⠀⠀⡀⣫⣥⣯⣿⣿⣈⢛⢿⣷⡿⢟⣿⣿⢏⣴⡿⢿⣷⣄⠀⠀⡀⠀⠀⠀⢠⡿⠁⢸⢸⠀⠈⢿⣧⣀⣻⣧⠀⠛⢇⣀⣿⣿⣾⡿⣿⡅⠀⢠⠦⢾⣿⣿⣿⠚⠁⠀⠀
+⣶⣤⣤⣀⣘⣿⡇⠀⠀⠀⠀⠀⠀⠀⠉⢹⣿⠛⠻⢿⣿⣷⣾⣿⣿⣿⠀⣺⡍⠙⣻⠿⢿⡄⠀⠀⠀⠀⣨⣴⡿⠿⡿⢹⣿⡿⣮⣝⣙⣫⡭⢶⣻⡿⣿⣿⢋⡾⠛⠙⠛⢿⣦⡄⠀⠀⢀⣾⡃⠀⠘⠘⠀⠀⢸⡏⠉⠋⠋⣴⡿⠟⠛⠋⠉⠀⢸⣿⡇⠀⠀⠀⢺⡿⠿⠟⠀⠀⣀⣀
+⣿⡛⠻⣿⣿⢿⢿⣿⣶⣶⣤⣤⣄⣀⣀⢸⣿⠀⠀⢽⣿⠀⣰⡏⢐⣿⠀⢼⡋⡿⢾⠅⢸⣿⠀⠀⠀⣼⡿⠉⠀⠀⡇⣿⡟⣷⡙⢶⢶⡴⠾⢋⣩⡾⣿⠇⡎⠀⠀⠀⠀⠀⠙⣿⡄⠀⠀⢘⡇⢀⡄⠀⠒⠂⢸⡇⠀⢠⣾⠟⠁⡀⠐⠚⠀⠀⢸⣿⠆⠴⠔⠀⠀⠀⠀⠀⠀⠈⠉⠀
+⣿⣿⡄⠘⢿⣦⡀⠻⣯⡉⠻⣿⡛⠻⢿⣿⢿⣷⣷⣿⣿⠰⠏⠀⢐⣿⠀⢽⡀⡯⣺⠅⢺⡏⠀⠀⣰⡿⠁⠀⠀⠀⣰⡿⠀⠈⠻⣦⣤⣴⠾⠛⠁⠈⣿⡅⢠⠀⠀⠀⠀⠀⠀⢸⣿⡀⠀⢨⡇⠀⢰⠄⠀⠀⠘⠃⣴⣿⠋⢀⣉⣠⣤⣦⣶⠷⢿⣿⠇⠀⠀⡐⠚⠂⠀⠀⠰⠴⠂⠀
+⣿⣿⣿⣆⠀⠻⣷⡄⠙⢿⣄⠙⢿⣤⠈⢻⣦⡈⠻⣭⡻⣷⣄⠀⢐⣿⠷⣿⣦⣷⣽⣁⣺⡇⠀⢰⣿⡳⠶⠤⢄⣼⡿⠁⠀⠀⠀⡄⠁⠀⠀⠀⠀⠀⢹⣿⣤⡙⠶⠶⠖⢛⢛⣛⡻⣷⡀⠐⠁⠀⠈⠃⠀⠀⠠⣾⣿⡷⠟⠛⠋⠉⠉⠀⠀⠀⢸⣿⡛⠙⠉⠁⠀⠀⠀⠀⠀⠀⠀⠀
+⠉⣩⣿⠿⠿⠷⡿⣿⣶⣮⣿⣧⣬⣻⣷⣄⣙⢿⣄⠙⢿⣌⠻⣷⣄⠻⠀⢺⠁⠉⣽⠛⢻⡅⠀⠈⢹⣿⣷⣷⣿⣿⠁⠀⠀⠀⢀⡇⠀⠀⠀⠀⠀⠀⢀⣿⣿⣿⣿⣷⣿⡿⠿⠿⣿⡋⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣽⠆⠀⢠⣤⡀⢘⣾⣷⠀⢸⣿⡅⠀⠠⠴⠴⠀⠀⠀⠀⠀⠓⠛
+⣾⠟⠁⢠⣴⣶⡀⠀⠀⠀⠁⠉⠉⠙⠙⠛⠛⠟⠿⠿⣿⢿⢷⣮⣿⣷⠄⠀⠀⣤⣀⠀⢹⡇⠀⠀⢼⡿⢿⣿⣿⣿⢰⣄⠀⠀⢰⡇⢀⡀⠀⠀⡀⣤⣾⣿⣿⣿⣿⣽⣿⣿⣿⠿⠿⠿⣶⣦⣄⣀⠀⠀⢰⣿⣷⠀⠺⠃⠀⠛⠋⠋⠀⣹⣿⠀⢸⣿⠆⠀⠀⠀⠀⠔⠖⠀⠀⡀⠀⠀
+⠋⠀⠀⠸⣿⣹⠇⠀⠀⣠⣶⣶⣶⣄⠀⠀⠀⣤⣦⣄⠻⢠⡾⠋⠀⠀⠀⠀⢸⣿⣿⠇⠈⠀⠀⢀⣿⡇⠀⢸⣿⣿⣧⣿⣿⣿⡌⡇⣽⣿⣿⣿⣿⣿⣿⣿⣿⡿⠻⠋⠉⢀⣀⣤⣴⣤⣀⡉⠙⠻⢷⣦⣄⠻⡇⠀⠀⣴⣶⣷⣦⡀⠀⣾⣿⠀⠈⣀⠀⠀⠀⠀⢀⣄⡀⢠⣶⣶⡀⠀
+⠀⠀⠀⠀⢻⣿⡆⠀⢀⣿⡇⢬⢠⢾⠀⠀⠀⣻⣼⠿⠐⠛⠀⣠⣶⣶⡄⠀⠀⣾⡯⠀⠀⠀⣴⡿⣿⣀⠀⣿⣿⡿⢻⣿⣿⣿⣇⣗⣿⣿⣿⣿⢟⣿⠟⠋⢁⣠⣤⣶⣿⣿⣿⡿⡿⣿⣿⣿⣷⣶⣄⡈⠛⢿⣦⠀⢨⢷⠰⠀⣿⡇⢠⣿⡯⠀⢸⡿⠇⢀⣠⣤⣌⠻⣧⠈⣻⣿⠀⠀
+⠀⠀⢸⡇⠘⣿⣿⣄⠘⢧⡅⢴⣼⢸⠇⠀⣰⣿⡏⠀⢸⡂⢀⡿⠓⣰⢻⠀⣸⣿⠇⠀⠀⢠⣿⣇⡻⢿⣿⣿⣿⡇⢸⣿⣿⣿⢿⣷⣿⣿⣿⣿⢨⣿⠀⢰⣿⣿⣿⣿⣿⣿⣷⡆⠀⠀⢰⣿⣿⣿⣿⣿⣷⠨⣿⢀⢸⡎⠷⠆⣴⢫⣾⣿⠇⢀⣿⠇⠀⣾⡃⡘⣿⣧⠹⢇⣿⡗⠀⠀
+⣀⣀⣺⡇⠀⠘⢿⣿⣿⣦⣿⠶⢴⣿⣶⣿⣿⠟⠀⣲⣿⡀⠈⣻⣇⣓⣾⣼⣿⠏⢠⡀⢠⣿⠏⢿⣿⣦⡲⣾⡿⠃⣾⡟⠛⠿⣿⠻⠻⠻⣿⣿⢐⣿⠀⢸⣿⣿⣷⣿⣿⣿⣿⡇⠀⠀⢸⣿⣿⣿⣿⣿⣿⠀⣿⠢⣿⣿⡖⣠⣿⣿⣿⠏⠀⠸⣿⣧⡈⣧⠲⠆⣸⣿⡆⣼⣿⠇⠀⠀
+⠁⠉⢹⡇⠀⠀⠀⠻⣿⣿⣿⣷⣸⣿⣿⠏⠁⠀⠀⣺⣿⣿⣾⣿⣷⣵⣿⣿⠋⠀⢼⢂⣿⠻⣶⣤⠙⣿⣿⡿⢃⣾⡿⠻⣿⣶⣾⡐⠻⢁⣷⣿⡐⣿⠀⢸⣿⡿⣿⣿⢿⣿⣾⡇⠀⠀⢸⣿⣿⣿⣿⣻⣿⠀⣿⠅⢿⣿⣷⣿⣿⣿⡏⠀⣠⣄⠙⢿⣿⣿⠛⠁⣹⣿⣿⣿⠋⠀⠀⠀
+⠀⠀⣸⡇⠀⢲⠄⠀⢸⣿⣿⢿⣿⣿⣿⠀⠀⠀⠀⣺⣿⣿⠟⣽⣿⣿⣿⣿⠀⠀⠙⣸⡿⠀⠀⢙⣿⣿⠟⢀⣾⡟⠀⠀⢀⣽⣿⢹⣿⡟⣿⣿⡆⣿⡅⢘⣿⣷⠀⠉⠉⠉⠉⠁⠀⠀⠈⠉⠉⠉⠁⢸⣿⠀⣿⠅⠘⣿⣿⣟⣯⣿⡇⠀⢻⣿⠀⠀⣿⣿⣿⣿⣿⣿⢿⡟⡆⠀⠀⠀
+⠋⠃⢸⡇⠀⢽⠀⠀⠘⣿⣿⣿⣿⣯⡿⠀⠰⠲⠰⢽⣿⣿⠀⣹⣿⣷⣿⣷⡄⠀⢀⣿⠇⠀⢀⣾⣿⠟⢀⣾⡟⠀⠀⣀⣴⣿⡏⢸⣿⡇⢸⣿⣇⢻⣇⠀⣿⣿⠀⣀⣀⣠⣀⣀⠀⠀⢀⣀⣀⣀⣀⢸⣟⢨⣿⠀⠈⣿⠻⠻⢟⣿⡀⢴⣿⣿⣷⡄⢹⣿⣟⣿⣿⠏⢸⠇⠁⢠⢤⢤
+⡀⣀⣸⣇⣀⣀⠀⠀⣰⣿⣭⣭⣥⣭⣷⠀⠀⠠⢤⢽⣿⣿⢠⣿⣿⡿⢋⣤⣦⡄⣾⣿⣦⣤⣾⣿⣷⡄⢰⣿⢿⣶⡾⠛⣽⣿⠃⣾⣿⣗⠨⣿⣿⡸⣿⠀⢹⣿⣾⣿⣿⣿⣿⡯⠀⠀⢸⣿⣿⣿⣿⣾⡇⣸⡏⠀⣼⣿⣿⣿⣿⣿⣧⠸⣿⣿⡯⢀⣾⢭⣭⣭⣽⣷⡀⠀⠀⠀⠀⠀
+⠛⠋⠋⠋⠉⠉⠀⢰⣿⣿⣿⣿⣿⣿⣿⡆⠀⣀⣠⣹⣿⡟⢸⣿⣿⡅⢿⣯⡘⢿⣿⠁⠈⣹⣿⣻⣾⢇⣿⡏⠀⠀⠀⢰⣿⣿⢀⣿⢿⣿⡀⢿⣿⣇⢿⣇⠈⢿⣿⣿⣿⣿⣿⡯⠀⠀⢸⣿⣿⣿⣿⣿⢀⣿⠃⠀⣻⣿⣿⢿⣿⡿⡟⠀⣿⣿⡏⣼⡏⠀⠀⠀⢹⣿⣷⠀⠀⠰⠴⡤
+⠀⠀⠴⠦⠀⠀⠀⢀⣿⣿⣯⠟⢿⣯⣿⠄⠀⠁⠀⢽⣿⡇⣾⣿⣿⡿⠀⣹⣿⡌⢿⡄⢸⡏⣏⡯⠁⣼⣿⠀⢀⣠⣾⣿⣿⡇⢸⣿⢸⣿⡆⢸⣿⣿⡎⣿⡆⠘⣿⣿⣿⣿⣿⡯⠀⠀⢸⣿⣿⣿⣿⠃⣼⡟⠀⠀⣾⣿⡟⠀⣿⣿⣗⢀⣿⣿⢠⣿⠂⢸⠀⡄⢘⣿⣿⡅⠀⠀⢘⠆
+⠀⢀⠀⠀⠀⠀⠀⣰⣿⣿⠏⠀⠘⣿⣿⡇⢀⡤⠦⠟⠛⠁⣿⡿⢊⣴⡿⠛⢙⣿⡜⣿⣴⣿⠿⠁⠀⣸⣿⣷⣿⣿⣿⢺⣿⠅⣾⣿⢸⣿⣯⠈⣿⡿⣿⡜⣿⣄⠘⣿⣿⣯⣿⡗⠀⠀⢸⣿⣿⣿⠏⣰⡿⠀⡀⠈⣿⣿⡅⠀⠹⣿⣷⡄⠻⡇⣼⡯⠀⢽⠀⡷⠀⣿⣿⣷⠀⠘⠚⠓
+⠋⠉⠁⠀⡀⣀⢰⣿⣿⡏⠲⠚⢐⣿⣿⠇⠀⠀⢀⣀⡀⠀⢀⣴⡿⠋⣠⣴⠟⣹⣷⡘⣿⠁⠀⠀⢀⣾⡿⣿⣏⣿⡇⣿⡿⢀⣿⣿⢸⣿⣿⠄⢻⣗⢿⣿⣎⢿⣦⠈⢻⣿⣿⡋⠀⠀⠈⣻⣿⠃⣰⡿⢁⣈⠉⠁⢽⣿⡇⠠⠤⠘⢿⣿⡄⠀⣿⠇⠀⠈⠀⠹⠀⣻⣿⣿⡀⠀⠀⠀
+⠶⠾⠚⠛⠉⠁⣸⣿⡟⠀⠀⠀⢐⣿⣿⠁⠀⠖⠖⠀⣠⣾⠟⠋⣠⡾⢋⣴⡾⠛⢿⣧⡿⠃⠀⠀⣸⣿⢫⣿⢸⣿⢁⣿⡇⢸⣿⣿⢸⣿⣿⡇⠸⣿⠸⣿⣿⣷⡹⣷⣄⠙⢿⣿⣦⣤⣿⡿⢁⣼⡟⠁⠀⠈⣠⣴⣾⣿⡇⣀⡀⢀⣾⡿⠃⢸⣿⣷⣶⣦⣤⣴⣴⣾⣿⣻⡇⠚⠶⠶
+⠀⠙⠙⠁⠀⢸⣿⣿⣄⠐⢒⣒⣰⣿⣿⢿⠶⠀⣠⣾⠟⢁⣠⡾⢫⣴⡿⠋⠀⠀⠈⠉⠀⠀⠀⠀⣿⣯⣾⡏⣺⡟⢰⣿⠁⣿⣿⣗⢨⣿⣿⣿⠀⣿⡅⢿⣿⣿⣿⣮⣻⣷⣄⠉⠻⠿⠉⣤⡿⠋⢀⣀⣄⣀⡈⠈⠈⢈⣩⣨⣈⠀⠁⢀⣀⡀⣩⣽⣿⣟⠿⠿⠿⣿⣽⡟⠁⠀⠀⠀
+⠀⠀⠒⠓⠛⠂⠉⠋⠛⠀⢀⢀⠀⠀⠀⢀⣤⡿⠛⢁⡴⢛⣡⣾⠟⠁⢠⡤⡤⡤⠈⠋⢋⣑⣀⠀⠈⢹⣿⣷⣿⣧⣌⣍⣐⣿⣿⣧⣴⣿⡻⣿⣆⣘⣃⣸⣿⣮⣿⣿⣿⡿⠿⢿⣦⣴⡿⠋⠀⣀⣀⣀⡀⠀⡤⡤⣤⡀⠀⠀⢀⣤⣤⣄⡀⠀⠀⠀⣀⣠⣀⡀⠘⠋⠉⠲⠲⠲⠄⠀
+⠀⠀⠀⠀⠤⠶⠶⠶⠤⠈⠉⠉⠉⠁⢰⣾⠋⢀⡴⢋⣴⡾⠛⠁⠀⠀⠀⠀⢀⣀⣀⣄⣉⠈⠈⠁⠀⢸⣿⢋⠻⢿⣿⣿⣿⣿⡿⠈⠉⠀⠀⠙⣿⣿⣿⣿⡿⡿⣿⣿⣿⡇⠀⠀⠉⠉⠀⠀⠀⠁⠉⠁⠁⠀⠀⣠⣤⣦⣴⣄⡀⠀⠀⣀⣤⣤⣄⣀⠁⠁⠁⠁⠠⠶⠶⠶⠤⠀⠀⠀
+⠈⠛⠛⠃⠀⠀⠀⣠⣤⣤⣤⠀⠀⣰⣿⠃⢀⣡⣴⡿⠋⠀⠐⠒⠗⠛⠒⠂⠉⠉⠁⣁⣁⣀⡀⠀⢀⣾⡿⠛⠻⣦⡹⣿⣿⣿⠃⢀⣀⣄⣄⡀⠹⣿⣾⢏⣴⠶⣦⣝⢿⣯⠀⠀⠈⠛⠛⠛⠋⠃⠖⠷⠻⠳⠖⠀⠀⠀⠀⣀⣀⣀⣀⡀⠀⠀⠀⣀⣤⣤⣤⣄⣀⠀⠀⡤⣤⣦⣤⡄
+⠀⠀⣤⣴⣴⣦⣦⡄⠀⠀⠀⠀⢰⣿⣷⠿⠟⠛⠁⠀⢠⣴⣴⢶⢶⢦⠄⠀⠀⠀⠈⠉⠉⠉⠉⠀⢸⣿⠀⠀⠀⠈⢿⣿⣿⢿⠀⠀⠁⠁⠁⠀⠀⢿⣯⡿⠁⠀⠀⠉⢻⣿⣦⠀⠀⢠⣴⣴⣶⣦⣦⡀⠀⢠⣤⣦⣦⣦⣌⠋⠋⠋⠋⠙⠀⠀⠀⠉⠁⠉⠉⠉⠉⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠐⠛⠛⠛⠛⠂⠀⠀⠀⢸⣿⣱⣶⣶⣞⣼⣿⣿⡿⠀⠀⠀⠀⠀⠀⠀⢸⣿⣇⣦⣤⣤⣾⣱⣿⣿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+"""
+
+
+    dialogo_vitoria_2 = f"""
+{Fore.YELLOW}{Style.BRIGHT}✦━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━✦{Style.RESET_ALL}
+{Fore.CYAN}{Style.BRIGHT}            O  H E R Ó I   D O   C A S T E L O               {Style.RESET_ALL}
+{Fore.YELLOW}{Style.BRIGHT}✦━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━✦{Style.RESET_ALL}
+
+{Fore.GREEN}{Style.BRIGHT}[Aldeões comemorando]{Style.RESET_ALL}
+{Fore.WHITE}"ELE LUTOU CONTRA O OGRO!!"{Style.RESET_ALL}
+{Fore.WHITE}"UM VERDADEIRO GUERREIRO!!"{Style.RESET_ALL}
+{Fore.WHITE}"O CASTELO NUNCA VAI ESQUECER!!"{Style.RESET_ALL}
+
+{Fore.MAGENTA}{Style.BRIGHT}Heroína:{Style.RESET_ALL}
+{Fore.WHITE}"Agora... tudo está bem."{Style.RESET_ALL}
+{Fore.WHITE}"Podemos respirar tranquilos por um tempo."{Style.RESET_ALL}
+
+{Fore.MAGENTA}{Style.BRIGHT}Heroína:{Style.RESET_ALL}
+{Fore.WHITE}"E eu preciso admitir..."{Style.RESET_ALL}
+{Fore.WHITE}"Eu estava errada sobre você."{Style.RESET_ALL}
+
+{Fore.YELLOW}{Style.BRIGHT}Você:{Style.RESET_ALL}
+{Fore.WHITE}"Errada? Eu ainda pareço um monstro, sabia..."{Style.RESET_ALL}
+
+{Fore.MAGENTA}{Style.BRIGHT}Heroína:{Style.RESET_ALL}
+{Fore.WHITE}"Talvez por fora."{Style.RESET_ALL}
+{Fore.WHITE}"Mas hoje... você lutou como um verdadeiro herói."{Style.RESET_ALL}
+
+{Fore.MAGENTA}{Style.BRIGHT}Heroína:{Style.RESET_ALL}
+{Fore.WHITE}"Sempre que precisar... pode contar comigo."{Style.RESET_ALL}
+
+{Fore.YELLOW}{Style.BRIGHT}Você:{Style.RESET_ALL}
+{Fore.WHITE}"Heh... então acho que não estou sozinho nessa jornada."{Style.RESET_ALL}
+
+{Fore.GREEN}{Style.BRIGHT}[Aldeões]{Style.RESET_ALL}
+{Fore.WHITE}"HERÓIS!! HERÓIS!!"{Style.RESET_ALL}
+
+{Fore.YELLOW}{Style.DIM}Pressione ENTER para continuar...{Style.RESET_ALL}
+"""
+    
+    fn.limpar_tela()
+    print("\n" * 3)
+    fn.descri_item_mais_img(mensagem, dialogo_vitoria_2) 
+
+
+
+
 #fase 1 completa
 def fase_1_fim() -> None:
     mensagem  = fr"""

@@ -78,6 +78,15 @@ while True:
         input()
         fs.fase_1(fase, orda, player)
 
+        if player['hp'] >= 1:
+            ic.fase1_heroina_parabenizando()
+            input()
+            ic.fase1_heroina_parabenizando2()
+            input()
+        else:
+            pass
+
+
 
     elif escolha_menu == "Ultimos Recordes":
         fn.ultimos_recordes()

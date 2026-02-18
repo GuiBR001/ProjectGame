@@ -371,6 +371,7 @@ def criar_personagem(nome: str,raca: int) -> dict:
         "xp_next": xp_para_upar(int(level)),
         "hp": int(hp),
         "hp_max": int(hp),
+        "escudo": 0,
         "dano": int(dano),
         "hp_base": int(hp),
         "dano_base": int(dano),
@@ -602,6 +603,7 @@ def exibir_player_M(player: dict) -> None:
     dano = player.get('dano', 0)
     sorte_val = player.get('sorte', 0)
     habilidade = player.get('habilidade', '')
+    escudo = player.get('escudo', 0)
 
     if 0 <= sorte_val <= 0.15:
         sorte_txt = "Baixa"
@@ -632,12 +634,13 @@ def exibir_player_M(player: dict) -> None:
     v_nome = f"{cor_val}{nome}{Style.RESET_ALL}"
     v_raca = f"{cor_val}{raca}{Style.RESET_ALL}"
     v_level = f"{Fore.MAGENTA}{Style.BRIGHT}{level}{Style.RESET_ALL}"
-    v_exp = f"{Fore.YELLOW}{Style.BRIGHT}{exp}{Style.RESET_ALL}"
-    v_xpnext = f"{Fore.YELLOW}{Style.BRIGHT}{xp_next}{Style.RESET_ALL}"
-    v_hp = f"{Fore.RED}{Style.BRIGHT}{vida}{Style.RESET_ALL}"
+    v_exp = f"{Fore.GREEN}{Style.BRIGHT}{exp}{Style.RESET_ALL}"
+    v_xpnext = f"{Fore.GREEN}{Style.BRIGHT}{xp_next}{Style.RESET_ALL}"
+    v_hp = f"{Fore.MAGENTA}{Style.BRIGHT}{vida}{Style.RESET_ALL}"
     v_dano = f"{Fore.RED}{Style.BRIGHT}{dano}{Style.RESET_ALL}"
     v_sorte = f"{cor_sorte}{Style.BRIGHT}{sorte_txt}{Style.RESET_ALL}"
     v_hab = f"{Fore.CYAN}{Style.BRIGHT}{habilidade}{Style.RESET_ALL}"
+    v_escu = f"{Fore.BLUE}{Style.BRIGHT}{escudo}{Style.RESET_ALL}"
 
     barra = barra_xp(exp, xp_next)
     v_barra = f"{cor_barra}{barra}{Style.RESET_ALL}"
@@ -654,6 +657,7 @@ def exibir_player_M(player: dict) -> None:
     linhas.append(f"{cor_label}XP Barra  : {Style.RESET_ALL}{v_barra}")
     linhas.append("")
     linhas.append(f"{cor_label}HP        : {Style.RESET_ALL}{v_hp}")
+    linhas.append(f"{cor_label}Escudo    : {Style.RESET_ALL}{v_escu}")
     linhas.append(f"{cor_label}Dano      : {Style.RESET_ALL}{v_dano}")
     linhas.append(f"{cor_label}Sorte     : {Style.RESET_ALL}{v_sorte}")
     linhas.append(f"{cor_label}Habilidade: {Style.RESET_ALL}{v_hab}")
@@ -3987,10 +3991,24 @@ def ataque_dos_monstros(player: dict, lista_npcs: list) -> None:
     
     idx = randint(0, len(lista_npcs) - 1)
     monstro = lista_npcs[idx]
+    danoescudo = True
 
-    player['hp'] -= monstro['dano']
-    if player['hp'] <= 0:
-        player['hp'] = 0
+    if player['escudo'] >= 1:
+        danoescudo = True
+        if danoescudo == True:
+            player['escudo'] -= monstro['dano']
+            if player['escudo'] <= 0:
+                player['escudo'] = 0
+    else:
+        danoescudo = False
+        
+
+    if danoescudo == False:
+        player['hp'] -= monstro['dano']
+        if player['hp'] <= 0:
+            player['hp'] = 0
+    else: 
+        pass
 
     img = imagem_seta_escolhida_inimigo_fase1(idx)
 
@@ -4019,21 +4037,26 @@ def ataque_dos_monstros(player: dict, lista_npcs: list) -> None:
 
 
     mensagem_ataque = (
-        f"\n"
-        f"{Fore.RED}✦━━━━━━━━━━━━━━ {Style.BRIGHT}ATAQUE INIMIGO{Style.RESET_ALL}{Fore.RED} ━━━━━━━━━━━━━━✦{Style.RESET_ALL}\n"
-        f"\n"
-        f"{Style.BRIGHT}{Fore.YELLOW}O monstro atacou!{Style.RESET_ALL}\n"
-        f"\n"
-        f"{Style.BRIGHT}Inimigo:{Style.RESET_ALL} {Fore.MAGENTA}{Style.BRIGHT}{monstro['nome']}{Style.RESET_ALL} "
-        f"{Fore.CYAN}{Style.BRIGHT}(Lv. {monstro['level']}){Style.RESET_ALL}\n"
-        f"\n"
-        f"{Style.BRIGHT}Dano recebido:{Style.RESET_ALL} {Fore.RED}{Style.BRIGHT}{monstro['dano']}{Style.RESET_ALL}\n"
+    f"\n"
+    f"{Fore.RED}✦━━━━━━━━━━━━━━ {Style.BRIGHT}ATAQUE INIMIGO{Style.RESET_ALL}{Fore.RED} ━━━━━━━━━━━━━━✦{Style.RESET_ALL}\n"
+    f"\n"
+    f"{Style.BRIGHT}{Fore.YELLOW}O monstro atacou!{Style.RESET_ALL}\n"
+    f"\n"
+    f"{Style.BRIGHT}Inimigo:{Style.RESET_ALL} {Fore.MAGENTA}{Style.BRIGHT}{monstro['nome']}{Style.RESET_ALL} "
+    f"{Fore.CYAN}{Style.BRIGHT}(Lv. {monstro['level']}){Style.RESET_ALL}\n"
+    f"\n"
+    f"{Style.BRIGHT}Dano recebido:{Style.RESET_ALL} {Fore.RED}{Style.BRIGHT}{monstro['dano']}{Style.RESET_ALL}\n"
+    + (
         f"{Style.BRIGHT}Sua vida agora:{Style.RESET_ALL} {Fore.GREEN}{Style.BRIGHT}{player['hp']}{Style.RESET_ALL}\n"
-        f"\n"
-        f"{Fore.RED}✦━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━✦{Style.RESET_ALL}\n"
-        f"\n"
-        f"{Style.BRIGHT}{Fore.WHITE}Aperte ENTER para continuar...{Style.RESET_ALL}"
+        if danoescudo == False
+        else f"{Style.BRIGHT}Seu escudo atual:{Style.RESET_ALL} {Fore.BLUE}{Style.BRIGHT}{player['escudo']}{Style.RESET_ALL}\n"
     )
+    + f"\n"
+    f"{Fore.RED}✦━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━✦{Style.RESET_ALL}\n"
+    f"\n"
+    f"{Style.BRIGHT}{Fore.WHITE}Aperte ENTER para continuar...{Style.RESET_ALL}"
+)
+
 
     limpar_tela()
     descri_monstro_mais_img(img, mensagem_ataque)
@@ -4072,10 +4095,24 @@ def ataque_dos_boss(player: dict, escolhas_boss: list[dict]) -> None:
     
     idx = randint(0, len(escolhas_boss) - 1)
     monstro = escolhas_boss[idx]
+    danoescudo = True
 
-    player['hp'] -= monstro['dano']
-    if player['hp'] <= 0:
-        player['hp'] = 0
+    if player['escudo'] >= 1:
+        danoescudo = True
+        if danoescudo == True:
+            player['escudo'] -= monstro['dano']
+            if player['escudo'] <= 0:
+                player['escudo'] = 0
+    else:
+        danoescudo = False
+        
+
+    if danoescudo == False:
+        player['hp'] -= monstro['dano']
+        if player['hp'] <= 0:
+            player['hp'] = 0
+    else: 
+        pass
 
     img = ic.boss1_img()
 

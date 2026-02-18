@@ -555,7 +555,7 @@ def exibir_player(player: dict) -> None:
     level = player['level']
     exp = player['exp']
     xp_next = player.get('xp_next', 0)
-    vida = player['hp']
+    vida = f"{player['hp']}/{player['hp_max']}"
     dano = player['dano']
     sorte = player['sorte']
     habilidade = player['habilidade'] 
@@ -636,7 +636,7 @@ def exibir_player_M(player: dict) -> None:
     v_level = f"{Fore.MAGENTA}{Style.BRIGHT}{level}{Style.RESET_ALL}"
     v_exp = f"{Fore.GREEN}{Style.BRIGHT}{exp}{Style.RESET_ALL}"
     v_xpnext = f"{Fore.GREEN}{Style.BRIGHT}{xp_next}{Style.RESET_ALL}"
-    v_hp = f"{Fore.MAGENTA}{Style.BRIGHT}{vida}{Style.RESET_ALL}"
+    v_hp = f"{Fore.MAGENTA}{Style.BRIGHT}{vida}/{player['hp_max']}{Style.RESET_ALL}"
     v_dano = f"{Fore.RED}{Style.BRIGHT}{dano}{Style.RESET_ALL}"
     v_sorte = f"{cor_sorte}{Style.BRIGHT}{sorte_txt}{Style.RESET_ALL}"
     v_hab = f"{Fore.CYAN}{Style.BRIGHT}{habilidade}{Style.RESET_ALL}"
@@ -1182,7 +1182,7 @@ def comprar_itens(player):
 {Fore.WHITE}{Style.BRIGHT}Ao beber, você recupera parte da sua força.{Style.RESET_ALL}
 
 {Fore.MAGENTA}{Style.BRIGHT}Efeito:{Style.RESET_ALL}
-{Fore.WHITE}{Style.BRIGHT}Cura {Fore.MAGENTA}{Style.BRIGHT}20%{Fore.WHITE}{Style.BRIGHT} da sua vida atual.{Style.RESET_ALL}
+{Fore.WHITE}{Style.BRIGHT}Cura {Fore.MAGENTA}{Style.BRIGHT}20%{Fore.WHITE}{Style.BRIGHT} da sua vida total.{Style.RESET_ALL}
 
 {Fore.YELLOW}{Style.DIM}ENTER para comprar  •  ↑/↓ para navegar{Style.RESET_ALL}
 
@@ -1226,7 +1226,7 @@ def comprar_itens(player):
 {Fore.WHITE}{Style.BRIGHT}Cada gole desperta sua força interior.{Style.RESET_ALL}
 
 {Fore.RED}{Style.BRIGHT}Efeito:{Style.RESET_ALL}
-{Fore.WHITE}{Style.BRIGHT}Aumenta seu ataque principal em {Fore.RED}{Style.BRIGHT}10%{Fore.WHITE}{Style.BRIGHT}.{Style.RESET_ALL}
+{Fore.WHITE}{Style.BRIGHT}Aumenta seu ataque principal em {Fore.RED}{Style.BRIGHT}30%{Fore.WHITE}{Style.BRIGHT}.{Style.RESET_ALL}
 
 {Fore.YELLOW}{Style.DIM}ENTER para comprar  •  ↑/↓ para navegar{Style.RESET_ALL}
 
@@ -1315,7 +1315,7 @@ def comprar_itens(player):
 {Fore.WHITE}{Style.BRIGHT}Ideal para aguentar ataques devastadores.{Style.RESET_ALL}
 
 {Fore.BLUE}{Style.BRIGHT}Efeito:{Style.RESET_ALL}
-{Fore.WHITE}{Style.BRIGHT}Ganha escudo de {Fore.BLUE}{Style.BRIGHT}30%{Fore.WHITE}{Style.BRIGHT} da sua vida atual.{Style.RESET_ALL}
+{Fore.WHITE}{Style.BRIGHT}Ganha escudo de {Fore.BLUE}{Style.BRIGHT}40%{Fore.WHITE}{Style.BRIGHT} da sua vida atual.{Style.RESET_ALL}
 
 {Fore.YELLOW}{Style.DIM}ENTER para comprar  •  ↑/↓ para navegar{Style.RESET_ALL}
 
@@ -1489,7 +1489,7 @@ def exibe_status_item_loja(idx: int) -> list[str]:
         titulo = "P O Ç Ã O   D E   V I D A"
         corpo = [
             f"{Fore.WHITE}{Style.BRIGHT}Um frasco que pulsa energia vital.{Style.RESET_ALL}",
-            f"{Fore.WHITE}{Style.BRIGHT}Cura {Fore.MAGENTA}{Style.BRIGHT}20%{Fore.WHITE}{Style.BRIGHT} da sua vida atual.{Style.RESET_ALL}",
+            f"{Fore.WHITE}{Style.BRIGHT}Cura {Fore.MAGENTA}{Style.BRIGHT}20%{Fore.WHITE}{Style.BRIGHT} da sua vida total.{Style.RESET_ALL}",
             f"{Fore.YELLOW}{Style.BRIGHT}Perfeita para virar o combate.{Style.RESET_ALL}",
         ]
 
@@ -1498,7 +1498,7 @@ def exibe_status_item_loja(idx: int) -> list[str]:
         titulo = "E L I X I R   D E   D A N O"
         corpo = [
             f"{Fore.WHITE}{Style.BRIGHT}Uma mistura ardente que desperta sua força.{Style.RESET_ALL}",
-            f"{Fore.WHITE}{Style.BRIGHT}Aumenta seu ataque principal em {Fore.RED}{Style.BRIGHT}10%{Fore.WHITE}{Style.BRIGHT}.{Style.RESET_ALL}",
+            f"{Fore.WHITE}{Style.BRIGHT}Aumenta seu ataque principal em {Fore.RED}{Style.BRIGHT}30%{Fore.WHITE}{Style.BRIGHT}.{Style.RESET_ALL}",
             f"{Fore.YELLOW}{Style.BRIGHT}Cada golpe fica mais letal.{Style.RESET_ALL}",
         ]
 
@@ -1516,7 +1516,7 @@ def exibe_status_item_loja(idx: int) -> list[str]:
         titulo = "E S C U D O   P R O T E T O R"
         corpo = [
             f"{Fore.WHITE}{Style.BRIGHT}Uma barreira mágica envolve seu corpo.{Style.RESET_ALL}",
-            f"{Fore.WHITE}{Style.BRIGHT}Ganha escudo de {Fore.BLUE}{Style.BRIGHT}30%{Fore.WHITE}{Style.BRIGHT} da sua vida atual.{Style.RESET_ALL}",
+            f"{Fore.WHITE}{Style.BRIGHT}Ganha escudo de {Fore.BLUE}{Style.BRIGHT}40%{Fore.WHITE}{Style.BRIGHT} da sua vida atual.{Style.RESET_ALL}",
             f"{Fore.YELLOW}{Style.BRIGHT}Absorve dano antes de te ferir.{Style.RESET_ALL}",
         ]
 
@@ -1733,8 +1733,7 @@ def usar_item_dict(player: dict, itens: dict[str, int], idx_item: int) -> str:
     item = nome.lower()
 
     if "cura" in item or "vida" in item:
-        base = int(player.get("hp_max", player.get("hp", 0)))
-        cura = max(1, int(base * 0.20))
+        cura = max(1, int(player['hp_max'] * 0.20))
         player["hp"] = min(int(player.get("hp", 0)) + cura, int(player.get("hp_max", player.get("hp", 0))))
         itens[nome] -= 1
 
@@ -1745,7 +1744,7 @@ def usar_item_dict(player: dict, itens: dict[str, int], idx_item: int) -> str:
 
     if "escudo" in item:
         vida_atual = int(player.get("hp", 0))
-        esc = max(1, int(vida_atual * 0.30))
+        esc = max(1, int(vida_atual * 0.40))
         player["escudo"] = int(player.get("escudo", 0)) + esc
         itens[nome] -= 1
         if itens[nome] <= 0:
@@ -1753,8 +1752,7 @@ def usar_item_dict(player: dict, itens: dict[str, int], idx_item: int) -> str:
         return f"{Fore.BLUE}{Style.BRIGHT}Você usou {nome}! +{esc} Escudo{Style.RESET_ALL}"
 
     if "xp" in item:
-        falta = int(player.get("xp_next", 0)) - int(player.get("exp", 0))
-        ganho = max(1, int(max(falta, 0) * 0.25))
+        ganho = max(1, int(max(player['xp_next'], 0) * 0.25))
         player["exp"] = int(player.get("exp", 0)) + ganho
         verificar_level_up(player)
         itens[nome] -= 1
@@ -1764,7 +1762,7 @@ def usar_item_dict(player: dict, itens: dict[str, int], idx_item: int) -> str:
 
     if "dano" in item:
         atual = int(player.get("dano", 0))
-        bonus = max(1, int(atual * 0.10))
+        bonus = max(1, int(atual * 0.30))
         player["dano"] = atual + bonus
         itens[nome] -= 1
         if itens[nome] <= 0:
@@ -4150,7 +4148,11 @@ def ataque_dos_boss(player: dict, escolhas_boss: list[dict]) -> None:
         f"{Fore.CYAN}{Style.BRIGHT}(Lv. {monstro['level']}){Style.RESET_ALL}\n"
         f"\n"
         f"{Style.BRIGHT}Dano recebido:{Style.RESET_ALL} {Fore.RED}{Style.BRIGHT}{monstro['dano']}{Style.RESET_ALL}\n"
+        + (
         f"{Style.BRIGHT}Sua vida agora:{Style.RESET_ALL} {Fore.GREEN}{Style.BRIGHT}{player['hp']}{Style.RESET_ALL}\n"
+        if danoescudo == False
+        else f"{Style.BRIGHT}Seu escudo atual:{Style.RESET_ALL} {Fore.BLUE}{Style.BRIGHT}{player['escudo']}{Style.RESET_ALL}\n"
+        ) +
         f"\n"
         f"{Fore.RED}✦━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━✦{Style.RESET_ALL}\n"
         f"\n"

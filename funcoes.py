@@ -211,6 +211,7 @@ def criar_inimigos(fase: int, orda: int, player: dict) -> None:
                         novo_npc = criar_npc(nivel, fase)
                         lista_npcs.append(novo_npc)
                         escolhas_inimigo.append(novo_npc['nome'] + " " + novo_npc['sexo'])
+                        novo_npc['hp'] = 15
                     break
 
             #ORDA DE MONSTROS 2
@@ -553,8 +554,8 @@ def exibir_player(player: dict) -> None:
     nome = player['nome']
     raca = player['raca']
     level = player['level']
-    exp = player['exp']
-    xp_next = player.get('xp_next', 0)
+    exp = f"{player['exp']}/{player.get('xp_next', 0)}"
+    xp_next = player.get('xp_next', 0) - player.get('exp', 0)
     vida = f"{player['hp']}/{player['hp_max']}"
     dano = player['dano']
     sorte = player['sorte']
@@ -577,7 +578,7 @@ def exibir_player(player: dict) -> None:
         f"  ║    Raça   : {str(raca).ljust(largura)}║\n"
         f"  ║    Level  : {str(level).ljust(largura)}║\n"
         f"  ║     EXP   : {str(exp).ljust(largura)}║\n"
-        f"  ║  PróxLvl  : {str(xp_next).ljust(largura)}║\n"
+        f"  ║  PróxLvl  : {str(xp_next).ljust(largura)}XP║\n"
         f"  ║ XP Barra  : {barra_xp(exp, xp_next).ljust(largura)}║\n"
         "  ╠" + "═" * 34 + "╣\n"
         f"  ║      HP   : {str(vida).ljust(largura)}║\n"
@@ -598,7 +599,7 @@ def exibir_player_M(player: dict) -> None:
     raca = player.get('raca', '')
     level = player.get('level', 0)
     exp = player.get('exp', 0)
-    xp_next = player.get('xp_next', 0)
+    xp_next = player.get('xp_next', 0) - player.get('exp', 0)
     vida = player.get('hp', 0)
     dano = player.get('dano', 0)
     sorte_val = player.get('sorte', 0)
@@ -634,16 +635,16 @@ def exibir_player_M(player: dict) -> None:
     v_nome = f"{cor_val}{nome}{Style.RESET_ALL}"
     v_raca = f"{cor_val}{raca}{Style.RESET_ALL}"
     v_level = f"{Fore.MAGENTA}{Style.BRIGHT}{level}{Style.RESET_ALL}"
-    v_exp = f"{Fore.GREEN}{Style.BRIGHT}{exp}{Style.RESET_ALL}"
-    v_xpnext = f"{Fore.GREEN}{Style.BRIGHT}{xp_next}{Style.RESET_ALL}"
+    v_exp = f"{Fore.GREEN}{Style.BRIGHT}{exp}/{player.get('xp_next')}{Style.RESET_ALL}"
+    v_xpnext = f"{Fore.GREEN}{Style.BRIGHT}{xp_next}XP{Style.RESET_ALL}"
     v_hp = f"{Fore.MAGENTA}{Style.BRIGHT}{vida}/{player['hp_max']}{Style.RESET_ALL}"
     v_dano = f"{Fore.RED}{Style.BRIGHT}{dano}{Style.RESET_ALL}"
     v_sorte = f"{cor_sorte}{Style.BRIGHT}{sorte_txt}{Style.RESET_ALL}"
     v_hab = f"{Fore.CYAN}{Style.BRIGHT}{habilidade}{Style.RESET_ALL}"
     v_escu = f"{Fore.BLUE}{Style.BRIGHT}{escudo}{Style.RESET_ALL}"
 
-    barra = barra_xp(exp, xp_next)
-    v_barra = f"{cor_barra}{barra}{Style.RESET_ALL}"
+    barra = barra_xp(player.get('exp', 0), player.get('xp_next', 0))
+    v_barra = barra
 
     linhas = []
     linhas.append(f"{cor_titulo}S T A T U S   D O   J O G A D O R{Style.RESET_ALL}")
@@ -654,7 +655,7 @@ def exibir_player_M(player: dict) -> None:
     linhas.append(f"{cor_label}Level     : {Style.RESET_ALL}{v_level}")
     linhas.append(f"{cor_label}EXP       : {Style.RESET_ALL}{v_exp}")
     linhas.append(f"{cor_label}Próx Nível: {Style.RESET_ALL}{v_xpnext}")
-    linhas.append(f"{cor_label}XP Barra  : {Style.RESET_ALL}{v_barra}")
+    linhas.append(f"{cor_label}XP Barra  : {Style.RESET_ALL}{rgb_text(v_barra)}")
     linhas.append("")
     linhas.append(f"{cor_label}HP        : {Style.RESET_ALL}{v_hp}")
     linhas.append(f"{cor_label}Escudo    : {Style.RESET_ALL}{v_escu}")
@@ -3820,12 +3821,12 @@ def atacar_boss_habilidade(player: dict, idx: int) -> None:
 #FUNCAO DE ATACAR OS MONSTROS APENAS (DANO) NORMAL DO JOGADOR
 def atacar_monstro(idx: int, player: dict, orda: int) -> None:
 
-    hp = lista_npcs[idx]['hp']
-
     img = imagem_seta_escolhida_inimigo_fase1(idx)
     inimigo = lista_npcs[idx]['nome']
 
     lista_npcs[idx]['hp'] = int(lista_npcs[idx]['hp']) - int(player['dano'])
+
+    hp = lista_npcs[idx]['hp']
 
     if lista_npcs[idx]['hp'] <= 0:
 
@@ -3911,7 +3912,7 @@ def atacar_boss(idx: int, player: dict) -> None:
         escolhas_boss[idx]['hp'] = 0
 
         npc = escolhas_boss[idx]
-        xp_ganho = int(calcular_xp(npc, player, len(escolhas_boss)))
+        xp_ganho = player.get('xp_next', 0) * 2
         player['exp'] = int(player.get('exp', 0)) + xp_ganho
         verificar_level_up(player)
         normalizar_stats(player)
@@ -4345,8 +4346,8 @@ def mostrar_monstro_derrotado(img: str, inimigo: str, player: dict, xp_ganho: in
     normalizar_stats(player)
 
     largura = 21
-    exp = player['exp']
-    xp_next = player.get('xp_next', 0)
+    exp = f"{player['exp']}/{player.get('xp_next', 0)}"
+    xp_next = player.get('xp_next', 0) - player.get('exp', 0)
 
     status_jogador = (
         "  ╔" + "═" * 34 + "╗\n"
@@ -4356,7 +4357,7 @@ def mostrar_monstro_derrotado(img: str, inimigo: str, player: dict, xp_ganho: in
         f"  ║    Level  : {str(player['level']).ljust(largura)}║\n"
         f"  ║     EXP   : {str(exp).ljust(largura)}║\n"
         f"  ║  PróxLvl  : {str(xp_next).ljust(largura)}║\n"
-        f"  ║ XP Barra  : {barra_xp(exp, xp_next).ljust(largura)}║\n"
+        f"  ║ XP Barra  : {barra_xp(player.get('exp', 0), player.get('xp_next', 0)).ljust(largura)}║\n"
         "  ╠" + "═" * 34 + "╣\n"
         f"  ║      HP   : {str(player['hp']).ljust(largura)}║\n"
         f"  ║     Dano  : {str(player['dano']).ljust(largura)}║\n"

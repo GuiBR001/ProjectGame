@@ -3,7 +3,7 @@ import sys
 import shutil
 import funcoes as fn
 import fase as fs
-import icons as ic
+import icons as ic 
 from colorama import Fore, Style, init
 
 init(autoreset= True)
@@ -15,7 +15,7 @@ orda = 1
 
 while True:
 
-    escolha_menu = fn.escolha_seta_menu()
+    escolha_menu = fn.escolha_seta_menu()/
 
     if escolha_menu == "Começar Novo Jogo":
 

@@ -555,7 +555,8 @@ def exibir_player(player: dict) -> None:
     raca = player['raca']
     level = player['level']
     exp = f"{player['exp']}/{player.get('xp_next', 0)}"
-    xp_next = player.get('xp_next', 0) - player.get('exp', 0)
+    xp_next_text = f"{player.get('xp_next', 0) - player.get('exp', 0)}" + "XP"
+    xp_next = player.get('xp_next', 0) - player.get('exp' , 0)
     vida = f"{player['hp']}/{player['hp_max']}"
     dano = player['dano']
     sorte = player['sorte']
@@ -578,7 +579,7 @@ def exibir_player(player: dict) -> None:
         f"  ║    Raça   : {str(raca).ljust(largura)}║\n"
         f"  ║    Level  : {str(level).ljust(largura)}║\n"
         f"  ║     EXP   : {str(exp).ljust(largura)}║\n"
-        f"  ║  PróxLvl  : {str(xp_next).ljust(largura)}XP║\n"
+        f"  ║  PróxLvl  : {str(xp_next_text).ljust(largura)}║\n"
         f"  ║ XP Barra  : {barra_xp(exp, xp_next).ljust(largura)}║\n"
         "  ╠" + "═" * 34 + "╣\n"
         f"  ║      HP   : {str(vida).ljust(largura)}║\n"

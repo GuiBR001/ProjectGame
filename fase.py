@@ -14,6 +14,7 @@ def fase_1(fase: int, orda: int, player: dict) -> None:
 
     fn.lista_npcs.clear()
     fn.escolhas_inimigo.clear()
+    fn.escolhas_boss.clear()
     fn.criar_inimigos(fase, orda, player)
 
     while fase == 1 and orda == 1:

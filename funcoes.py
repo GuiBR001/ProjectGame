@@ -1000,7 +1000,6 @@ def escolha_seta_inimigo_fase1(player, orda) -> int | None:
 #ESCOLHA DE BOSSFIGHT
 def escolha_seta_inimigo_bossfight(player) -> int | None:
 
-    escolhas_boss.clear()
     idx = 0
     idx_item = 0
     foco_itens = False

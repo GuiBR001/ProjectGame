@@ -15,7 +15,7 @@ orda = 1
 
 while True:
 
-    escolha_menu = fn.escolha_seta_menu()/
+    escolha_menu = fn.escolha_seta_menu()
 
     if escolha_menu == "Começar Novo Jogo":
 

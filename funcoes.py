@@ -1000,6 +1000,7 @@ def escolha_seta_inimigo_fase1(player, orda) -> int | None:
 #ESCOLHA DE BOSSFIGHT
 def escolha_seta_inimigo_bossfight(player) -> int | None:
 
+    escolhas_boss.clear()
     idx = 0
     idx_item = 0
     foco_itens = False
@@ -3826,8 +3827,11 @@ def atacar_monstro(idx: int, player: dict, orda: int) -> None:
     inimigo = lista_npcs[idx]['nome']
 
     lista_npcs[idx]['hp'] = int(lista_npcs[idx]['hp']) - int(player['dano'])
-
+    
     hp = lista_npcs[idx]['hp']
+
+    if hp <= 0:
+        hp = 0
 
     if lista_npcs[idx]['hp'] <= 0:
 
